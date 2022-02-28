@@ -1,3 +1,2 @@
 # improve_flexibility_contents
-testing
 project description
