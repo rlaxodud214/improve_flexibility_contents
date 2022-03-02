@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class CSVInput : MonoBehaviour
 {
     // !!Resources에 있는 ageData 파일 위치 옮기지 마시오.
+
     #region 변수
     private int user_age = 35; //임시 나이 삽입
     private string user_name = "김태영"; //임시 이름 삽입
