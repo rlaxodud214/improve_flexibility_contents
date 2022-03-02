@@ -74,3 +74,4 @@ crashlytics-build.properties
 # 용량커서 안 올라가는 fbx 파일들 업로드 안되게 제거하기 위해 추가
 *.fbx
 /Flex_CityVR/Library/
+/LumbarFlexibilityContents/Library/
