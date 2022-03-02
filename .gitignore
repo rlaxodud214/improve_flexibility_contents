@@ -71,7 +71,10 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
+# End of https://www.gitignore.io/api/unity
+
 # 용량커서 안 올라가는 fbx 파일들 업로드 안되게 제거하기 위해 추가
 *.fbx
 /Flex_CityVR/Library/
 /LumbarFlexibilityContents/Library/
+
