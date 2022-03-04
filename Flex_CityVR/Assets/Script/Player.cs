@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private float rotspeed = 100f;
     private float gravity = 20f;
     private Vector3 moveDir = Vector3.zero;
+    public Vector3 lastPosition; // 플레이어 마지막 위치
     public static Player instance;   // 싱글톤 
 
     // Start is called before the first frame update
@@ -18,12 +19,23 @@ public class Player : MonoBehaviour
     void Awake()
     {
         Player.instance = this;
+        if (!PlayerPrefs.HasKey("pos_X")) // 게임 첫 플레이시 시작 지점
+        {
+            PlayerPrefs.SetFloat("pos_X", -44f);
+            PlayerPrefs.SetFloat("pos_Y", 2f);
+            PlayerPrefs.SetFloat("pos_Z", 22f);
+        }
         animator = GetComponent<Animator>();
         _controller = GetComponent<CharacterController>();
     }
     void Start()
     {
-        
+        if (!PlayerPrefs.HasKey("pos_X")) // 게임 첫 플레이시 시작 지점
+        {
+            PlayerPrefs.SetFloat("pos_X", -44f);
+            PlayerPrefs.SetFloat("pos_Y", 2f);
+            PlayerPrefs.SetFloat("pos_Z", 22f);
+        }
     }
 
     // Update is called once per frame
@@ -60,5 +72,14 @@ public class Player : MonoBehaviour
         }
         moveDir.y -= gravity * Time.deltaTime;
         _controller.Move(moveDir * Time.deltaTime);
+    }
+
+    // 플레이어의 마지막 위치 저장
+    public void SavePosition()
+    {
+        //lastPosition = this.transform.position;
+        PlayerPrefs.SetFloat("pos_X", this.transform.position.x);
+        PlayerPrefs.SetFloat("pos_Y", this.transform.position.y);
+        PlayerPrefs.SetFloat("pos_Z", this.transform.position.z);
     }
 }

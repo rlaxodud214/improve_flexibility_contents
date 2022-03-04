@@ -87,6 +87,10 @@ public class PhoneControl : MonoBehaviour
         // 알파값 (투명도) 는 인스펙터에서 0 ~ 255  -->  투명 ~ 불투명
         // 코드 상으로 0 ~ 1로 지정해야함
         balckImg.gameObject.SetActive(true);
+
+        // CharacterController 꺼줘야 캐릭터가 이동함, 페이드아웃될 때 못 움직이도록 함
+        mPlayer.transform.GetComponent<CharacterController>().enabled = false; 
+        
         float fadeCount = 0; // 처음 알파값 (투명도)
         while (fadeCount < 1.0f) // 알파 최댓값 1.0까지 반복
         {
@@ -104,7 +108,6 @@ public class PhoneControl : MonoBehaviour
 
         yield return new WaitForSeconds(5f); // 캐릭터 이동이 fadeout 보다 먼저 발생하지 않도록
 
-        mPlayer.transform.GetComponent<CharacterController>().enabled = false; // 꺼줘야 이동함
         mPlayer.transform.position = wantPos;
         mPlayer.transform.GetComponent<CharacterController>().enabled = true;
 
