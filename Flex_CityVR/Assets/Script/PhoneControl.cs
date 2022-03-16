@@ -10,7 +10,8 @@ public class PhoneControl : MonoBehaviour
     public GameObject mPlayer; // 임시
 
     // phone
-    private bool phone_on;
+    private bool phone_on; // 핸드폰 on/off 여부
+    private bool click_on; // 핸드폰 여는 버튼/tab 클릭 했는지
     private Animator animator;
     public GameObject Phone;
     public List<GameObject> toTeleport = new List<GameObject>(); // teleport 리스트
@@ -39,6 +40,7 @@ public class PhoneControl : MonoBehaviour
 
         #region 폰 초기화
         phone_on = false;
+        click_on = false;
         Phone.SetActive(false);
         Phone.transform.GetChild(1).gameObject.SetActive(true);
         Phone.transform.GetChild(2).gameObject.SetActive(false);
@@ -54,26 +56,46 @@ public class PhoneControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab)) // 핸드폰 켜기/끄기
         {
-            if (phone_on) // 켜져 있으면
+            Debug.Log("Tab");
+            click_on = true;
+            if (click_on && phone_on) // 켜져 있으면
             {
-                animator.SetBool("phone_on", false);
-                //animator.SetFloat("Reverse", -1.0f);
-                phone_on = false;
-                Phone.SetActive(false);
-                Phone.transform.GetChild(1).gameObject.SetActive(true);
-                Phone.transform.GetChild(2).gameObject.SetActive(false);
-
+                StartCoroutine(phoneUp());
             }
-            else // 꺼져 있으면
+            else if (click_on && !phone_on)   // 꺼져 있으면
             {
-                animator.SetBool("phone_on", true);
-                //animator.SetFloat("Reverse", 1.0f);
-                phone_on = true;
-                Phone.SetActive(true);
-                Phone.transform.GetChild(1).gameObject.SetActive(true);
-                Phone.transform.GetChild(2).gameObject.SetActive(false);
+                StartCoroutine(phoneDown());
             }
+            click_on = false;
         }
+    }
+
+    IEnumerator phoneUp()
+    {
+        phone_on = false;
+        //print("끔1.  phone_on : " + phone_on);
+        animator.SetBool("phone_on", false);
+        //animator.SetFloat("Reverse", -1.0f);
+        //animator.SetBool("phone_off", true);
+        Phone.SetActive(false);
+        Phone.transform.GetChild(1).gameObject.SetActive(true);
+        Phone.transform.GetChild(2).gameObject.SetActive(false);
+        //print("끔2.  phone_on : " + phone_on);
+        yield return new WaitForSeconds(2f);
+    }
+
+    IEnumerator phoneDown()
+    {
+        phone_on = true;
+        //print("켬1.  phone_on : " + phone_on);
+        animator.SetBool("phone_on", true);
+        //animator.SetBool("phone_off", false);
+        //animator.SetFloat("Reverse", 1.0f);
+        Phone.SetActive(true);
+        Phone.transform.GetChild(1).gameObject.SetActive(true);
+        Phone.transform.GetChild(2).gameObject.SetActive(false);
+        //print("켬2.  phone_on : " + phone_on);
+        yield return new WaitForSeconds(2f);
     }
 
     public void teleport()

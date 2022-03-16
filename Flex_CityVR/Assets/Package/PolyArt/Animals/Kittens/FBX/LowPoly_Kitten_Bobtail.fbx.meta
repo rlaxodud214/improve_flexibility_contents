@@ -1,0 +1,172 @@
+fileFormatVersion: 2
+guid: 085299c3a4488fb41a0eecdf62011682
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Arm_Kitten
+    100002: Base
+    100004: claw_b.L
+    100006: claw_b.R
+    100008: claw_f.L
+    100010: claw_f.R
+    100012: foot_b.L
+    100014: foot_b.R
+    100016: foot_f.L
+    100018: foot_f.R
+    100020: head
+    100022: Helper_claw_b.L
+    100024: Helper_claw_b.R
+    100026: Helper_foot_f.L
+    100028: Helper_foot_f.R
+    100030: hip_b.L
+    100032: hip_b.R
+    100034: hip_f.L
+    100036: hip_f.R
+    100038: Kitten_Bobtail
+    100040: leg_b.L
+    100042: leg_b.R
+    100044: leg_f.L
+    100046: leg_f.R
+    100048: //RootNode
+    100050: mouth
+    100052: neck
+    100054: root_bone
+    100056: shoulder_blade.L
+    100058: shoulder_blade.R
+    100060: spine_01
+    100062: spine_02
+    100064: spine_03
+    100066: spine_04
+    100068: spine_05
+    100070: Spine_base
+    100072: tail_01
+    100074: tail_02
+    100076: tail_03
+    400000: Arm_Kitten
+    400002: Base
+    400004: claw_b.L
+    400006: claw_b.R
+    400008: claw_f.L
+    400010: claw_f.R
+    400012: foot_b.L
+    400014: foot_b.R
+    400016: foot_f.L
+    400018: foot_f.R
+    400020: head
+    400022: Helper_claw_b.L
+    400024: Helper_claw_b.R
+    400026: Helper_foot_f.L
+    400028: Helper_foot_f.R
+    400030: hip_b.L
+    400032: hip_b.R
+    400034: hip_f.L
+    400036: hip_f.R
+    400038: Kitten_Bobtail
+    400040: leg_b.L
+    400042: leg_b.R
+    400044: leg_f.L
+    400046: leg_f.R
+    400048: //RootNode
+    400050: mouth
+    400052: neck
+    400054: root_bone
+    400056: shoulder_blade.L
+    400058: shoulder_blade.R
+    400060: spine_01
+    400062: spine_02
+    400064: spine_03
+    400066: spine_04
+    400068: spine_05
+    400070: Spine_base
+    400072: tail_01
+    400074: tail_02
+    400076: tail_03
+    2100000: Kitten_color
+    4300000: Kitten_Bobtail
+    9500000: //RootNode
+    13700000: Kitten_Bobtail
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Kitten_color
+    second: {fileID: 2100000, guid: 3a241fe084c4c9c4eab384507c2d312f, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 0
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 0
+    keepQuads: 0
+    weldVertices: 0
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

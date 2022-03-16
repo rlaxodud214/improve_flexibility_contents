@@ -16,21 +16,26 @@ public class SceneChange : MonoBehaviour
         StartCoroutine(MoveScene("3-1.Flexibility_Measurement"));*/
     }
 
-/*    IEnumerator MoveScene(string moveSceneName)
-    {
-        AsyncOperation async = SceneManager.LoadSceneAsync(moveSceneName);
-
-        async.allowSceneActivation = false; 
-        while (!(async.isDone))
+    /*    IEnumerator MoveScene(string moveSceneName)
         {
-            float progress = async.progress * 100f;
-            Debug.Log("async progress : " + async.progress + "%");
+            AsyncOperation async = SceneManager.LoadSceneAsync(moveSceneName);
 
-            if (changeScene && async.progress >= 0.9f)
-                async.allowSceneActivation = true; // true 가 되면 씬을 로드함
-        }
-        yield return null;
-    }*/
+            async.allowSceneActivation = false; 
+            while (!(async.isDone))
+            {
+                float progress = async.progress * 100f;
+                Debug.Log("async progress : " + async.progress + "%");
+
+                if (changeScene && async.progress >= 0.9f)
+                    async.allowSceneActivation = true; // true 가 되면 씬을 로드함
+            }
+            yield return null;
+        }*/
+
+    void Start()
+    {
+        //Invoke("test", 5f);
+    }
 
     void OnMouseDown() // Coliider를 마우스로 클릭하면 발생하는 함수 (기존에 있는 이벤트함수 이용)
     {
@@ -43,6 +48,11 @@ public class SceneChange : MonoBehaviour
         }
         
 
+    }
+
+    void test()
+    {
+        SceneManager.LoadScene("3-1.Flexibility_Measurement");
     }
 
 }
