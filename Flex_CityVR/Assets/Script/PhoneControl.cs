@@ -7,40 +7,19 @@ using UnityEngine.UI;
 [System.Serializable]
 public class PhoneControl : MonoBehaviour
 {
-    public GameObject mPlayer; // 임시
-
     // phone
     private bool phone_on; // 핸드폰 on/off 여부
-    private bool click_on; // 핸드폰 여는 버튼/tab 클릭 했는지
-    private Animator animator;
+    private Animator animator; //핸드폰 애니메이터 (추후 핸드폰 up/down 애니메이션)
     public GameObject Phone;
-    public List<GameObject> toTeleport = new List<GameObject>(); // teleport 리스트
-    public List<GameObject> teleportBtn = new List<GameObject>(); // teleport 와 연결할 버튼 리스트
-    public Dictionary<string, GameObject> telePos = new Dictionary<string, GameObject>();
-    private Vector3 wantPos;
-    //
-
-    //fadeout
-    public Image balckImg;
-    //
 
     // Start is called before the first frame update
 
     void Awake()
     {
-        // 버튼 이름과 toTeleport 매치
-        // 눌린 버튼의 이름을 가져와 딕셔너리에서 값을 찾을거임
-        for (int i = 0; i < toTeleport.Count; i++)
-        {
-            telePos.Add(teleportBtn[i].name, toTeleport[i]);
-        }
-        mPlayer = GameObject.Find("Player");
         animator = Phone.transform.GetComponent<Animator>();
-        balckImg.gameObject.SetActive(false);
 
         #region 폰 초기화
         phone_on = false;
-        click_on = false;
         Phone.SetActive(false);
         Phone.transform.GetChild(1).gameObject.SetActive(true);
         Phone.transform.GetChild(2).gameObject.SetActive(false);
@@ -56,84 +35,31 @@ public class PhoneControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab)) // 핸드폰 켜기/끄기
         {
-            Debug.Log("Tab");
-            click_on = true;
-            if (click_on && phone_on) // 켜져 있으면
+            if (phone_on) // 켜져 있으면
             {
-                StartCoroutine(phoneUp());
+                phone_on = false;
+                //print("끔1.  phone_on : " + phone_on);
+                //animator.SetBool("phone_on", false);
+                //animator.SetFloat("Reverse", -1.0f);
+                //animator.SetBool("phone_off", true);
+                Phone.SetActive(false);
+                Phone.transform.GetChild(1).gameObject.SetActive(true);
+                Phone.transform.GetChild(2).gameObject.SetActive(false);
+                //print("끔2.  phone_on : " + phone_on);
             }
-            else if (click_on && !phone_on)   // 꺼져 있으면
+            else   // 꺼져 있으면
             {
-                StartCoroutine(phoneDown());
+                phone_on = true;
+                //print("켬1.  phone_on : " + phone_on);
+                //animator.SetBool("phone_on", true);
+                //animator.SetBool("phone_off", false);
+                //animator.SetFloat("Reverse", 1.0f);
+                Phone.SetActive(true);
+                Phone.transform.GetChild(1).gameObject.SetActive(true);
+                Phone.transform.GetChild(2).gameObject.SetActive(false);
+                //print("켬2.  phone_on : " + phone_on);
             }
-            click_on = false;
+
         }
-    }
-
-    IEnumerator phoneUp()
-    {
-        phone_on = false;
-        //print("끔1.  phone_on : " + phone_on);
-        animator.SetBool("phone_on", false);
-        //animator.SetFloat("Reverse", -1.0f);
-        //animator.SetBool("phone_off", true);
-        Phone.SetActive(false);
-        Phone.transform.GetChild(1).gameObject.SetActive(true);
-        Phone.transform.GetChild(2).gameObject.SetActive(false);
-        //print("끔2.  phone_on : " + phone_on);
-        yield return new WaitForSeconds(2f);
-    }
-
-    IEnumerator phoneDown()
-    {
-        phone_on = true;
-        //print("켬1.  phone_on : " + phone_on);
-        animator.SetBool("phone_on", true);
-        //animator.SetBool("phone_off", false);
-        //animator.SetFloat("Reverse", 1.0f);
-        Phone.SetActive(true);
-        Phone.transform.GetChild(1).gameObject.SetActive(true);
-        Phone.transform.GetChild(2).gameObject.SetActive(false);
-        //print("켬2.  phone_on : " + phone_on);
-        yield return new WaitForSeconds(2f);
-    }
-
-    public void teleport()
-    {
-        StartCoroutine(FadeCoroutine());
-        StartCoroutine(changePosition());
-    }
-
-    IEnumerator FadeCoroutine()
-    {
-        // 알파값 (투명도) 는 인스펙터에서 0 ~ 255  -->  투명 ~ 불투명
-        // 코드 상으로 0 ~ 1로 지정해야함
-        balckImg.gameObject.SetActive(true);
-
-        // CharacterController 꺼줘야 캐릭터가 이동함, 페이드아웃될 때 못 움직이도록 함
-        mPlayer.transform.GetComponent<CharacterController>().enabled = false; 
-        
-        float fadeCount = 0; // 처음 알파값 (투명도)
-        while (fadeCount < 1.0f) // 알파 최댓값 1.0까지 반복
-        {
-            fadeCount += 0.01f;
-            yield return new WaitForSeconds(0.01f); // 0.01s마다 실행
-            balckImg.color = new Color(0, 0, 0, fadeCount); // 해당 변수값으로 알파값 지정
-        }
-    }
-
-    IEnumerator changePosition()
-    {
-        // 눌린 버튼의 name 가져오기
-        string name = EventSystem.current.currentSelectedGameObject.name;
-        wantPos = telePos[name].transform.position;
-
-        yield return new WaitForSeconds(5f); // 캐릭터 이동이 fadeout 보다 먼저 발생하지 않도록
-
-        mPlayer.transform.position = wantPos;
-        mPlayer.transform.GetComponent<CharacterController>().enabled = true;
-
-        yield return new WaitForSeconds(3f);
-        balckImg.gameObject.SetActive(false);
     }
 }
