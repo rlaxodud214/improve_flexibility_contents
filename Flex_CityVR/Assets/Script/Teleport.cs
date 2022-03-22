@@ -49,31 +49,65 @@ public class Teleport : MonoBehaviour
         Player.instance.controller_state = false;
         mPlayer.transform.GetComponent<CharacterController>().enabled = false;
 
-        StartCoroutine(FadeOutCamera(backImg));
+        StartCoroutine(FadeInCamera(backImg,4f));
         StartCoroutine(changePosition());
     }
 
-    IEnumerator FadeOutCamera(Image img) // 페이드 아웃
+    IEnumerator FadeInCamera(Image img, float fadeOutTime) // 페이드 인 : 투명 > 불투명
     {
         // 알파값 (투명도) 는 인스펙터에서 0 ~ 255  -->  투명 ~ 불투명
         // 코드 상으로 0 ~ 1로 지정해야함
 
-        float fadeCount = 0; // 처음 알파값 (투명도)
-        while (fadeCount < 1.0f) // 알파 최댓값 1.0까지 반복
+        // 투명하게 초기화
+        img.gameObject.SetActive(true);
+        Color temp = img.color;
+        temp.a = 0;
+        img.color = temp;
+        //
+        float t = 0f; // 0~1 일때 t=0; 0.5~1일때 t=0.5 와 같이 선형보간 값 구함
+        temp.a = Mathf.Lerp(0f, 1f, t); // 투명~불투명
+        
+        while(temp.a < 1f)
         {
-            fadeCount += 0.01f;
-            yield return new WaitForSeconds(0.01f); // 0.01s마다 실행
-            img.color = new Color(0, 0, 0, fadeCount); // 해당 변수값으로 알파값 지정
+            t += Time.deltaTime / fadeOutTime;
+            temp.a = Mathf.Lerp(0f, 1f, t);
+            img.color = temp;
+            yield return null;
         }
     }
 
+    IEnumerator FadeOutCamera(Image img, float fadeOutTime) // 페이드 아웃 : 불투명 > 투명
+    {
+        // 알파값 (투명도) 는 인스펙터에서 0 ~ 255  -->  투명 ~ 불투명
+        // 코드 상으로 0 ~ 1로 지정해야함
+
+        // 불투명하게 초기화
+        if (img.gameObject.activeSelf == false)
+            img.gameObject.SetActive(true);
+        Color temp = img.color;
+        temp.a = 255;
+        img.color = temp;
+        //
+
+        float t = 0f;
+        temp.a = Mathf.Lerp(1f, 0f, t); // 불투명~투명
+
+        while (temp.a > 0f)
+        {
+            t += Time.deltaTime / fadeOutTime;
+            temp.a = Mathf.Lerp(1f, 0f, t);
+            img.color = temp;
+            yield return null;
+        }
+        img.gameObject.SetActive(false);
+    }
     IEnumerator changePosition()
     {
         // 눌린 버튼의 name 가져오기
         string name = EventSystem.current.currentSelectedGameObject.name;
         wantPos = telePos[name].transform.position;
 
-        yield return new WaitForSeconds(5f); // 캐릭터 이동이 fadeout 보다 먼저 발생하지 않도록
+        yield return new WaitForSeconds(4f); // 캐릭터 이동이 fadeout 보다 먼저 발생하지 않도록
 
         mPlayer.transform.position = wantPos;
         Player.instance.controller_state = true;
@@ -86,13 +120,15 @@ public class Teleport : MonoBehaviour
 
     IEnumerator showTitle(GameObject obj) // 장소 이름 띄우기
     {
+        yield return new WaitForSeconds(1f);
         string num = obj.name.Substring(0, 1);
+        //print("장소 이름 index : " + (int.Parse(num) - 1));
         Image nowTitle = contentsTitle.GetChild(int.Parse(num) - 1).gameObject.transform.GetComponent<Image>(); // 장소 이름
 
-        nowTitle.gameObject.SetActive(true);
-        yield return new WaitForSeconds(2f);
-        // 끌 때 페이드 필요
-        nowTitle.gameObject.SetActive(false);
+        StartCoroutine(FadeInCamera(nowTitle, 2f));
+        yield return new WaitForSeconds(3f);
+        StartCoroutine(FadeOutCamera(nowTitle, 2f));
+
     }
 
 
