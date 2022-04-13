@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.24114239, g: 0.21803388, b: 0.1629838, a: 1}
+  m_IndirectSpecularColor: {r: 0.054631215, g: 0.04562679, b: 0.027337864, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1840,14 +1840,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1377100698}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b57f1a1a2929234290b21d8ea7e06c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 404cb39eb64ed784d9d31c79e9621a5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sensorEulerData: {x: 0, y: 0, z: 0}
   offset: {x: 0, y: 0, z: 0}
   save_offset: 0
   OpenZenIoType: 1
-  OpenZenIdentifier: 00:04:3E:9B:A2:85
+  OpenZenIdentifier: 00:04:3E:9B:A2:A5
 --- !u!1 &1490340476
 GameObject:
   m_ObjectHideFlags: 0

@@ -2967,7 +2967,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5117709272763234209}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 8.08009, y: 0, z: -0.21000001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 9166498488683983564}
@@ -4774,6 +4774,7 @@ MonoBehaviour:
   SlowTimeClip: {fileID: 8300000, guid: 3264b135b94635f42a09d672b19cae85, type: 3}
   SpeedupTimeClip: {fileID: 8300000, guid: 8a4a5bd0b5270024ca91ab9d88bce279, type: 3}
   SetFixedDelta: 0
+  CheckInput: 1
   ForceTimeScale: 0
 --- !u!82 &1416394701893124138
 AudioSource:

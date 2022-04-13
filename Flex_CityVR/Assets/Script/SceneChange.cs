@@ -42,7 +42,7 @@ public class SceneChange : MonoBehaviour
         if (gameObject.name == "Monitor_screen")
         {
             //Debug.Log("클릭된 오브젝트 : " + gameObject.name);
-            Player.instance.SavePosition();
+            //Player.instance.SavePosition();
             SceneManager.LoadScene("3-3.Result"); // 3-1. 씬 사용 할 것 (IMU 미연동 방지로 3-3으로 해둠)
             //changeScene = true;
         }

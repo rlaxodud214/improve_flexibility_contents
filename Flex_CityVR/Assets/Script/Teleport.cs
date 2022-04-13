@@ -42,7 +42,7 @@ public class Teleport : MonoBehaviour
         backImg.gameObject.SetActive(false);
     }
 
-    public void teleport() // UI 버튼 함수에 연결
+/*    public void teleport() // UI 버튼 함수에 연결
     {
         backImg.gameObject.SetActive(true);
         // CharacterController 꺼줘야 캐릭터가 이동함, 페이드아웃될 때 못 움직이도록 함
@@ -51,7 +51,7 @@ public class Teleport : MonoBehaviour
 
         StartCoroutine(FadeInCamera(backImg,4f));
         StartCoroutine(changePosition());
-    }
+    }*/
 
     IEnumerator FadeInCamera(Image img, float fadeOutTime) // 페이드 인 : 투명 > 불투명
     {
@@ -101,7 +101,7 @@ public class Teleport : MonoBehaviour
         }
         img.gameObject.SetActive(false);
     }
-    IEnumerator changePosition()
+/*    IEnumerator changePosition()
     {
         // 눌린 버튼의 name 가져오기
         string name = EventSystem.current.currentSelectedGameObject.name;
@@ -116,7 +116,7 @@ public class Teleport : MonoBehaviour
         yield return new WaitForSeconds(3f);
         backImg.gameObject.SetActive(false);
         StartCoroutine(showTitle(telePos[name]));
-    }
+    }*/
 
     IEnumerator showTitle(GameObject obj) // 장소 이름 띄우기
     {
