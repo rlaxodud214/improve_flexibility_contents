@@ -45,7 +45,6 @@ public class PhoneControl : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Tab) || InputBridge.Instance.AButton) // 핸드폰 켜기/끄기
         {
-            print("startPhone : " + startPhone);
             if (startPhone && canCall) {
                 canCall = false;
                 StartCoroutine(phoneCon());
@@ -61,7 +60,6 @@ public class PhoneControl : MonoBehaviour
     {
         if (phone_on) // 켜져 있으면
         {
-            print("OFF");
             phone_on = false;
             //print("끔1.  phone_on : " + phone_on);
             //animator.SetBool("phone_on", false);
@@ -76,7 +74,6 @@ public class PhoneControl : MonoBehaviour
         }
         else // 꺼져 있으면
         {
-            print("ON");
             phone_on = true;
             //print("켬1.  phone_on : " + phone_on);
             //animator.SetBool("phone_on", true);
@@ -91,6 +88,5 @@ public class PhoneControl : MonoBehaviour
         }
         startPhone = false;
         canCall = true;
-        print("startPhone : "+ startPhone);
     }
 }

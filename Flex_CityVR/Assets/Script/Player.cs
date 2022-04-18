@@ -126,7 +126,9 @@ public class Player : MonoBehaviour
 
         #endregion*/ // 까지 2022.04.14 주석 - XR Rig에 사용 불가
 
+    public Vector3 Offset;
 
+    private GameObject CenterEyeAnchor;
     // Trigger 여부
     private bool T_hospital, T_soccer, T_limbo, T_kayak, T_fly, T_window, T_battle, T_chef, T_arrow;
 
@@ -135,18 +137,23 @@ public class Player : MonoBehaviour
     void Awake()
     {
         Player.instance = this;
-
+        CenterEyeAnchor = GameObject.Find("CenterEyeAnchor");
         #region 초기화
         T_hospital = T_soccer = T_limbo = T_kayak = T_fly = T_window = T_battle = T_chef = T_arrow = false;
         #endregion
     }
 
+    private void Update()
+    {
+        transform.position = CenterEyeAnchor.transform.position + Offset;
+        transform.eulerAngles = new Vector3(0f, GameManager.instance.XR_Rig.transform.GetChild(0).rotation.eulerAngles.y, 0f);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        print("출력");
         Debug.Log("otherName : " + other.name.Substring(0,-1));
 
-/*        if (other.gameObject.layer == 11) // Contents Layer
+        if (other.gameObject.layer == 11) // Contents Layer
         {
             if (other.name.Substring(0, -1) == "T_kay") //카약
             {
@@ -156,7 +163,7 @@ public class Player : MonoBehaviour
             UIManager.instance.informText.text = "콘텐츠 수행 장소로 이동하시겠습니까?";
         }
 
-        UIManager.instance.checkTrigger();*/
+        UIManager.instance.checkTrigger();
     }
 
     private void OnCollisionEnter(Collision other)
