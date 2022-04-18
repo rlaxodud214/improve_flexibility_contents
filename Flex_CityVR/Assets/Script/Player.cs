@@ -143,6 +143,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+<<<<<<< HEAD
         print("출력");
         Debug.Log("otherName : " + other.name.Substring(0,-1));
 
@@ -174,4 +175,17 @@ public class Player : MonoBehaviour
         UIManager.instance.checkTrigger();
     }
 
+=======
+        if (other.name.Substring(0, 5) == "T_kay") //카약
+        {
+            T_kayak = true;
+            UIManager.instance.informPanel.SetActive(true);
+            UIManager.instance.informText.text = "콘텐츠 수행 장소로 이동하시겠습니까?";
+        }
+        UIManager.instance.checkTrigger();
+    }
+
+
+
+>>>>>>> a99a04dddc0dc358ee2236fd0b1f139f306d5cc4
 }
