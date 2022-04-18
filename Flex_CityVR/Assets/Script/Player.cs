@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -126,20 +127,34 @@ public class Player : MonoBehaviour
 
         #endregion*/ // 까지 2022.04.14 주석 - XR Rig에 사용 불가
 
+    // timer
+    public bool timer; // timer
+    private float maxTime = 3; // 유지해야하는 시간
+    private int minTime = 0; // 플레이어가 유지 중인 시간
+    //
+
+    private string objectName;
+
     public Vector3 Offset;
 
     private GameObject CenterEyeAnchor;
-    // Trigger 여부
-    private bool T_hospital, T_soccer, T_limbo, T_kayak, T_fly, T_window, T_battle, T_chef, T_arrow;
+
+    // Cntents Trigger 입장 여부
+    public Dictionary<string, bool> dic_contents = new Dictionary<string, bool>()
+    {
+        {"T_hospital", false},{"T_soccer", false},{"T_limbo", false},{"T_kayak", false},
+        {"T_fly", false},{"T_window", false},{"T_battle", false},{"T_chef", false},{"T_arrow", false},
+    };
 
     public static Player instance;   // 싱글톤 
 
     void Awake()
     {
         Player.instance = this;
-        CenterEyeAnchor = GameObject.Find("CenterEyeAnchor");
+
         #region 초기화
-        T_hospital = T_soccer = T_limbo = T_kayak = T_fly = T_window = T_battle = T_chef = T_arrow = false;
+        CenterEyeAnchor = GameObject.Find("CenterEyeAnchor");
+        objectName = "";
         #endregion
     }
 
@@ -147,38 +162,73 @@ public class Player : MonoBehaviour
     {
         transform.position = CenterEyeAnchor.transform.position + Offset;
         transform.eulerAngles = new Vector3(0f, GameManager.instance.XR_Rig.transform.GetChild(0).rotation.eulerAngles.y, 0f);
+        Timer_();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("otherName : " + other.name.Substring(0,-1));
-
-        if (other.gameObject.layer == 11) // Contents Layer
+        if (other.gameObject.layer == 11) // 모든 콘텐츠의 Trigger는 Contents Layer 로 할 것
         {
-            if (other.name.Substring(0, -1) == "T_kay") //카약
-            {
-                T_kayak = true;
-            }
-            UIManager.instance.informPanel.SetActive(true);
-            UIManager.instance.informText.text = "콘텐츠 수행 장소로 이동하시겠습니까?";
+            UIManager.instance.setInformType(1); //알림창 type = Contents로 변경
+            objectName = other.name.Substring(0, 5);
+            timer = true;
+            Timer_();
         }
-
-        UIManager.instance.checkTrigger();
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer == 11) // Contents Layer
+        if (other.gameObject.layer == 11) // 모든 콘텐츠의 Trigger는 Contents Layer 로 할 것
         {
-            if (other.gameObject.name.Substring(0, -1) == "T_kay") //카약
-            {
-                T_kayak = true;
-            }
-            UIManager.instance.informPanel.SetActive(true);
-            UIManager.instance.informText.text = "콘텐츠 수행 장소로 이동하시겠습니까?";
+            UIManager.instance.setInformType(1); //알림창 type = Contents로 변경
+            objectName = other.transform.name.Substring(0, 5);
+            timer = true;
+            Timer_();
         }
-
-        UIManager.instance.checkTrigger();
     }
 
+    public void checkTrigger()
+    {
+        if (objectName == "T_kay") dic_contents["T_kayak"] = true;              //카약
+        else if (objectName == "T_hos") dic_contents["T_hospital"] = true;      //병원
+        else if (objectName == "T_soc") dic_contents["T_soccer"] = true;        //골키퍼
+        else if (objectName == "T_lim") dic_contents["T_limbo"] = true;         //림보
+        else if (objectName == "T_fly") dic_contents["T_fly"] = true;           //건물 피하기
+        else if (objectName == "T_win") dic_contents["T_window"] = true;        //창문 닦기
+        else if (objectName == "T_bat") dic_contents["T_battle"] = true;     //포트리스
+        else if (objectName == "T_che") dic_contents["T_chef"] = true;         //음식만들기
+        else if (objectName == "T_arr") dic_contents["T_arrow"] = true;       //활쏘기
+        print("트리거는 : " + KeySearch());
+        UIManager.instance.informPanel.SetActive(true);
+        UIManager.instance.informText.text = "콘텐츠 수행 장소로 이동하시겠습니까?";
+    }
+
+
+    public void Timer_()
+    {
+        if (timer == true){
+            maxTime += Time.deltaTime;
+            if (maxTime >= 1){
+                minTime++;
+                maxTime -= 1;
+                //Debug.Log("min : " + minTime);
+                if (minTime == 3){
+                    //이벤트
+                    Debug.Log("<color=cyan>포탈에 2초 머물렀습니다.</color>");
+                    checkTrigger();
+                    timer = false;
+                }
+            }
+        }
+        else {
+            maxTime = 0;
+            minTime = 0;
+        }
+    }
+
+    public string KeySearch()
+    {
+        string key = Player.instance.dic_contents.FirstOrDefault(x => x.Value == true).Key;
+        return key;
+    }
 }

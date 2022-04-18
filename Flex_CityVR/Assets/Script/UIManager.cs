@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class UIManager : MonoBehaviour
 {
     // Text UI
@@ -15,6 +16,7 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         UIManager.instance = this;
+        UISetting.informType = EinformType.None;    //알림창 타입 초기화
     }
     // Start is called before the first frame update
     void Start()
@@ -31,15 +33,33 @@ public class UIManager : MonoBehaviour
     public void cancle()
     {
         // 취소 버튼을 눌렀을 때
+        print("선택이 취소되었습니다.");
+        string key = Player.instance.KeySearch();
+        Player.instance.dic_contents[key] = false;
+        informPanel.SetActive(false);
     }
 
     public void check()
     {
-        // 확인 버튼을 눌렀을 때
+        // 확인 버튼을 눌렀을 때 스위치문으로 informType 따라 수행
+        switch (UISetting.informType)
+        {
+            case EinformType.None:
+                break;
+            case EinformType.Contents:
+                SceneChange.instance.contentsTelport();
+                break;
+        }
+        setInformType(0);
     }
 
     public void checkTrigger()
     {
-        // 트리거 켜져있는 애 확인 if elseif else 로 확인해서 콘텐츠로 이동시키기
+
+    }
+
+    public void setInformType(int type)     // 알림창 타입 변경/설정 시
+    {
+        UISetting.informType = (EinformType)type;
     }
 }

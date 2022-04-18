@@ -6,12 +6,6 @@ using UnityEngine.UI;
 
 public class Teleport : MonoBehaviour
 {
-    // timer
-    private bool timer; // timer
-    private float maxTime = 3; // 유지해야하는 시간
-    private int minTime = 0; // 플레이어가 유지 중인 시간
-    //
-
     // teleport
     public GameObject mPlayer; // 임시
     public List<GameObject> teleportLocation = new List<GameObject>(); // teleport 리스트
@@ -128,42 +122,5 @@ public class Teleport : MonoBehaviour
         StartCoroutine(FadeInCamera(nowTitle, 2f));
         yield return new WaitForSeconds(3f);
         StartCoroutine(FadeOutCamera(nowTitle, 2f));
-
     }
-
-
-    public void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            timer = true;
-            Timer_();
-        }
-    }
-
-    public void Timer_()
-    {
-        if (timer == true)
-        {
-            maxTime += Time.deltaTime;
-            if (maxTime >= 1)
-            {
-                minTime++;
-                maxTime -= 1;
-                Debug.Log("min : " + minTime);
-                if (minTime == 3)
-                {
-                    //이벤트
-                    print("버텼다!");
-                    timer = false;
-                }
-            }
-        }
-        else
-        {
-            maxTime = 0;
-            minTime = 0;
-        }
-    }
-
 }

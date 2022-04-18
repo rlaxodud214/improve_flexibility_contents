@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.SceneManagement;
 
 // 비동기 씬로드 참고 --> 포기
@@ -9,12 +10,17 @@ using UnityEngine.SceneManagement;
 
 public class SceneChange : MonoBehaviour
 {
-    //private bool changeScene;
+    public static SceneChange instance;   // 싱글톤 
     void Awake()
     {
-        /*changeScene = false;
-        StartCoroutine(MoveScene("3-1.Flexibility_Measurement"));*/
+        SceneChange.instance = this;
     }
+    //private bool changeScene;
+/*    void Awake()
+    {
+        changeScene = false;
+        StartCoroutine(MoveScene("3-1.Flexibility_Measurement"));
+    }*/
 
     /*    IEnumerator MoveScene(string moveSceneName)
         {
@@ -46,8 +52,6 @@ public class SceneChange : MonoBehaviour
             SceneManager.LoadScene("3-3.Result"); // 3-1. 씬 사용 할 것 (IMU 미연동 방지로 3-3으로 해둠)
             //changeScene = true;
         }
-        
-
     }
 
     void test()
@@ -55,4 +59,36 @@ public class SceneChange : MonoBehaviour
         SceneManager.LoadScene("3-1.Flexibility_Measurement");
     }
 
+    public void contentsTelport()
+    {
+        // 트리거 통과 여부 확인해서 해당 콘텐츠로 이동시키기
+        // value 값이 true인 key 값 찾기 -> using System.Linq 사용
+        string key = Player.instance.KeySearch();
+        switch (key)
+        {
+            case "T_hospital":
+                //게임 시작
+                break;
+            case "T_soccer":
+                //게임 시작
+                break;
+            case "T_limbo":
+                break;
+            case "T_kayak":
+                SceneManager.LoadScene("KayakGame");
+                break;
+            case "T_fly":
+                break;
+            case "T_window":
+                break;
+            case "T_battle":
+                break;
+            case "T_chef":
+                break;
+            case "T_arrow":
+                break;
+        }
+        //나중에 콘텐츠 수행하고 다시 메인시티로 돌아올 때 해당 Player의 딕셔너리 value false로 바꿔주기
+        //알림창 타입도 아직 Contents 상태
+    }
 }
