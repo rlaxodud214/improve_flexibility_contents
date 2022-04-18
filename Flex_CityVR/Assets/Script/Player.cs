@@ -143,15 +143,35 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name.Substring(0, 5) == "T_kay") //카약
+        print("출력");
+        Debug.Log("otherName : " + other.name.Substring(0,-1));
+
+/*        if (other.gameObject.layer == 11) // Contents Layer
         {
-            T_kayak = true;
+            if (other.name.Substring(0, -1) == "T_kay") //카약
+            {
+                T_kayak = true;
+            }
             UIManager.instance.informPanel.SetActive(true);
             UIManager.instance.informText.text = "콘텐츠 수행 장소로 이동하시겠습니까?";
         }
-        UIManager.instance.checkTrigger();
+
+        UIManager.instance.checkTrigger();*/
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.layer == 11) // Contents Layer
+        {
+            if (other.gameObject.name.Substring(0, -1) == "T_kay") //카약
+            {
+                T_kayak = true;
+            }
+            UIManager.instance.informPanel.SetActive(true);
+            UIManager.instance.informText.text = "콘텐츠 수행 장소로 이동하시겠습니까?";
+        }
 
+        UIManager.instance.checkTrigger();
+    }
 
 }

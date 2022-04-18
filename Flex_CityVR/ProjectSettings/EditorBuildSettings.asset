@@ -6,19 +6,19 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Package/BNG Framework/Scenes/XR Demo.unity
+    path: Assets/PaidAsset/BNG Framework/Scenes/XR Demo.unity
     guid: a1360534006d3f845bc79b46b93cfec5
   - enabled: 0
-    path: Assets/Package/BNG Framework/Scenes/Scene Transitioning.unity
+    path: Assets/PaidAsset/BNG Framework/Scenes/Scene Transitioning.unity
     guid: 9d7c9629abf9c99449e358b0938b47d0
   - enabled: 0
-    path: Assets/Package/BNG Framework/Scenes/Physics Hands.unity
+    path: Assets/PaidAsset/BNG Framework/Scenes/Physics Hands.unity
     guid: 34a4579517c578e4080d0a6ef2c96294
   - enabled: 0
-    path: Assets/Package/BNG Framework/Scenes/Rigidbody Player.unity
+    path: Assets/PaidAsset/BNG Framework/Scenes/Rigidbody Player.unity
     guid: 57fc97c5771a777449aa8bd02514df22
   - enabled: 0
-    path: Assets/Package/BNG Framework/Scenes/Vehicle Example.unity
+    path: Assets/PaidAsset/BNG Framework/Scenes/Vehicle Example.unity
     guid: d96233ee44d985d4fb8dc23a907c06eb
   - enabled: 1
     path: Assets/Flexibility_Measurement/Scene/1.Login.unity

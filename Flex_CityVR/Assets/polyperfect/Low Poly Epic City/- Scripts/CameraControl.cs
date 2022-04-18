@@ -15,7 +15,7 @@ public class CameraControl : MonoBehaviour
 
     //rotation
     [Header("Rotation")]
-    public float rotationSpeed = 1;
+    public float rotationSpeed = 1f;
     public Transform target;
     private Vector3 targetPositionCache;
     private bool isRotationEnable = true;

@@ -13,7 +13,5 @@ public class kayak_UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (OVRInput.GetDown(OVRInput.RawButton.A))
-            Debug.Log("두두드듣ㅇ");
     }
 }
