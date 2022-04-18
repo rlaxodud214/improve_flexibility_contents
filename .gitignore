@@ -78,3 +78,6 @@ crashlytics-build.properties
 /Flex_CityVR/Library/
 /LumbarFlexibilityContents/Library/
 
+# DMCA takedown로 인해 추가함(저작권법 위반 방지)
+/Flex_CityVR/Assets/PaidAsset/
+/Flex_CityVR/Assets/Contents/Kayak/PaidAsset/

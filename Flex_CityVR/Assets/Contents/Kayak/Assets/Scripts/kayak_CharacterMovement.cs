@@ -23,11 +23,7 @@ public class kayak_CharacterMovement : MonoBehaviour
     }
     
     // Update is called once per frame
-<<<<<<< HEAD
     void FixedUpdate()
-=======
-    void Update()
->>>>>>> a99a04dddc0dc358ee2236fd0b1f139f306d5cc4
     {
         //transform.Translate(Vector3.forward * Time.deltaTime*5f, Space.World);
         if (!kayak_GameManager.Game.PauseState)
@@ -49,11 +45,7 @@ public class kayak_CharacterMovement : MonoBehaviour
                  speed *= 1.13f;*/
 /*                time -= 0.5f;
                 speed += 0.001f;*/
-<<<<<<< HEAD
                 speed += 0.00001f;
-=======
-                speed += 0.0003f;
->>>>>>> a99a04dddc0dc358ee2236fd0b1f139f306d5cc4
                 time -= 0.5f;
                 /*SpeedUpText.SetActive(true);
                 Invoke("TextOff", 1.5f);*/
