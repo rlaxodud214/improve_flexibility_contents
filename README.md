@@ -18,13 +18,14 @@ Window_Cleaning - 빌딩 닦이 = 25% 완료 / y, z축
   
   
 ㅇ 책임자 : 박소윤 - Photon Cloud  
-Super_Bird - 건물 피하기 = 90% 완료 / y축  
 Battle_City - 포트리스 = 50% 완료(업로드 예정) / y, z축  
 GoalKeeper - 골키퍼 = 90% 완료 / z축  
+LimBo - 림보 = 90% 완료 / y축
   
   
 ㅇ 책임자 : 김태영 - Database  
 Kayak - 바다표류기 = 90% 완료 / x축  
+Super_Bird - 건물 피하기 = 90% 완료 / y축  
 Monster_Shooter - 활쏘기 = 75% 완료 / (각각) x, y, z축  
 LumbarFlexibilityContents - 유연성 측정 및 결과 그래프 = 100% 완료 / x, y, z축  
 
