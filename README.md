@@ -13,12 +13,12 @@ VR 적용 완료, 캐릭터 및 카메라 이동 완료
 ---------------------------------------------------------  
 
 ㅇ 책임자 : 오승연 - Main City  
-Cooking_Food - 음식 만들기 = % 완료 / x, y축  
-ooooooooo - 빌딩 닦이 = % 완료 / y, z축  
+Cooking_Food - 음식 만들기 = 60% 완료 / x, y축  
+Window_Cleaning - 빌딩 닦이 = 0% 완료 / y, z축  
   
   
 ㅇ 책임자 : 박소윤 - Photon Cloud  
-ooooooooo - 건물 피하기 = % 완료 / y축  
+Super_Bird - 건물 피하기 = % 완료 / y축  
 Fortress - 포트리스 = % 완료(업로드 예정) / y, z축  
 GoalKeeper - 골키퍼 = % 완료 / z축  
   
