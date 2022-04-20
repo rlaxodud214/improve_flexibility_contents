@@ -88,6 +88,10 @@ crashlytics-build.properties
 /GoalKeeper/Assets/PaidAsset/
 /GoalKeeper/Library/
 
+# 소윤-Battle_City
+/Battle_City/Assets/PaidAsset/
+/Battle_City/Library/
+
 # 탱탱-유연성 측정 및 시각화
 /LumbarFlexibilityContents/Library/
 
