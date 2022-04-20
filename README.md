@@ -13,18 +13,18 @@ VR 적용 완료, 캐릭터 및 카메라 이동 완료
 ---------------------------------------------------------  
 
 ㅇ 책임자 : 오승연 - Main City  
-Cooking_Food - 음식 만들기 = 60% 완료 / x, y축  
-Window_Cleaning - 빌딩 닦이 = 0% 완료 / y, z축  
+Island_Chef - 음식 만들기 = 60% 완료 / x, y축  
+Window_Cleaning - 빌딩 닦이 = 25% 완료 / y, z축  
   
   
 ㅇ 책임자 : 박소윤 - Photon Cloud  
-Super_Bird - 건물 피하기 = % 완료 / y축  
-Fortress - 포트리스 = % 완료(업로드 예정) / y, z축  
-GoalKeeper - 골키퍼 = % 완료 / z축  
+Super_Bird - 건물 피하기 = 90% 완료 / y축  
+Battle_City - 포트리스 = 50% 완료(업로드 예정) / y, z축  
+GoalKeeper - 골키퍼 = 90% 완료 / z축  
   
   
 ㅇ 책임자 : 김태영 - Database  
-Kayak - 카약 = 90% 완료 / x축  
+Kayak - 바다표류기 = 90% 완료 / x축  
 Monster_Shooter - 활쏘기 = 75% 완료 / (각각) x, y, z축  
 LumbarFlexibilityContents - 유연성 측정 및 결과 그래프 = 100% 완료 / x, y, z축  
 
