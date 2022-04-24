@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,7 +36,15 @@ public class kayak_CharacterMovement : MonoBehaviour
             }
 
             data = OpenZenMoveObject.Instance.sensorEulerData.x;
-            print("data.x : " + data);
+            try
+            {
+                // print("data.x : " + data);
+            } catch(Exception e)
+            {
+                print("error log : " + e.ToString());
+                return ;
+            }
+            
             transform.Rotate(new Vector3(0, data / 100, 0), Space.Self);
 
             time += Time.deltaTime;

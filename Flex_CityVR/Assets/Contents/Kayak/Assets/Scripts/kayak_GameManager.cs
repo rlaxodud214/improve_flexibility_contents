@@ -2,12 +2,13 @@
 using PathCreation.Examples;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class kayak_GameManager : MonoBehaviour
 {
-    GameObject PlayerPrefab;
+    public GameObject PlayerPrefab;
 
     public GameObject CurrentPlayer;
     public GameObject StartPointStone;
@@ -32,7 +33,10 @@ public class kayak_GameManager : MonoBehaviour
     public GameObject SharkPrefab;
     public GameObject SharkParent;
     public GameObject Path;
+    public OpenZenMoveObject openZenMoveObjectcs;
     GameObject CreatedShark;
+
+    public GameObject canvas;
 
     private static kayak_GameManager _game;
     public static kayak_GameManager Game
@@ -44,30 +48,14 @@ public class kayak_GameManager : MonoBehaviour
     {
         _game = GetComponent<kayak_GameManager>();
         PauseState = true;
+        canvas = GameObject.Find("Canvas (1)");
         // thisButton.onClick.AddListener(OnKeyHit);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        StartPointStone.GetComponent<Rigidbody>().useGravity = false;
-        if (!GameObject.Find("KayakV2"))
-        {
-            CurrentPlayer = Instantiate(PlayerPrefab, PlayerStartPos, Quaternion.Euler(PlayerStartRot));
-        }
-        else
-        {
-            CurrentPlayer = GameObject.Find("KayakV2");
-        }
-        CurrentPlayer.GetComponent<kayak_CharacterMovement>().Paddle.GetComponent<Animator>().speed = 0;
-        CurrentPlayer.GetComponent<kayak_CharacterMovement>().BoatWater.Stop();
-
-        for(int i = 0; i < Path.transform.childCount; i++)
-        {
-            CreatedShark = Instantiate(SharkPrefab, Vector3.zero, Quaternion.Euler(Vector3.zero));
-            CreatedShark.GetComponent<PathFollower>().pathCreator = Path.transform.GetChild(i).GetComponent<PathCreator>();
-            CreatedShark.transform.parent = SharkParent.transform;
-        }
+        StartGame();
     }
 
     // Update is called once per frame
@@ -111,13 +99,15 @@ public class kayak_GameManager : MonoBehaviour
 
     public void PlayerDeath()
     {
+        // PauseState = true;
         DeathPanel.SetActive(true);
         //생존시간 * 현재속도 * 1.5=점수
         ScoreText.text = "점수 : " + (SurviveTime * CurrentPlayer.GetComponent<kayak_CharacterMovement>().speed * 1.5f + 10).ToString("N0") + "\n" + SurviveTimeText.text;
     }
     public void Revive()
     {
-        //Destroy(CurrentPlayer.transform.Find("Main Camera").gameObject); // VR 미사용시 prefab에서 maincamera 켜기
+        print("Revive()");
+        //Destroy(CurrentPlayer.transform.Find("Main Camera").gameObject); // VR 미사용시 prefa b에서 maincamera 켜기
         Destroy(CurrentPlayer.transform.Find("XR Rig").gameObject); // VR 사용시
         CurrentPlayer.GetComponent<kayak_CharacterMovement>().enabled = false;
 
@@ -127,11 +117,42 @@ public class kayak_GameManager : MonoBehaviour
 
         CurrentPlayer = Instantiate(PlayerPrefab, PlayerStartPos, Quaternion.Euler(PlayerStartRot));
         StartPointStone.transform.position = StonePos;
+
+        // 복제하기 전에 참조해서 오류나는 듯 그래서 Invoke 처리함
+        Invoke("RREinit", 1.5f);
+
+        // , "SurviveTimeText", "StartBtn", "StartTimeText", "ScoreText"
+        // var String_Array = new string[] { "PausePanel", "DeathPanel", "StartPanel"};
+        // Reinit(String_Array);
+    }
+
+    void RREinit()
+    {
+        canvas = GameObject.Find("KayakV2 1(Clone)").transform.Find("Canvas (1)").gameObject;
+        print(canvas);
+        PausePanel = canvas.transform.Find("PausePanel").gameObject;
+        DeathPanel = canvas.transform.Find("DeathPanel").gameObject;
+        StartPanel = canvas.transform.Find("StartPanel").gameObject;
+        SurviveTimeText = canvas.transform.Find("surviveTimeText").GetComponent<Text>();
+        StartBtn = canvas.transform.Find("StartBtn").gameObject;
+        StartTimeText = canvas.transform.Find("startTimeText").GetComponent<Text>();
+        ScoreText = canvas.transform.Find("Scoretext").GetComponent<Text>();
+    }
+
+    // 넘겨받은 스트링 배열의 변수 객체를 다시 초기화 해주는 함수
+    public void Reinit(string[] name) // ex) name = ["PausePanel", "DeathPanel", "StartPanel"] 
+    { 
+        for(int i=0; i<name.Length; i++)
+        {
+            FieldInfo a = GetType().GetField(name[i]);
+            object tmp = new GameObject();
+            a.SetValue(tmp, canvas.transform.Find(name[i]).gameObject);
+        }
     }
 
 
     public void PauseTheGame()
-    {
+    {                                      
         PausePanel.SetActive(true);
         PauseState = true;
         Time.timeScale = 0;
@@ -155,8 +176,9 @@ public class kayak_GameManager : MonoBehaviour
 #endif
     }
 
-    public void StartGame() // VR 미사용
+    public void StartGame() // VR 미사용 -> 사용
     {
+        print("버튼 눌림");
         StartCoroutine(StartBtnOnClick());
     }
 
@@ -164,6 +186,7 @@ public class kayak_GameManager : MonoBehaviour
     {
         StartBtn.SetActive(false);
         StartTimeText.gameObject.SetActive(true);
+        openZenMoveObjectcs.runstart();
         StartTimeText.text = "3";
         yield return new WaitForSeconds(1f);
         StartTimeText.text = "2";

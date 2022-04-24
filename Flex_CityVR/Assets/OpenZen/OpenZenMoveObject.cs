@@ -52,72 +52,6 @@ public class OpenZenMoveObject : MonoBehaviour
         save_offset = false;
         sensorEulerData = new Vector3(0, 0, 0);
         offset = new Vector3(0, 0, 0);
-
-        // create OpenZen
-        OpenZen.ZenInit(mZenHandle);
-
-        // Hint: to get the io type and identifer for all connected sensor,
-        // you cant start the DiscoverSensorScene. The information of all 
-        // found sensors is printed in the debug console of Unity after
-        // the search is complete.
-
-        print("Trying to connect to OpenZen Sensor on IO " + OpenZenIoType +
-            " with sensor name " + OpenZenIdentifier);
-
-        var sensorInitError = OpenZen.ZenObtainSensorByName(mZenHandle,
-            OpenZenIoType.ToString(), OpenZenIdentifier, 0, mSensorHandle);
-
-        if (sensorInitError != ZenSensorInitError.ZenSensorInitError_None)
-        {
-            print("Error while connecting to sensor.");
-            print("IMU 센서 연결 대기중");
-            System.Threading.Thread.Sleep(500);
-            Start();
-        }
-
-        else
-        {
-            ZenComponentHandle_t mComponent = new ZenComponentHandle_t();
-            OpenZen.ZenSensorComponentsByNumber(mZenHandle, mSensorHandle, OpenZen.g_zenSensorType_Imu, 0, mComponent);
-
-            // enable sensor streaming, normally on by default anyways 스트리밍 활성화
-            OpenZen.ZenSensorComponentSetBoolProperty(mZenHandle, mSensorHandle, mComponent,
-               (int)EZenImuProperty.ZenImuProperty_StreamData, true);
-
-            // set the sampling rate to 100 Hz // rate 설정
-            OpenZen.ZenSensorComponentSetInt32Property(mZenHandle, mSensorHandle, mComponent,
-               (int)EZenImuProperty.ZenImuProperty_SamplingRate, 100);
-
-            // filter mode using accelerometer & gyroscope & magnetometer 필터 모드 설정
-            /*Filter mode list:
-            Gyro only:                  LPMS_FILTER_GYR = 0;
-            Gyro + Acc(Kalman):        LPMS_FILTER_GYR_ACC = 1;
-            Gyro + Acc + Mag(Kalman):  LPMS_FILTER_GYR_ACC_MAG = 2;
-            Gyro + Acc(DCM):           LPMS_FILTER_DCM_GYR_ACC = 3;
-            Gyro + Acc + Mag(DCM):     LPMS_FILTER_DCM_GYR_ACC_MAG = 4;*/
-            OpenZen.ZenSensorComponentSetInt32Property(mZenHandle, mSensorHandle, mComponent,
-               (int)EZenImuProperty.ZenImuProperty_FilterMode, 2);
-
-            // Ensure the Orientation data is streamed out 
-            /*
-            ZenImuProperty_OutputRawGyr,
-            ZenImuProperty_OutputRawMag,
-            ZenImuProperty_OutputEuler
-            ZenImuProperty_OutputRawGyr0,
-            ZenImuProperty_OutputRawGyr1,
-            ZenImuProperty_OutputGyr0BiasCalib,
-            ZenImuProperty_OutputGyr1BiasCalib,
-            ZenImuProperty_OutputGyr0AlignCalib,
-            ZenImuProperty_OutputGyr1AlignCalib
-            */
-
-            OpenZen.ZenSensorComponentSetBoolProperty(mZenHandle, mSensorHandle, mComponent,
-               (int)EZenImuProperty.ZenImuProperty_OutputGyr0AlignCalib, true);
-
-            // (int)EZenImuProperty.ZenImuProperty_OutputQuat, true);
-            // (int)EZenImuProperty.ZenImuProperty_OutputEuler, true);
-            print("Sensor configuration complete");
-        }
     }
 
     // Update is called once per frame
@@ -141,9 +75,9 @@ public class OpenZenMoveObject : MonoBehaviour
                     case ZenEventType.ZenEventType_ImuData:
                         // read quaternion
                         OpenZenFloatArray fq = OpenZenFloatArray.frompointer(zenEvent.data.imuData.r); // 아웃풋 데이터 쿼터니언->오일러로 변경함
-                                                                                                       // Unity Quaternion constructor has order x,y,z,w
-                                                                                                       // Furthermore, y and z axis need to be flipped to 
-                                                                                                       // convert between the LPMS and Unity coordinate system
+                                                                                                        // Unity Quaternion constructor has order x,y,z,w
+                                                                                                        // Furthermore, y and z axis need to be flipped to 
+                                                                                                        // convert between the LPMS and Unity coordinate system
                         sensorEulerData = new Vector3(fq.getitem(2) * -1f, fq.getitem(0) * -1f, fq.getitem(1));
 
                         /* Quaternion sensorOrientation = new Quaternion(fq.getitem(1), fq.getitem(3), fq.getitem(2), fq.getitem(0));*/
@@ -163,7 +97,7 @@ public class OpenZenMoveObject : MonoBehaviour
                         sensorEulerData.y = (float)dataset(sensorEulerData.y);
                         sensorEulerData.z = (float)dataset(sensorEulerData.z);
 
-                        print("x : " + sensorEulerData.x.ToString("N0"));// + ", y : " + sensorEulerData.y.ToString("N0") + ", z : " + sensorEulerData.z.ToString("N0"));
+                        // print("x : " + sensorEulerData.x.ToString("N0"));// + ", y : " + sensorEulerData.y.ToString("N0") + ", z : " + sensorEulerData.z.ToString("N0"));
                         break;
                 }
             }
@@ -199,5 +133,60 @@ public class OpenZenMoveObject : MonoBehaviour
             OpenZen.ZenReleaseSensor(mZenHandle, mSensorHandle);
         }
         OpenZen.ZenShutdown(mZenHandle);
+    }
+
+    public void runstart()
+    {
+        StartCoroutine(sensor_connect());
+    }
+
+    IEnumerator sensor_connect()
+    {
+        var is_connect = false;
+        // create OpenZen
+        OpenZen.ZenInit(mZenHandle);
+        // Hint: to get the io type and identifer for all connected sensor,
+        // you cant start the DiscoverSensorScene. The information of all 
+        // found sensors is printed in the debug console of Unity after
+        // the search is complete.
+
+        print("Trying to connect to OpenZen Sensor on IO " + OpenZenIoType + " with sensor name " + OpenZenIdentifier);
+        var sensorInitError = OpenZen.ZenObtainSensorByName(mZenHandle, OpenZenIoType.ToString(), OpenZenIdentifier, 0, mSensorHandle);
+
+        if (sensorInitError != ZenSensorInitError.ZenSensorInitError_None)
+        {
+            print("Error while connecting to sensor.");
+            print("IMU 센서 연결 대기중");
+            yield return new WaitForSeconds(1f);
+        }
+
+        else
+        {
+            ZenComponentHandle_t mComponent = new ZenComponentHandle_t();
+            OpenZen.ZenSensorComponentsByNumber(mZenHandle, mSensorHandle, 
+                OpenZen.g_zenSensorType_Imu, 0, mComponent);
+
+            // enable sensor streaming, normally on by default anyways 스트리밍 활성화
+            OpenZen.ZenSensorComponentSetBoolProperty(mZenHandle, mSensorHandle, mComponent,
+                (int)EZenImuProperty.ZenImuProperty_StreamData, true);
+
+            // set the sampling rate to 100 Hz // rate 설정
+            OpenZen.ZenSensorComponentSetInt32Property(mZenHandle, mSensorHandle, mComponent,
+                (int)EZenImuProperty.ZenImuProperty_SamplingRate, 100);
+
+            // filter mode using accelerometer & gyroscope & magnetometer 필터 모드 설정
+            OpenZen.ZenSensorComponentSetInt32Property(mZenHandle, mSensorHandle, mComponent,
+                (int)EZenImuProperty.ZenImuProperty_FilterMode, 2);
+
+            OpenZen.ZenSensorComponentSetBoolProperty(mZenHandle, mSensorHandle, mComponent,
+                (int)EZenImuProperty.ZenImuProperty_OutputGyr0AlignCalib, true);
+
+            // (int)EZenImuProperty.ZenImuProperty_OutputQuat, true);
+            // (int)EZenImuProperty.ZenImuProperty_OutputEuler, true);
+            print("Sensor configuration complete");
+            is_connect = true;
+        }
+        if (is_connect == false)
+            runstart();
     }
 }

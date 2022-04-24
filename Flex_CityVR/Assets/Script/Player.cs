@@ -134,10 +134,11 @@ public class Player : MonoBehaviour
     //
 
     private string objectName;
-
     public Vector3 Offset;
-
     private GameObject CenterEyeAnchor;
+
+    // 캐릭터 컨트롤러
+    public bool controller_state;
 
     // Cntents Trigger 입장 여부
     public Dictionary<string, bool> dic_contents = new Dictionary<string, bool>()
@@ -153,6 +154,7 @@ public class Player : MonoBehaviour
         Player.instance = this;
 
         #region 초기화
+        controller_state = true;
         CenterEyeAnchor = GameObject.Find("CenterEyeAnchor");
         objectName = "";
         #endregion
@@ -187,7 +189,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void checkTrigger()
+    public void checkTrigger()  // 포탈 이름 확인해서 해당 변수 true로 변경
     {
         if (objectName == "T_kay") dic_contents["T_kayak"] = true;              //카약
         else if (objectName == "T_hos") dic_contents["T_hospital"] = true;      //병원
