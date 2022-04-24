@@ -44,6 +44,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Contents/Kayak/Assets/Scenes/KayakGame.unity
     guid: 48e9b9b656cc5ad488d748d6f54ab3d3
+  - enabled: 1
+    path: Assets/Contents/GoalKeeper/Assets/Scenes/GoalKeeper.unity
+    guid: b4d8e133b058e8a4e849a424b7df8063
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 05db55fcab8702b4d9105a755133fb05,
       type: 2}

@@ -67,10 +67,9 @@ public class SceneChange : MonoBehaviour
         switch (key)
         {
             case "T_hospital":
-                //게임 시작
                 break;
             case "T_soccer":
-                //게임 시작
+                SceneManager.LoadScene("GoalKeeper");
                 break;
             case "T_limbo":
                 break;
