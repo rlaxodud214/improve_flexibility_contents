@@ -81,8 +81,9 @@ crashlytics-build.properties
 # DMCA takedown로 인해 추가함(저작권법 위반 방지)
 /Flex_CityVR/Library/
 /Flex_CityVR/Assets/PaidAsset/
-/Flex_CityVR/Assets/Contents/Kayak/PaidAsset/
-/Flex_CityVR/Assets/Contents/GoalKeeper/PaidAsset/
+/Flex_CityVR/Assets/Contents/Kayak/Assets/PaidAsset/
+/Flex_CityVR/Assets/Contents/GoalKeeper/Assets/PaidAsset/
+/Flex_CityVR/Assets/Contents/Monster_Shooter/Assets/PaidAsset/
 
 # 소윤-GoalKeeper
 /GoalKeeper/Assets/PaidAsset/
