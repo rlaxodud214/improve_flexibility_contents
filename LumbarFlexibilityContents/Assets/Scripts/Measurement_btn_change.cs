@@ -24,6 +24,7 @@ public class Measurement_btn_change : MonoBehaviour
     public Sprite[] Image; // 1_1, 1_2, 2_1, 2_2, 3_1, 3_2
     
     public GameObject M_Sportsman;
+
     #region Singleton                                         // 싱글톤 패턴은 하나의 인스턴스에 전역적인 접근을 시키며 보통 호출될 때 인스턴스화 되므로 사용하지 않는다면 생성되지도 않습니다.
     private static Measurement_btn_change _Instance;          // 싱글톤 패턴을 사용하기 위한 인스턴스 변수, static 선언으로 어디서든 참조가 가능함
 
@@ -31,8 +32,6 @@ public class Measurement_btn_change : MonoBehaviour
     {
         get { return _Instance; }                         // _sceneManager이 변수값을 리턴받을 수 있음.
     }
-
-
     #endregion
 
     // Start is called before the first frame update
@@ -67,7 +66,8 @@ public class Measurement_btn_change : MonoBehaviour
                 break;
         }
         Change_Origin.GetComponent<Image>().fillAmount = Math.Abs(Angle) / 360;
-        if (Angle < 0)
+        // 좌측굴곡, 굴곡, 좌측회전
+        if (Angle < 0) 
         {
             Change_Origin.transform.eulerAngles = new Vector3(0, 0, 180 - Angle);
             Angle = Math.Abs(Angle);
@@ -77,6 +77,7 @@ public class Measurement_btn_change : MonoBehaviour
                     if (Angle > Angle_Value[0])
                     {
                         Angle_Value[0] = Angle;
+                        UserData.instance.angleValues[0] = Angle_Value[0];
                         Left[2].GetComponent<Image>().fillAmount = Angle / 90;
                     }
                         
@@ -86,20 +87,23 @@ public class Measurement_btn_change : MonoBehaviour
                     if (Angle > Angle_Value[2])
                     {
                         Angle_Value[2] = Angle;
+                        UserData.instance.angleValues[2] = Angle_Value[2];
                         Left[2].GetComponent<Image>().fillAmount = Angle / (90 * 1.2f);
                     }
                         
                     break;
 
                 case 3:
-                    if (Angle > Angle_Value[5])
+                    if (Angle > Angle_Value[4])
                     {
-                        Angle_Value[5] = Angle;
-                        Right[2].GetComponent<Image>().fillAmount = Angle / 90;
+                        Angle_Value[4] = Angle;
+                        UserData.instance.angleValues[4] = Angle_Value[4];
+                        Left[2].GetComponent<Image>().fillAmount = Angle / 90;  // 수정
                     }
                     break;
             }
         }
+        // 우측굴곡, 신전, 우회전
         else
         {
             Change_Origin.transform.eulerAngles = new Vector3(0, 0, 180);
@@ -110,6 +114,7 @@ public class Measurement_btn_change : MonoBehaviour
                     if (Angle > Angle_Value[1])
                     {
                         Angle_Value[1] = Angle;
+                        UserData.instance.angleValues[1] = Angle_Value[1];
                         Right[2].GetComponent<Image>().fillAmount = Angle / 90;
                     }
                     break;
@@ -118,16 +123,18 @@ public class Measurement_btn_change : MonoBehaviour
                     if (Angle > Angle_Value[3])
                     {
                         Angle_Value[3] = Angle;
+                        UserData.instance.angleValues[3] = Angle_Value[3];
                         Right[2].GetComponent<Image>().fillAmount = Angle / 90;
                     }
                         
                     break;
 
                 case 3:
-                    if (Angle > Angle_Value[4])
+                    if (Angle > Angle_Value[5])
                     {
-                        Angle_Value[4] = Angle;
-                        Left[2].GetComponent<Image>().fillAmount = Angle / 90;
+                        Angle_Value[5] = Angle;
+                        UserData.instance.angleValues[5] = Angle_Value[5];
+                        Right[2].GetComponent<Image>().fillAmount = Angle / 90;
                     }
                         
                     break;
@@ -155,6 +162,8 @@ public class Measurement_btn_change : MonoBehaviour
                 Right[0].GetComponent<Image>().sprite = Image[1];
                 Left[1].GetComponent<Text>().text = "좌측 굴곡";
                 Right[1].GetComponent<Text>().text = "우측 굴곡";
+                Left[3].GetComponent<Image>().fillAmount = 48.2f / 90;
+                Right[3].GetComponent<Image>().fillAmount = 48.1f / 90;
                 M_Sportsman.GetComponent<Animator>().SetTrigger(num.ToString());
                 break;
 
@@ -168,6 +177,8 @@ public class Measurement_btn_change : MonoBehaviour
                 Right[0].GetComponent<Image>().sprite = Image[3];
                 Left[1].GetComponent<Text>().text = "굴곡";
                 Right[1].GetComponent<Text>().text = "신전";
+                Left[3].GetComponent<Image>().fillAmount = 95 / (90 * 1.2f);
+                Right[3].GetComponent<Image>().fillAmount = 36.6f / 90;
                 M_Sportsman.GetComponent<Animator>().SetTrigger(num.ToString());
                 break;
 
@@ -181,6 +192,8 @@ public class Measurement_btn_change : MonoBehaviour
                 Right[0].GetComponent<Image>().sprite = Image[5];
                 Left[1].GetComponent<Text>().text = "좌측 회전";
                 Right[1].GetComponent<Text>().text = "우측 회전";
+                Left[3].GetComponent<Image>().fillAmount = 34.4f / 90;
+                Right[3].GetComponent<Image>().fillAmount = 34.6f / 90;
                 M_Sportsman.GetComponent<Animator>().SetTrigger(num.ToString());
                 break;
 
