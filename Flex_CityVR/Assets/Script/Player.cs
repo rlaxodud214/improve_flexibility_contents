@@ -147,7 +147,7 @@ public class Player : MonoBehaviour
         {"T_fly", false},{"T_window", false},{"T_battle", false},{"T_chef", false},{"T_arrow", false},
     };
 
-    public static Player instance;   // 싱글톤 
+    public static Player instance;   //싱글톤 
 
     void Awake()
     {
@@ -230,6 +230,7 @@ public class Player : MonoBehaviour
 
     public string KeySearch()
     {
+        // 해당 value 값을 찾는 key 반환
         string key = Player.instance.dic_contents.FirstOrDefault(x => x.Value == true).Key;
         return key;
     }

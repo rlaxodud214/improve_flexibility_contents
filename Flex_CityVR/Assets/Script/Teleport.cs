@@ -29,7 +29,6 @@ public class Teleport : MonoBehaviour
     {
         Teleport.instance = this;
         //timer = false;
-
         // 버튼 이름과 teleportLocation 매치
         // 눌린 버튼의 이름을 가져와 딕셔너리에서 값을 찾을거임
 
