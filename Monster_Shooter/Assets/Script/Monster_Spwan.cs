@@ -17,6 +17,8 @@ public class Monster_Spwan : MonoBehaviour
     public float Position_Change_Delay;
     public int RandNum_type;
     public int RandNum_position;
+    public GameObject Image_Arrow;
+    public Vector3 Image_Arrow_Rotation;
 
     // public Monster_Info[] monster_info;
 
@@ -26,18 +28,37 @@ public class Monster_Spwan : MonoBehaviour
         /*monster_info[0].name = "WerewolfPBRDefault";
         monster_info[0].name = "WerewolfPBRDefault";
         monster_info[0].name = "WerewolfPBRDefault";*/
-        Spawn_Time = 15f;
+        Spawn_Time = 9f;
         Position_Change_Delay = 30f;
         RandNum_type = 0;
         RandNum_position = 0;
         StartCoroutine(Create());
-        StartCoroutine(Sinario());
+        StartCoroutine(Scenario());
+        Image_Arrow_Rotation = Vector3.zero;
     }
 
     // Update is called once per frame
     void Update()
     {
+        switch(RandNum_position)
+        {
+            case 0:
+                Image_Arrow_Rotation.z = 90;
+                break;
 
+            case 1:
+                Image_Arrow_Rotation.z = -90;
+                break;
+
+            case 2:
+                Image_Arrow_Rotation.z = 180; 
+                break;
+
+            case 3:
+                Image_Arrow_Rotation.z = 0;
+                break;
+        }
+        Image_Arrow.transform.localEulerAngles = Image_Arrow_Rotation;
     }
 
     IEnumerator Create()
@@ -59,7 +80,7 @@ public class Monster_Spwan : MonoBehaviour
 
             // 몬스터 이동 스크립트 추가
             var M = g.AddComponent<Monster>();
-            M.hp = 100;
+            // M.hp = 1000;
 
             // 콜라이더 크기가 몬스터 마다 달라서 몬스터 프리팹에 콜라이더 추가해버림
             /*            // 캡슐 콜라이더 추가
@@ -74,12 +95,13 @@ public class Monster_Spwan : MonoBehaviour
         }
     }
 
-    IEnumerator Sinario()
+    IEnumerator Scenario()
     {
         var temp_time = 0f;
-        while(Position_Change_Delay > temp_time)
+        RandNum_type = 6;
+        while (Position_Change_Delay > temp_time)
         {
-            RandNum_type = Random.Range(0, 2);
+            // RandNum_type = Random.Range(0, 2);
             yield return new WaitForSeconds(Spawn_Time-0.2f);
             temp_time += Spawn_Time;
         }
@@ -87,23 +109,24 @@ public class Monster_Spwan : MonoBehaviour
         RandNum_position = 0;
         print("위에 생성");
 
-        RandNum_type = Random.Range(1, 3);
+        // RandNum_type = Random.Range(1, 3);
         RandNum_position = 1;
         print("아래에 생성");
         yield return new WaitForSeconds(Position_Change_Delay);
 
-        RandNum_type = Random.Range(2, 4);
+        // RandNum_type = Random.Range(2, 4);
         RandNum_position = 2;
         print("좌측에 생성");
         yield return new WaitForSeconds(Position_Change_Delay);
 
-        RandNum_type = Random.Range(3, 5);
+        // RandNum_type = Random.Range(3, 5);
         RandNum_position = 3;
         print("우측에 생성");
         yield return new WaitForSeconds(Position_Change_Delay);
 
-        RandNum_type = Random.Range(0, 6);
+        // RandNum_type = Random.Range(0, 6);
         RandNum_position = Random.Range(0, 3);
         print("랜덤 위치에 랜덤 몬스터 생성");
+        Scenario();
     }
 }
