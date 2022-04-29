@@ -9,13 +9,12 @@ using Button = UnityEngine.UI.Button;
 public class Teleport : MonoBehaviour
 {
     // teleport
-    public GameObject XR_Rig; // 임시
+    public GameObject Player_Controller; // 임시
 
     public GameObject teleportLocation;
     public Transform teleportBtn;
 
     private Dictionary<string, GameObject> telePos = new Dictionary<string, GameObject>();
-    private Vector3 wantPos;
     public Transform contentsTitle;
     //
 
@@ -40,9 +39,9 @@ public class Teleport : MonoBehaviour
         backImg.gameObject.SetActive(false); 
     }
 
-    private void Start()
+    public void Start()
     {
-        XR_Rig = GameManager.instance.XR_Rig;
+        Player_Controller = GameManager.instance.XR_Rig.transform.GetChild(0).gameObject;
     }
 
     IEnumerator FadeInCamera(Image img, float fadeInTime) // 페이드 인 : 투명 > 불투명
@@ -100,7 +99,7 @@ public class Teleport : MonoBehaviour
         backImg.gameObject.SetActive(true);
         // CharacterController 꺼줘야 캐릭터가 이동함, 페이드아웃될 때 못 움직이도록 함
         Player.instance.controller_state = false;
-        XR_Rig.transform.GetChild(0).GetComponent<CharacterController>().enabled = false;
+        Player_Controller.transform.GetComponent<CharacterController>().enabled = false;
 
         StartCoroutine(FadeInCamera(backImg, 3f));
         StartCoroutine(changePosition());
@@ -110,15 +109,21 @@ public class Teleport : MonoBehaviour
     {
         // 눌린 버튼의 name 가져오기
         string name = EventSystem.current.currentSelectedGameObject.name;
-        wantPos = telePos[name].transform.position;
+        //print("telePos[name].transform.position = "+ telePos[name].transform.position);
 
-        yield return new WaitForSeconds(4f); // 캐릭터 이동이 fadeout 보다 먼저 발생하지 않도록
+        Vector3 wantPos = telePos[name].transform.position;
+        //print("wantPos = " + wantPos);
+        yield return new WaitForSeconds(3.1f); // 캐릭터 이동이 fadeout 보다 먼저 발생하지 않도록
 
-        XR_Rig.transform.position = wantPos;
+        print("XR_Rig_Pos = " + Player_Controller.transform.position);
+        Player_Controller.transform.position = wantPos;
+        print("XR_Rig_Pos = " + Player_Controller.transform.position);
+        print("wantPos = " + wantPos);
         Player.instance.controller_state = true;
-        XR_Rig.transform.GetChild(0).GetComponent<CharacterController>().enabled = true;
 
-        yield return new WaitForSeconds(2f);
+        Player_Controller.transform.GetComponent<CharacterController>().enabled = true;
+
+        yield return new WaitForSeconds(3f);
         backImg.gameObject.SetActive(false);
         StartCoroutine(showTitle(telePos[name]));
     }
@@ -134,5 +139,24 @@ public class Teleport : MonoBehaviour
         StartCoroutine(FadeInCamera(nowTitle, 2f));
         yield return new WaitForSeconds(3f);
         StartCoroutine(FadeOutCamera(nowTitle, 2f));
+    }
+
+    public IEnumerator TeleportMeasure() // 측정 장소 이동
+    {
+        backImg.gameObject.SetActive(true);
+        // CharacterController 꺼줘야 캐릭터가 이동함, 페이드아웃될 때 못 움직이도록 함
+        Player.instance.controller_state = false;
+        Player_Controller.transform.GetComponent<CharacterController>().enabled = false;
+
+        StartCoroutine(FadeInCamera(backImg, 3f));
+
+        yield return new WaitForSeconds(3.1f); // 캐릭터 이동이 fadeout 보다 먼저 발생하지 않도록
+
+        Player_Controller.transform.position = teleportLocation.transform.GetChild(9).position;
+        Player.instance.controller_state = true;
+        Player_Controller.transform.GetComponent<CharacterController>().enabled = true;
+
+        yield return new WaitForSeconds(3f);
+        backImg.gameObject.SetActive(false);
     }
 }

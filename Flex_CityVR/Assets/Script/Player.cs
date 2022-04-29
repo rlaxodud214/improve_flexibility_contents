@@ -134,7 +134,7 @@ public class Player : MonoBehaviour
     //
 
     private string objectName;
-    public Vector3 Offset;
+    //public Vector3 Offset;  //캐릭터 사용시
     private GameObject CenterEyeAnchor;
 
     // 캐릭터 컨트롤러
@@ -162,8 +162,9 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        transform.position = CenterEyeAnchor.transform.position + Offset;
-        transform.eulerAngles = new Vector3(0f, GameManager.instance.XR_Rig.transform.GetChild(0).rotation.eulerAngles.y, 0f);
+        //캐릭터 사용시
+        /*transform.position = CenterEyeAnchor.transform.position + Offset;
+        transform.eulerAngles = new Vector3(0f, GameManager.instance.XR_Rig.transform.GetChild(0).rotation.eulerAngles.y, 0f);*/
         Timer_();
     }
 
@@ -202,7 +203,7 @@ public class Player : MonoBehaviour
         else if (objectName == "T_arr") dic_contents["T_arrow"] = true;       //활쏘기
         print("트리거는 : " + KeySearch());
         UIManager.instance.informPanel.SetActive(true);
-        UIManager.instance.informText.text = "콘텐츠 수행 장소로 이동하시겠습니까?";
+        UIManager.instance.informText.text = "콘텐츠 수행 장소로 이동하시겠습니까?"; //informtype contetns일때
     }
 
 

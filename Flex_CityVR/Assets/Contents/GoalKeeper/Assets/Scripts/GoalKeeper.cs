@@ -7,12 +7,14 @@ public class GoalKeeper : MonoBehaviour
 {
     const int LEFT = 0;
     const int RIGHT = 1;
-    const float SPEED = 0.4f;
 
+    #region Public Fields
+
+    public float speed = 0f;
+
+    #endregion
 
     #region Private Fields
-
-    Animator player;
 
     int playerMax;
     float imuVal;
@@ -24,14 +26,13 @@ public class GoalKeeper : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player = GetComponent<Animator>();
-
+        OpenZenMoveObject.Instance.runstart();
         playerMax = 35;
         imuVal = 0f;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         //Debug.Log("IMU Z 데이터 : " + OpenZenMoveObject.Instance.sensorEulerData.z.ToString("N0"));
         //Debug.Log("정규화 데이터 : " + Normalize(0, PLAYER_MAX, OpenZenMoveObject.Instance.sensorEulerData.z));
@@ -40,19 +41,11 @@ public class GoalKeeper : MonoBehaviour
         // 이동방식: 누적
         if (OpenZenMoveObject.Instance.sensorEulerData.z < -10)
         {
-            player.SetBool("isMove", true);
-            player.SetInteger("dir", LEFT);
-            player.transform.Translate(Vector3.left * SPEED * imuVal);
+            transform.Translate(Vector3.left * speed * imuVal);
         }
         else if (OpenZenMoveObject.Instance.sensorEulerData.z > 10)
         {
-            player.SetBool("isMove", true);
-            player.SetInteger("dir", RIGHT);
-            player.transform.Translate(Vector3.right * SPEED * imuVal);
-        }
-        else
-        {
-            player.SetBool("isMove", false);
+            transform.Translate(Vector3.right * speed * imuVal);
         }
     }
 

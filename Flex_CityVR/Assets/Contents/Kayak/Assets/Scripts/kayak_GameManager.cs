@@ -55,7 +55,7 @@ public class kayak_GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartGame();
+        //StartGame();
     }
 
     // Update is called once per frame

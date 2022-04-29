@@ -50,6 +50,7 @@ public class UIManager : MonoBehaviour
                 SceneChange.instance.contentsTelport();
                 break;
         }
+        informPanel.SetActive(false);
         setInformType(0);
     }
 

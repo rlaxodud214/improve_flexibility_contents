@@ -9,21 +9,26 @@ public class CSVInput : MonoBehaviour
     // !!Resources에 있는 ageData 파일 위치 옮기지 마시오.
 
     #region 변수
-    private int user_age = 35; //임시 나이 삽입
+    private int user_age; //임시 나이 삽입
     private string user_name = "김태영"; //임시 이름 삽입
-    public double user_flex; // 임시 유연성
+    public float user_flex; // 임시 유연성
     private int user_percentage = 99; // 백분위
     private Dictionary<int, List<string>> _Index = new Dictionary<int, List<string>>(); // 키 : 연령대 value : 사용할 헤드
     // 헤드 순서 : 종합, 최대치, 평균치
-    private List<string> _20Head = new List<string>() { "age20", "20_Max", "20_Mean"};  // 20대 사용 CSV 헤드
+    private List<string> _20Head = new List<string>() { "age20", "20_Max", "20_Mean" };  // 20대 사용 CSV 헤드
     private List<string> _30Head = new List<string>() { "age30", "30_Max", "30_Mean" }; // 30대 사용 CSV 헤드
     private List<string> _65Head = new List<string>() { "age65", "65_Max", "65_Mean" }; // 65이상 사용 CSV 헤드
-
     List<Dictionary<string, object>> _data; // CSV 오브젝트
+
     private List<double> data_all = new List<double>(); // 종합 유연성
     private List<double> data_Mean = new List<double>(); // 평균치
     private List<double> data_Max = new List<double>();  // 최대치
+    public Text percentageAge;
+    public Slider percentageAgeSlider;
+    public float[] userData;    // 수행동작 별 사용자 측정값
     public List<Slider> mean_Slider = new List<Slider>();
+    public List<Slider> userDataSlider = new List<Slider>();    // 수행동작 별 사용자 측정값 슬라이더
+    public List<Text> userDataText = new List<Text>();
     public Text temp_ageText; //임시
     public Text handle, percentage; // 사용자 백분위 표시 
     public Slider percnetageSlider;
@@ -34,13 +39,41 @@ public class CSVInput : MonoBehaviour
 
     private void Awake()
     {
+        userData = UserData.instance.angleValues;
+        user_age = 23;
         temp_ageText.text = "나이 : " + user_age; //임시
-        user_flex = 285; // 임시
+        user_flex = 0;  // 종합유연성 값 초기화
+        // 이전 씬에서 측정한 값 받아오도록 수정
+        for (int i = 0; i < userData.Length; i++)
+        {
+            user_flex += userData[i];
+        }
+        // 측정값 슬라이더 초기화 -> 나중에 순서 바꾸던가 해야될 듯
+        userDataSlider[0].maxValue = mean_Slider[2].maxValue;
+        userDataSlider[1].maxValue = mean_Slider[3].maxValue;
+        userDataSlider[2].maxValue = mean_Slider[0].maxValue;
+        userDataSlider[3].maxValue = mean_Slider[1].maxValue;
+        userDataSlider[4].maxValue = mean_Slider[4].maxValue;
+        userDataSlider[5].maxValue = mean_Slider[5].maxValue;
+        // 수행동작 별 측정값 슬라이더에 적용
+        for (int i = 0; i < userDataSlider.Count; i++)
+        {
+            userDataSlider[i].value = userData[i];
+            userDataText[i].text = userData[i].ToString("N1");
+        }
+        percentageAge.text = user_flex.ToString("N0");
+        percentageAgeSlider.value = user_flex;
         //user_age = int.Parse(User_info_change.Instance.user[1]) / 10; // user 나이
         user_age = user_age / 10;
         user_age = int.Parse(user_age.ToString() + "0"); // user 연령대
         if (user_age >= 60)
             user_age = 65;
+
+        for (int i = 0; i < mean_Slider.Count; i++)
+        {
+            mean_Slider[i].interactable = false;
+            userDataSlider[i].interactable = false;
+        }
 
         #region 연령별 CSV 헤드 삽입
         _Index.Add(20, _20Head);

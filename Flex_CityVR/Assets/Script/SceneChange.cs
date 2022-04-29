@@ -43,7 +43,7 @@ public class SceneChange : MonoBehaviour
         //Invoke("test", 5f);
     }
 
-    void OnMouseDown() // Coliider를 마우스로 클릭하면 발생하는 함수 (기존에 있는 이벤트함수 이용)
+/*    void OnMouseDown() // Coliider를 마우스로 클릭하면 발생하는 함수 (기존에 있는 이벤트함수 이용)
     {
         if (gameObject.name == "Monitor_screen")
         {
@@ -52,11 +52,17 @@ public class SceneChange : MonoBehaviour
             SceneManager.LoadScene("3-3.Result"); // 3-1. 씬 사용 할 것 (IMU 미연동 방지로 3-3으로 해둠)
             //changeScene = true;
         }
+    }*/
+
+    public void Flex_Scene()
+    {
+        SceneManager.LoadScene("3-0.Main");
     }
 
-    void test()
+    public void Main_Flex()
     {
-        SceneManager.LoadScene("3-1.Flexibility_Measurement");
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("mainCity");
     }
 
     public void contentsTelport()
@@ -67,6 +73,7 @@ public class SceneChange : MonoBehaviour
         switch (key)
         {
             case "T_hospital":
+                StartCoroutine(Teleport.instance.TeleportMeasure());
                 break;
             case "T_soccer":
                 SceneManager.LoadScene("GoalKeeper");

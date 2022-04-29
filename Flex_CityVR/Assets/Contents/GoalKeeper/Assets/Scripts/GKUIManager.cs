@@ -78,6 +78,7 @@ public class GKUIManager : MonoBehaviour
     #endregion
 
     #region Public Fields
+
     public void Pause(bool isPause)
     {
         if (isPause)
@@ -134,6 +135,11 @@ public class GKUIManager : MonoBehaviour
         // 인덱스 범위 제한
         if (toggleIdx < toggles.Count)
             toggles[toggleIdx].isOn = true; // 다음 토글로 포커스 가도록
+    }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
     }
 
     #endregion

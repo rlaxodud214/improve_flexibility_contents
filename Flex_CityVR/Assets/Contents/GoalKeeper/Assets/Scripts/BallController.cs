@@ -200,13 +200,18 @@ public class BallController : MonoBehaviour
 
     public void LevelUp(int level)
     {
-        if (level == 2)
+/*        if (level == 2)
         {
             for (int i = 1; i < ParabolaRoot.transform.childCount; i += 2)
             {
                 targets.Add(ParabolaRoot.transform.GetChild(i));   // 타겟은 짝수번째의 point
             }
+            targets.Add(ParabolaRoot.transform.GetChild(chil))
             lineCount = 60;
+        }*/
+        if (level == 2)
+        {
+            lineCount -= 20;
         }
     }
 

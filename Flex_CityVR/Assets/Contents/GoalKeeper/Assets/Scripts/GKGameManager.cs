@@ -46,12 +46,12 @@ public class GKGameManager : MonoBehaviour
         backwardAnim = false;
         forwardAnim = false;
 
-        chance = 5;
+        chance = 3; // 데모용 수정 5->2
         level = 1;
 
         // 게임 플레이 시간
         playtime = 0f;
-        isTimerActive = true;
+        isTimerActive = false;
         GKUIManager.Instance.PlaytimeText.text = string.Format("00   00");   // 공백은 3개
     }
 
@@ -138,7 +138,7 @@ public class GKGameManager : MonoBehaviour
         // 5번의 기회 동안 게임오버되지 않으면 다음 level로
         if (chance == 0)
         {
-            chance = 5;
+            chance = 3; // 데모용 수정 5->2
             level++;
             ballController.LevelUp(level);
             GKUIManager.Instance.ChangeLevel(level);
