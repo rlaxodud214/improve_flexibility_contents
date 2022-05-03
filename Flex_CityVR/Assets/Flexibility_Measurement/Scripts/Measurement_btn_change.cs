@@ -197,7 +197,6 @@ public class Measurement_btn_change : MonoBehaviour
 
             case 4: // Start
                 isstart = true;
-                M_Sportsman.SetActive(false);
                 // 패널 2개 띄우기
                 panels[0].SetActive(true);
                 Invoke("p0_false", 2.0f);
@@ -230,7 +229,6 @@ public class Measurement_btn_change : MonoBehaviour
     public void Measurement_start() // 측정 시작
     {
         panels[1].SetActive(false);
-        M_Sportsman.SetActive(true);
         set_init();
         Text_Change(num);
         OpenZenMoveObject.Instance.runstart();
@@ -238,7 +236,6 @@ public class Measurement_btn_change : MonoBehaviour
 
     public void SportManActive()
     {
-        M_Sportsman.SetActive(true);
         M_Sportsman.GetComponent<Animator>().SetTrigger("4");
     }
 }
