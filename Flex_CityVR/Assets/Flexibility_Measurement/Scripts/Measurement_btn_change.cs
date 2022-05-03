@@ -25,6 +25,14 @@ public class Measurement_btn_change : MonoBehaviour
 
     public GameObject M_Sportsman;
 
+    //연령별 평균 데이터
+    //0굴곡,1신전,2좌측굴,3우측굴,4좌측회전,5우측회전
+    private int user_age;
+    private float[] age20_mean = { 95f, 36.6f, 48.2f, 48.1f, 34.4f, 34.6f }; 
+    private float[] age30_mean = { 94f, 34.7f, 47.4f, 47.5f, 33.8f, 34.5f };
+    private float[] age65_mean = { 94f, 32.1f, 39.2f, 39.5f, 34.3f, 33.6f };
+    private float[] use_mean;
+
     #region Singleton                                         // 싱글톤 패턴은 하나의 인스턴스에 전역적인 접근을 시키며 보통 호출될 때 인스턴스화 되므로 사용하지 않는다면 생성되지도 않습니다.
     private static Measurement_btn_change _Instance;          // 싱글톤 패턴을 사용하기 위한 인스턴스 변수, static 선언으로 어디서든 참조가 가능함
 
@@ -37,6 +45,19 @@ public class Measurement_btn_change : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        print("User_info_temp.user_age : "+ User_info_temp.user_age);
+        user_age = User_info_temp.user_age;
+        user_age = user_age / 10;
+        user_age = int.Parse(user_age.ToString() + "0"); // user 연령대 구하기
+        if (user_age >= 60)
+            user_age = 65;
+
+        // 연령대에 해당하는 mean 값
+        if (user_age == 20) use_mean = (float[])age20_mean.Clone();
+        else if (user_age == 30) use_mean = (float[])age30_mean.Clone();
+        else if (user_age == 65) use_mean = (float[])age65_mean.Clone();
+        else Debug.LogError("해당 연령대의 데이터가 없습니다.");
+
         set_init();
         num = 1;
         isstart = false;
@@ -160,8 +181,8 @@ public class Measurement_btn_change : MonoBehaviour
                 Right[0].GetComponent<Image>().sprite = Image[1];
                 Left[1].GetComponent<Text>().text = "좌측 굴곡";
                 Right[1].GetComponent<Text>().text = "우측 굴곡";
-                Left[3].GetComponent<Image>().fillAmount = 48.2f / 90;
-                Right[3].GetComponent<Image>().fillAmount = 48.1f / 90;
+                Left[3].GetComponent<Image>().fillAmount = use_mean[2] / 90;
+                Right[3].GetComponent<Image>().fillAmount = use_mean[3] / 90;
                 M_Sportsman.GetComponent<Animator>().SetTrigger(num.ToString());
                 break;
 
@@ -175,8 +196,8 @@ public class Measurement_btn_change : MonoBehaviour
                 Right[0].GetComponent<Image>().sprite = Image[3];
                 Left[1].GetComponent<Text>().text = "굴곡";
                 Right[1].GetComponent<Text>().text = "신전";
-                Left[3].GetComponent<Image>().fillAmount = 95 / (90 * 1.2f);
-                Right[3].GetComponent<Image>().fillAmount = 36.6f / 90;
+                Left[3].GetComponent<Image>().fillAmount = use_mean[0] / (90 * 1.2f);
+                Right[3].GetComponent<Image>().fillAmount = use_mean[1] / 90;
                 M_Sportsman.GetComponent<Animator>().SetTrigger(num.ToString());
                 break;
 
@@ -190,8 +211,8 @@ public class Measurement_btn_change : MonoBehaviour
                 Right[0].GetComponent<Image>().sprite = Image[5];
                 Left[1].GetComponent<Text>().text = "좌측 회전";
                 Right[1].GetComponent<Text>().text = "우측 회전";
-                Left[3].GetComponent<Image>().fillAmount = 34.4f / 90;
-                Right[3].GetComponent<Image>().fillAmount = 34.6f / 90;
+                Left[3].GetComponent<Image>().fillAmount = use_mean[4] / 90;
+                Right[3].GetComponent<Image>().fillAmount = use_mean[5] / 90;
                 M_Sportsman.GetComponent<Animator>().SetTrigger(num.ToString());
                 break;
 
@@ -217,6 +238,8 @@ public class Measurement_btn_change : MonoBehaviour
         Right[1].GetComponent<Text>().text = "";
         Left[2].GetComponent<Image>().fillAmount = 0;
         Right[2].GetComponent<Image>().fillAmount = 0;
+        Left[3].GetComponent<Image>().fillAmount = 0;
+        Right[3].GetComponent<Image>().fillAmount = 0;
         Change_Origin.GetComponent<Image>().fillAmount = 0;
     }
 

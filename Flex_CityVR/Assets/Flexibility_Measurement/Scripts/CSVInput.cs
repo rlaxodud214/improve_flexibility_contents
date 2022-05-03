@@ -10,7 +10,7 @@ public class CSVInput : MonoBehaviour
 
     #region 변수
     private int user_age; //임시 나이 삽입
-    private string user_name = "김태영"; //임시 이름 삽입
+    private string user_name; //임시 이름 삽입
     public float user_flex; // 임시 유연성
     private int user_percentage = 99; // 백분위
     private Dictionary<int, List<string>> _Index = new Dictionary<int, List<string>>(); // 키 : 연령대 value : 사용할 헤드
@@ -32,7 +32,6 @@ public class CSVInput : MonoBehaviour
     public Text temp_ageText; //임시
     public Text handle, percentage; // 사용자 백분위 표시 
     public Slider percnetageSlider;
-    private int pre_index;
     #endregion
 
     // Start is called before the first frame update
@@ -40,7 +39,8 @@ public class CSVInput : MonoBehaviour
     private void Awake()
     {
         userData = UserData.instance.angleValues;
-        user_age = 23;
+        user_age = User_info_temp.user_age;
+        user_name = User_info_temp.user_name;
         temp_ageText.text = "나이 : " + user_age; //임시
         user_flex = 0;  // 종합유연성 값 초기화
         // 이전 씬에서 측정한 값 받아오도록 수정
@@ -85,6 +85,13 @@ public class CSVInput : MonoBehaviour
     }
     void Start()
     {
+        ReadCSVdata();
+        Mypercentage();
+    }
+
+    void ReadCSVdata()
+    {
+        //연령대에 맞는 종합유연성, 최대, 평균 유연성 읽기
         if (_Index.ContainsKey(user_age))
         {
             Debug.Log("유효한 데이터");
@@ -103,8 +110,6 @@ public class CSVInput : MonoBehaviour
         }
         else
             Debug.LogError("해당 연령대의 데이터가 없습니다.");
-
-        Mypercentage();
     }
 
     void inputData(List<double> _max, List<double> _mean) // 연령대에 맞는 데이터 최대값, 평균값 삽입
