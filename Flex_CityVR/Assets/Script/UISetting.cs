@@ -6,7 +6,8 @@ using UnityEngine;
 public enum EinformType
 {
     None,
-    Contents
+    Contents,
+    Shop
 }
 public class UISetting
 {
