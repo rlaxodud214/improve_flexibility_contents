@@ -38,25 +38,21 @@ public class UIManager : MonoBehaviour
             case EinformType.None:
                 break;
             case EinformType.Contents:
-                string key = Player.instance.KeySearch();
-                Player.instance.dic_contents[key] = false;
+                string get_key;
+                get_key = Player.instance.KeySearch();
+                Player.instance.dic_contents[get_key] = false;
+                setInformType(0);
                 break;
             case EinformType.Shop:
+                print("shop Cancle");
                 break;
 
         }
         informPanel.SetActive(false);
-        // 취소 버튼을 눌렀을 때
-/*        print("선택이 취소되었습니다.");
-        string key = Player.instance.KeySearch();
-        Player.instance.dic_contents[key] = false;
-        informPanel.SetActive(false);*/
-
     }
 
     public void check()
     {
-        informPanel.SetActive(false);
         // 확인 버튼을 눌렀을 때 스위치문으로 informType 따라 수행
         switch (UISetting.informType)
         {
@@ -70,12 +66,7 @@ public class UIManager : MonoBehaviour
                 Store.instance.BuyItem();
                 break;
         }
-        //setInformType(0); //초기화
-    }
-
-    public void checkTrigger()
-    {
-
+        informPanel.SetActive(false);
     }
 
     public void setInformType(int type)     // 알림창 타입 변경/설정 시

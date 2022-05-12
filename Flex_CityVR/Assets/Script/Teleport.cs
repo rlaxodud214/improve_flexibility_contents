@@ -115,14 +115,12 @@ public class Teleport : MonoBehaviour
         //print("wantPos = " + wantPos);
         yield return new WaitForSeconds(3.1f); // 캐릭터 이동이 fadeout 보다 먼저 발생하지 않도록
 
-        print("XR_Rig_Pos = " + Player_Controller.transform.position);
+        //print("XR_Rig_Pos = " + Player_Controller.transform.position);
         Player_Controller.transform.position = wantPos;
-        print("XR_Rig_Pos = " + Player_Controller.transform.position);
-        print("wantPos = " + wantPos);
+        //print("XR_Rig_Pos = " + Player_Controller.transform.position);
+        //print("wantPos = " + wantPos);
         Player.instance.controller_state = true;
-
         Player_Controller.transform.GetComponent<CharacterController>().enabled = true;
-
         yield return new WaitForSeconds(3f);
         backImg.gameObject.SetActive(false);
         StartCoroutine(showTitle(telePos[name]));

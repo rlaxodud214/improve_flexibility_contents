@@ -69,8 +69,9 @@ public class SceneChange : MonoBehaviour
     {
         // 트리거 통과 여부 확인해서 해당 콘텐츠로 이동시키기
         // value 값이 true인 key 값 찾기 -> using System.Linq 사용
-        string key = Player.instance.KeySearch();
-        switch (key)
+        string get_key;
+        get_key = Player.instance.KeySearch();
+        switch (get_key)
         {
             case "T_hospital":
                 StartCoroutine(Teleport.instance.TeleportMeasure());
@@ -93,8 +94,11 @@ public class SceneChange : MonoBehaviour
                 break;
             case "T_arrow":
                 break;
+            default:
+                Debug.Log("<color=Red>입장한 포탈이 없습니다.</color>");
+                break;
         }
-        //나중에 콘텐츠 수행하고 다시 메인시티로 돌아올 때 해당 Player의 딕셔너리 value false로 바꿔주기
-        //알림창 타입도 아직 Contents 상태
+        Player.instance.dic_contents[get_key] = false;
+        //나중에 콘텐츠 수행하고 다시 메인시티로 돌아올 때 해당 Player의 딕셔너리 value false로 바꿔주기 -> 미정
     }
 }

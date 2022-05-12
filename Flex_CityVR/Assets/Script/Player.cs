@@ -129,7 +129,7 @@ public class Player : MonoBehaviour
 
     // timer
     public bool timer; // timer
-    private float maxTime = 3; // 유지해야하는 시간
+    private float maxTime = 2; // 유지해야하는 시간
     private int minTime = 0; // 플레이어가 유지 중인 시간
     //
 
@@ -153,6 +153,8 @@ public class Player : MonoBehaviour
     {
         Player.instance = this;
 
+        print("Player.cs-Awake 실행");
+
         #region 초기화
         controller_state = true;
         CenterEyeAnchor = GameObject.Find("CenterEyeAnchor");
@@ -166,16 +168,23 @@ public class Player : MonoBehaviour
         /*transform.position = CenterEyeAnchor.transform.position + Offset;
         transform.eulerAngles = new Vector3(0f, GameManager.instance.XR_Rig.transform.GetChild(0).rotation.eulerAngles.y, 0f);*/
         Timer_();
+        //print("nowPortal : "+nowPortal);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 11) // 모든 콘텐츠의 Trigger는 Contents Layer 로 할 것
         {
-            UIManager.instance.setInformType(1); //알림창 type = Contents로 변경
             objectName = other.name.Substring(0, 5);
             timer = true;
-            Timer_();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 11) // 모든 콘텐츠의 Trigger는 Contents Layer 로 할 것
+        {
+            timer = false;
         }
     }
 
@@ -183,15 +192,23 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.layer == 11) // 모든 콘텐츠의 Trigger는 Contents Layer 로 할 것
         {
-            UIManager.instance.setInformType(1); //알림창 type = Contents로 변경
             objectName = other.transform.name.Substring(0, 5);
             timer = true;
-            Timer_();
         }
     }
 
-    public void checkTrigger()  // 포탈 이름 확인해서 해당 변수 true로 변경
+    private void OnCollisionExit(Collision other)
     {
+        if (other.gameObject.layer == 11) // 모든 콘텐츠의 Trigger는 Contents Layer 로 할 것
+        {
+            timer = false;
+        }
+    }
+
+    public void PortalInform()  // 포탈 이름 확인해서 해당 변수 true로 변경
+    {
+        UIManager.instance.setInformType(1); //알림창 type = Contents로 변경
+
         if (objectName == "T_kay") dic_contents["T_kayak"] = true;              //카약
         else if (objectName == "T_hos") dic_contents["T_hospital"] = true;      //병원
         else if (objectName == "T_soc") dic_contents["T_soccer"] = true;        //골키퍼
@@ -201,9 +218,9 @@ public class Player : MonoBehaviour
         else if (objectName == "T_bat") dic_contents["T_battle"] = true;     //포트리스
         else if (objectName == "T_che") dic_contents["T_chef"] = true;         //음식만들기
         else if (objectName == "T_arr") dic_contents["T_arrow"] = true;       //활쏘기
-        print("트리거는 : " + KeySearch());
         UIManager.instance.informPanel.SetActive(true);
         UIManager.instance.informText.text = "콘텐츠 수행 장소로 이동하시겠습니까?"; //informtype contetns일때
+        print("이용 중인 포탈은 : " + KeySearch());
     }
 
 
@@ -215,12 +232,13 @@ public class Player : MonoBehaviour
                 minTime++;
                 maxTime -= 1;
                 //Debug.Log("min : " + minTime);
-                if (minTime == 3){
+                if (minTime == 2){
                     //이벤트
                     Debug.Log("<color=cyan>포탈에 2초 머물렀습니다.</color>");
-                    checkTrigger();
+                    PortalInform();
                     timer = false;
                 }
+
             }
         }
         else {
@@ -232,7 +250,8 @@ public class Player : MonoBehaviour
     public string KeySearch()
     {
         // 해당 value 값을 찾는 key 반환
-        string key = Player.instance.dic_contents.FirstOrDefault(x => x.Value == true).Key;
+        string key;
+        key = dic_contents.FirstOrDefault(x => x.Value == true).Key;
         return key;
     }
 }
