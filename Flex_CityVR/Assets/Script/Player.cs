@@ -153,8 +153,6 @@ public class Player : MonoBehaviour
     {
         Player.instance = this;
 
-        print("Player.cs-Awake 실행");
-
         #region 초기화
         controller_state = true;
         CenterEyeAnchor = GameObject.Find("CenterEyeAnchor");
