@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Store : MonoBehaviour
@@ -17,8 +18,11 @@ public class Store : MonoBehaviour
     bool canBuy = false;
     
     private int getItemCost;
-    private ItemType getItemType;
+    private string getItemName;
+    private int itemIndex;
 
+    [HideInInspector]
+    public UnityEngine.UI.Button button;
 
     public static Store instance;
     private void Awake()
@@ -27,6 +31,7 @@ public class Store : MonoBehaviour
         UserMoney = 100000;
         // UserMoney 연동
         getItemCost = 0;
+        itemIndex = 0;
         UserMoneyText.text = GetThousandComma(UserMoney).ToString();
     }
 
@@ -53,10 +58,13 @@ public class Store : MonoBehaviour
 
     public void ItemClick(int index)
     {
+        button = EventSystem.current.currentSelectedGameObject.transform.GetComponent<Button>();
+        button.enabled = false;
         UIManager.instance.setInformType(2); // Shop
         UIManager.instance.informPanel.SetActive(true);
         UIManager.instance.informText.text = "아이템을 구매하시겠습니까?"; //informtype shop일때
-        getItemType = petItemRoot.GetChild(index).GetComponent<ItemInfo>().itemType;
+        itemIndex = index;
+        getItemName = petItemRoot.GetChild(index).GetComponent<ItemInfo>().itemName;
         getItemCost = petItemRoot.GetChild(index).GetComponent<ItemInfo>().itemCost;
         if (UserMoney >= getItemCost)
         {
@@ -74,35 +82,16 @@ public class Store : MonoBehaviour
             UIManager.instance.informText_simple.text = "구매를 완료했습니다.";
             UserMoney -= getItemCost;
             UserMoneyText.text = GetThousandComma(UserMoney).ToString();
-            UpdateInventory();
+
+            // 구매한 아이템의 ItemInfo 전달
+            var itemInfo = petItemRoot.GetChild(itemIndex).GetComponent<ItemInfo>();
+            Inventory.instance.UpdateItem(itemInfo);
         }
         else
         {
             UIManager.instance.informText_simple.text = "다이아가 부족합니다.";
         }
-
-        Debug.Log("userItem[PetFood] :: " + ItemDatabase.instance.PetFood);
-        Debug.Log("userItem[NormalBox] :: " + ItemDatabase.instance.NormalBox);
-        Debug.Log("userItem[PremiumBox] :: " + ItemDatabase.instance.PremiumBox);
+        button.enabled = true;
+        button = null;
     }
-
-    public void UpdateInventory()
-    {
-        string type = getItemType.ToString();
-
-        if (type == "PetFood")
-        {
-            ItemDatabase.instance.PetFood += 1;
-        }
-        else if (type == "NormalBox")
-        {
-            ItemDatabase.instance.NormalBox += 1;
-        }
-        else if (type == "PremiumBox")
-        {
-            ItemDatabase.instance.PremiumBox += 1;
-        }
-
-    }
-
 }

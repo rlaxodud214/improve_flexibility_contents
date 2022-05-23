@@ -45,6 +45,8 @@ public class UIManager : MonoBehaviour
                 break;
             case EinformType.Shop:
                 print("shop Cancle");
+                Store.instance.button.enabled = true;
+                Store.instance.button = null;
                 break;
 
         }
