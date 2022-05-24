@@ -13,6 +13,7 @@ TagManager:
   - TrafficLight
   - TrafficLightCrosswalk
   - Soccer
+  - Pet
   layers:
   - Default
   - TransparentFX
@@ -26,7 +27,7 @@ TagManager:
   - Player
   - Grabbable
   - Contents
-  - 
+  - Pet
   - 
   - 
   - 
