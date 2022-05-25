@@ -7,7 +7,8 @@ public enum EinformType
 {
     None,
     Contents,
-    Shop
+    Shop,
+    Inventory,
 }
 public class UISetting
 {

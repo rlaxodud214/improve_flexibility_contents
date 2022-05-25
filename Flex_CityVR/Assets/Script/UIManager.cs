@@ -48,6 +48,9 @@ public class UIManager : MonoBehaviour
                 Store.instance.button.enabled = true;
                 Store.instance.button = null;
                 break;
+            case EinformType.Inventory:
+                print("inventory Cancle");
+                break;
 
         }
         informPanel.SetActive(false);
@@ -66,6 +69,9 @@ public class UIManager : MonoBehaviour
                 break;
             case EinformType.Shop:
                 Store.instance.BuyItem();
+                break;
+            case EinformType.Inventory:
+                ItemUse.instance.UseItem();
                 break;
         }
         informPanel.SetActive(false);

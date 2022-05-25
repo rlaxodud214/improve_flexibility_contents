@@ -28,7 +28,7 @@ public class Store : MonoBehaviour
     private void Awake()
     {
         Store.instance = this;
-        UserMoney = 100000;
+        UserMoney = 1000000;
         // UserMoney 연동
         getItemCost = 0;
         itemIndex = 0;

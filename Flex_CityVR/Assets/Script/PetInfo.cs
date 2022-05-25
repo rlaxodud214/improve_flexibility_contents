@@ -5,7 +5,6 @@ using UnityEngine;
 [System.Serializable]
 public class PetInfo : MonoBehaviour
 {
-
-    public string petName;
+    public string Name;
     public string Rank;
 }

@@ -47,8 +47,9 @@ public class Inventory : MonoBehaviour
 
     public void UseItem()
     {
-        print("UseItem");
+        // 눌린 버튼의 GameObject 가져오기
         GameObject obj = EventSystem.current.currentSelectedGameObject.gameObject;
-        obj.transform.GetComponent<Slot>().ResetItem();
+        Slot slot = obj.transform.GetComponent<Slot>();
+        ItemUse.instance.SlotClick(slot);
     }
 }
