@@ -9,6 +9,7 @@ public enum EinformType
     Contents,
     Shop,
     Inventory,
+    PetSafe,
 }
 public class UISetting
 {

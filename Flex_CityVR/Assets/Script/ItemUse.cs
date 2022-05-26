@@ -78,6 +78,8 @@ public class ItemUse : MonoBehaviour
     public void PetSetting(GameObject prefab)
     {
         GameObject newPet = Instantiate<GameObject>(prefab, PetSpawnPoint);
+        Pet.instance.GetPet(newPet);
+
         newPet.transform.position = PetSpawnPoint.GetChild(0).position;
         newPet.transform.localEulerAngles = new Vector3(0, -180, 0);
         petName.text = newPet.transform.GetComponent<PetInfo>().Name;

@@ -51,6 +51,9 @@ public class UIManager : MonoBehaviour
             case EinformType.Inventory:
                 print("inventory Cancle");
                 break;
+            case EinformType.PetSafe:
+                print("PetSafe Cancle");
+                break;
 
         }
         informPanel.SetActive(false);
@@ -72,6 +75,8 @@ public class UIManager : MonoBehaviour
                 break;
             case EinformType.Inventory:
                 ItemUse.instance.UseItem();
+                break;
+            case EinformType.PetSafe:
                 break;
         }
         informPanel.SetActive(false);
