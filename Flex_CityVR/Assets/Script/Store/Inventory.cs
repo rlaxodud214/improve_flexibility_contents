@@ -21,7 +21,7 @@ public class Inventory : MonoBehaviour
             Instantiate<GameObject>(this.slotPrefab, slotRoot);
             Transform obj = slotRoot.GetChild(i);
             obj.GetComponent<UnityEngine.UI.Button>().enabled = false;
-            var slot = obj.GetComponent<Slot>();
+            Slot slot = obj.GetComponent<Slot>();
             slot.isUse = false;
             slot.image = obj.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>();
             slots.Add(slot);
