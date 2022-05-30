@@ -12,6 +12,8 @@ public class Pet : MonoBehaviour
     [HideInInspector]
     public List<PetSlot> slots = new List<PetSlot>();
 
+    public List<AnimationClip> petAnimation = new List<AnimationClip>();
+
     public static Pet instance;
 
     private void Awake()
@@ -19,7 +21,7 @@ public class Pet : MonoBehaviour
         instance = this;
 
         // DB 연동 사용자가 가지고 있는 펫 수+4 만큼 생성
-        for(int i=0; i<UserPet.Count+4; i++)
+        for(int i=0; i<UserPet.Count+2; i++)
         {
             AddSlot();
         }
@@ -63,39 +65,30 @@ public class Pet : MonoBehaviour
             UserPet.Add(pet);
             AddPet();
         }
-/*
-        for (int i = 0; i < slots.Count; i++)
-        {
-            string petName = slots[i].petInfo.Name;
-            if (newName != petName)
-            {
-                UserPet.Add(pet);
-                AddPet();
-                break;
-            }
-        }*/
     }
 
-    // 슬롯에 추가
+    // 펫 보관함 슬롯에 추가
     public void AddPet()
     {
         PetSlot emptySlot = slots.Find(t => t.isUse == false);
-        GameObject lastPet = UserPet.Last();
+        PetInfo lastPet = UserPet.Last().transform.GetComponent<PetInfo>();
+        print("Last Pet :: "+ lastPet.transform.GetComponent<PetInfo>().Name);
 
         if (!emptySlot)
         {
-            AddSlot();
+            emptySlot = AddSlot();
         }
 
-        emptySlot.SetSlot(lastPet.transform.GetComponent<PetInfo>());
+        emptySlot.SetSlot(lastPet);
     }
 
-    public void AddSlot()
+    public PetSlot AddSlot()
     {
         GameObject obj = Instantiate<GameObject>(this.slotPrefab, contentRoot);
         PetSlot slot = obj.transform.GetComponent<PetSlot>();
         slot.ResetSlot();
         slots.Add(slot);
+        return slot;
     }
 
     public void SlotClick()

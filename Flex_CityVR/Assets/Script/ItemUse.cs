@@ -12,8 +12,11 @@ public class ItemUse : MonoBehaviour
     public ItemInfo item;
 
     public List<GameObject> petPrefab = new List<GameObject>();
-    public List<float> normalPercentage = new List<float>();
-    public List<float> premiumPercentage = new List<float>();
+
+    // 일반 펫 상자 확률
+    private List<float> normalPercentage = new List<float>();
+    // 프리미엄 펫 상자 확률
+    private List<float> premiumPercentage = new List<float>();
     public Transform PetSpawnPoint;
 
     public GameObject PetCard;
@@ -32,9 +35,24 @@ public class ItemUse : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
+        SetPercentage(normalPercentage, 10f);
+        SetPercentage(premiumPercentage, 4f);
         SettingGacha(normalPicker, normalPercentage);
         SettingGacha(premiumPicker, premiumPercentage);
+    }
+
+    // percentage는 프리미엄 펫이 나올 확률
+    public void SetPercentage(List<float> percentageList, float percentage)
+    {
+        float division = (100f - percentage * 4) / 5;
+        for(int i=0; i<5; i++)
+        {
+            percentageList.Add(division);
+        }
+        for(int i=0; i<4; i++)
+        {
+            percentageList.Add(percentage);
+        }
     }
 
     public void SlotClick(Slot sslot)
@@ -78,13 +96,12 @@ public class ItemUse : MonoBehaviour
     public void PetSetting(GameObject prefab)
     {
         GameObject newPet = Instantiate<GameObject>(prefab, PetSpawnPoint);
+        Pet.instance.GetPet(newPet);
         newPet.transform.position = PetSpawnPoint.GetChild(0).position;
         newPet.transform.localEulerAngles = new Vector3(0, -180, 0);
         petName.text = newPet.transform.GetComponent<PetInfo>().Name;
         petRank.text = newPet.transform.GetComponent<PetInfo>().Rank + " 등급";
         StartCoroutine(ShowPetCard(newPet));
-
-        Pet.instance.GetPet(newPet);
     }
 
     IEnumerator ShowPetCard(GameObject newPet)
