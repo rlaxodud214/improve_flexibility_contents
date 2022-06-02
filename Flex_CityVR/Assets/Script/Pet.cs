@@ -8,11 +8,21 @@ public class Pet : MonoBehaviour
 {
     public Transform contentRoot;
     public GameObject slotPrefab;
-    public List<GameObject> UserPet = new List<GameObject>();
+
+    public List<GameObject> UserPet = new List<GameObject>();     // 보유 중인 펫 목록
+    Transform PetSpawnPoint;
+
+    public UnityEngine.UI.Text petName;
+
     [HideInInspector]
     public List<PetSlot> slots = new List<PetSlot>();
 
-    public List<AnimationClip> petAnimation = new List<AnimationClip>();
+    private GameObject previousPrefab;
+
+    // 펫 랜덤 애니메이션
+    public List<string> animArray = new List<string>();
+    public Animation anim;
+    int randNum;
 
     public static Pet instance;
 
@@ -20,8 +30,13 @@ public class Pet : MonoBehaviour
     {
         instance = this;
 
+        #region 변수 초기화
+        previousPrefab = null;
+        PetSpawnPoint = ItemUse.instance.PetSpawnPoint;
+        #endregion
+        //RandomAnimation();
         // DB 연동 사용자가 가지고 있는 펫 수+4 만큼 생성
-        for(int i=0; i<UserPet.Count+2; i++)
+        for (int i=0; i<UserPet.Count+2; i++)
         {
             AddSlot();
         }
@@ -31,8 +46,14 @@ public class Pet : MonoBehaviour
         {
             for(int i=0; i<UserPet.Count; i++)
             {
-                PetInfo info = UserPet[i].transform.GetComponent<PetInfo>();
+                GameObject newPet = Instantiate<GameObject>(UserPet[i], PetSpawnPoint);
+                newPet.transform.GetComponent<PetInfo>().prefab = newPet;
+                newPet.transform.position = PetSpawnPoint.GetChild(0).position;
+                newPet.transform.localEulerAngles = new Vector3(0, -180, 0);
+
+                PetInfo info = newPet.transform.GetComponent<PetInfo>();
                 slots[i].GetComponent<PetSlot>().SetSlot(info);
+                newPet.SetActive(false);
             }
         }
 
@@ -72,7 +93,6 @@ public class Pet : MonoBehaviour
     {
         PetSlot emptySlot = slots.Find(t => t.isUse == false);
         PetInfo lastPet = UserPet.Last().transform.GetComponent<PetInfo>();
-        print("Last Pet :: "+ lastPet.transform.GetComponent<PetInfo>().Name);
 
         if (!emptySlot)
         {
@@ -82,6 +102,7 @@ public class Pet : MonoBehaviour
         emptySlot.SetSlot(lastPet);
     }
 
+    // 슬롯이 부족한 경우 추가
     public PetSlot AddSlot()
     {
         GameObject obj = Instantiate<GameObject>(this.slotPrefab, contentRoot);
@@ -91,10 +112,32 @@ public class Pet : MonoBehaviour
         return slot;
     }
 
+    // 슬롯 클릭 시 선택한 슬롯의 펫 TextureRender
     public void SlotClick()
     {
         GameObject obj = EventSystem.current.currentSelectedGameObject.gameObject;
         PetSlot slot = obj.transform.GetComponent<PetSlot>();
-        print("SlotClick :: PetName :: " + slot.petInfo.Name);
+        anim = slot.petInfo.prefab.GetComponent<Animation>();
+        petName.text = ""+ slot.petInfo.Name;
+        if (previousPrefab != null)
+        {
+            previousPrefab.SetActive(false);
+        }
+        slot.petInfo.prefab.gameObject.SetActive(true);
+        RandomPetAnimation();
+        previousPrefab = slot.petInfo.prefab;
+    }
+
+    public void RandomPetAnimation()
+    {
+        animArray.Clear();
+        randNum = -1;
+        foreach (AnimationState state in anim)
+        {
+            animArray.Add(state.name);
+        }
+        randNum = Random.Range(0, animArray.Count);
+        anim.Play(animArray[randNum]);
+        anim.wrapMode = WrapMode.Once;
     }
 }

@@ -7,4 +7,5 @@ public class PetInfo : MonoBehaviour
 {
     public string Name;
     public string Rank;
+    public GameObject prefab;
 }
