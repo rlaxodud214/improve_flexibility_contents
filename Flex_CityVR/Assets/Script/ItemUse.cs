@@ -14,9 +14,9 @@ public class ItemUse : MonoBehaviour
     public List<GameObject> petPrefab = new List<GameObject>();
 
     // 일반 펫 상자 확률
-    private List<float> normalPercentage = new List<float>();
+    public List<float> normalPercentage = new List<float>();
     // 프리미엄 펫 상자 확률
-    private List<float> premiumPercentage = new List<float>();
+    public List<float> premiumPercentage = new List<float>();
     public Transform PetSpawnPoint;
 
     public GameObject PetCard;
@@ -35,8 +35,8 @@ public class ItemUse : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        SetPercentage(normalPercentage, 10f);
-        SetPercentage(premiumPercentage, 4f);
+        SetPercentage(normalPercentage, 1.8f);
+        SetPercentage(premiumPercentage, 7f);
         SettingGacha(normalPicker, normalPercentage);
         SettingGacha(premiumPicker, premiumPercentage);
     }
@@ -44,14 +44,15 @@ public class ItemUse : MonoBehaviour
     // percentage는 프리미엄 펫이 나올 확률
     public void SetPercentage(List<float> percentageList, float percentage)
     {
-        float division = (100f - percentage * 4) / 5;
+
+        float division = (100f - percentage) / 5;
         for(int i=0; i<5; i++)
         {
             percentageList.Add(division);
         }
         for(int i=0; i<4; i++)
         {
-            percentageList.Add(percentage);
+            percentageList.Add(percentage/4);
         }
     }
 
@@ -96,6 +97,7 @@ public class ItemUse : MonoBehaviour
     public void PetSetting(GameObject prefab)
     {
         GameObject newPet = Instantiate<GameObject>(prefab, PetSpawnPoint);
+        newPet.transform.GetComponent<PetInfo>().prefab = newPet;
         Pet.instance.GetPet(newPet);
         newPet.transform.position = PetSpawnPoint.GetChild(0).position;
         newPet.transform.localEulerAngles = new Vector3(0, -180, 0);
@@ -107,8 +109,10 @@ public class ItemUse : MonoBehaviour
     IEnumerator ShowPetCard(GameObject newPet)
     {
         PetCard.SetActive(true);
+        Pet.instance.anim = newPet.GetComponent<Animation>();
+        Pet.instance.RandomPetAnimation();
         yield return new WaitForSeconds(4f);
-        Destroy(newPet);
+        newPet.SetActive(false);
         choice = null;
         PetCard.SetActive(false);
     }
