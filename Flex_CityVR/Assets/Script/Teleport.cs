@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using BNG;
-using Button = UnityEngine.UI.Button;
 
 public class Teleport : MonoBehaviour
 {
@@ -109,16 +107,9 @@ public class Teleport : MonoBehaviour
     {
         // 눌린 버튼의 name 가져오기
         string name = EventSystem.current.currentSelectedGameObject.name;
-        //print("telePos[name].transform.position = "+ telePos[name].transform.position);
-
         Vector3 wantPos = telePos[name].transform.position;
-        //print("wantPos = " + wantPos);
         yield return new WaitForSeconds(3.1f); // 캐릭터 이동이 fadeout 보다 먼저 발생하지 않도록
-
-        //print("XR_Rig_Pos = " + Player_Controller.transform.position);
         Player_Controller.transform.position = wantPos;
-        //print("XR_Rig_Pos = " + Player_Controller.transform.position);
-        //print("wantPos = " + wantPos);
         Player.instance.controller_state = true;
         Player_Controller.transform.GetComponent<CharacterController>().enabled = true;
         yield return new WaitForSeconds(3f);
@@ -130,10 +121,8 @@ public class Teleport : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         string num = obj.name.Substring(0, 1); // 텔레포트 장소의 번호 가져오기
-        //print("장소 이름 index : " + (int.Parse(num) - 1));
         Image nowTitle = contentsTitle.GetChild(int.Parse(num) - 1).gameObject.transform.GetComponent<Image>(); // 장소 이름
 
-        // title Fade In/Out
         StartCoroutine(FadeInCamera(nowTitle, 2f));
         yield return new WaitForSeconds(3f);
         StartCoroutine(FadeOutCamera(nowTitle, 2f));

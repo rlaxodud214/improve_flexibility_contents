@@ -121,7 +121,6 @@ public class BallController : MonoBehaviour
         // 포물선 따라 움직이기 끝나면
         else if (Animation && parabolaFly != null && animationTime > parabolaFly.GetDuration())
         {
-            print("여기 실행 됨");
             animationTime = float.MaxValue;
             Animation = false;
         }

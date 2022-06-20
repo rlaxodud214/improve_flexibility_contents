@@ -99,16 +99,22 @@ public class ItemUse : MonoBehaviour
         GameObject newPet = Instantiate<GameObject>(prefab, PetSpawnPoint);
         newPet.transform.GetComponent<PetInfo>().prefab = newPet;
         Pet.instance.GetPet(newPet);
-        newPet.transform.position = PetSpawnPoint.GetChild(0).position;
-        newPet.transform.localEulerAngles = new Vector3(0, -180, 0);
-        petName.text = newPet.transform.GetComponent<PetInfo>().Name;
-        petRank.text = newPet.transform.GetComponent<PetInfo>().Rank + " 등급";
+        InitPetPosition(newPet);
         StartCoroutine(ShowPetCard(newPet));
+    }
+
+    // 펫 프리팹 생성 위치 초기화
+    public void InitPetPosition(GameObject prefab)
+    {
+        prefab.transform.position = PetSpawnPoint.GetChild(0).position;
+        prefab.transform.localEulerAngles = new Vector3(0, -180, 0);
     }
 
     IEnumerator ShowPetCard(GameObject newPet)
     {
         PetCard.SetActive(true);
+        petName.text = newPet.transform.GetComponent<PetInfo>().Name;
+        petRank.text = newPet.transform.GetComponent<PetInfo>().Rank + " 등급";
         Pet.instance.anim = newPet.GetComponent<Animation>();
         Pet.instance.RandomPetAnimation();
         yield return new WaitForSeconds(4f);

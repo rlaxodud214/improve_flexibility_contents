@@ -135,7 +135,8 @@ public class Player : MonoBehaviour
 
     private string objectName;
     //public Vector3 Offset;  //캐릭터 사용시
-    private GameObject CenterEyeAnchor;
+    [HideInInspector]
+    public GameObject CenterEyeAnchor;
 
     // 캐릭터 컨트롤러
     public bool controller_state;

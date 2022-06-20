@@ -282,11 +282,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8593000079112244622}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -810, y: -175}
+  m_AnchoredPosition: {x: -810, y: 0}
   m_SizeDelta: {x: 70, y: 68.18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8593000077703359759
@@ -393,7 +393,7 @@ GameObject:
   - component: {fileID: 8593000078001170566}
   - component: {fileID: 8593000078001170565}
   m_Layer: 5
-  m_Name: "\uCEE8\uD150\uCE20btn"
+  m_Name: "\uADF8\uB798\uD504btn"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -411,11 +411,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8593000079112244622}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -810, y: 0}
+  m_AnchoredPosition: {x: -810, y: -175}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8593000078001170567
@@ -669,8 +669,8 @@ RectTransform:
   - {fileID: 8593000077689397808}
   - {fileID: 8593000077681966386}
   - {fileID: 8593000078576539206}
-  - {fileID: 8593000078001170564}
   - {fileID: 8593000077703359756}
+  - {fileID: 8593000078001170564}
   - {fileID: 8593000079696805314}
   m_Father: {fileID: 0}
   m_RootOrder: 0

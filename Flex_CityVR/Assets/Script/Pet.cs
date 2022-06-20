@@ -11,18 +11,26 @@ public class Pet : MonoBehaviour
 
     public List<GameObject> UserPet = new List<GameObject>();     // 보유 중인 펫 목록
     Transform PetSpawnPoint;
-
-    public UnityEngine.UI.Text petName;
-
     [HideInInspector]
     public List<PetSlot> slots = new List<PetSlot>();
 
+    // 펫보관함
+    public UnityEngine.UI.Text petName;
+    private GameObject nowSlot;
     private GameObject previousPrefab;
 
     // 펫 랜덤 애니메이션
     public List<string> animArray = new List<string>();
     public Animation anim;
     int randNum;
+    //
+
+    // 펫 소환
+    [HideInInspector]
+    public bool isCall;
+    public UnityEngine.UI.Button unCalledBtn;
+    public Transform CalledPetRoot;
+    //
 
     public static Pet instance;
 
@@ -33,8 +41,8 @@ public class Pet : MonoBehaviour
         #region 변수 초기화
         previousPrefab = null;
         PetSpawnPoint = ItemUse.instance.PetSpawnPoint;
+        isCall = false;
         #endregion
-        //RandomAnimation();
         // DB 연동 사용자가 가지고 있는 펫 수+4 만큼 생성
         for (int i=0; i<UserPet.Count+2; i++)
         {
@@ -56,7 +64,8 @@ public class Pet : MonoBehaviour
                 newPet.SetActive(false);
             }
         }
-
+        // isCall = true 마지막에 소환된 펫이 있으면 펫 가져오기 DB 연동
+        unCalledBtn.interactable = isCall;
     }
 
     // 뽑기 통해 얻은 펫 (중복 방지)
@@ -115,15 +124,16 @@ public class Pet : MonoBehaviour
     // 슬롯 클릭 시 선택한 슬롯의 펫 TextureRender
     public void SlotClick()
     {
-        GameObject obj = EventSystem.current.currentSelectedGameObject.gameObject;
-        PetSlot slot = obj.transform.GetComponent<PetSlot>();
+        nowSlot = null;
+        nowSlot = EventSystem.current.currentSelectedGameObject.gameObject;
+        PetSlot slot = nowSlot.transform.GetComponent<PetSlot>();
         anim = slot.petInfo.prefab.GetComponent<Animation>();
-        petName.text = ""+ slot.petInfo.Name;
         if (previousPrefab != null)
         {
             previousPrefab.SetActive(false);
         }
         slot.petInfo.prefab.gameObject.SetActive(true);
+        petName.text = "" + slot.petInfo.Name;
         RandomPetAnimation();
         previousPrefab = slot.petInfo.prefab;
     }
@@ -139,5 +149,34 @@ public class Pet : MonoBehaviour
         randNum = Random.Range(0, animArray.Count);
         anim.Play(animArray[randNum]);
         anim.wrapMode = WrapMode.Once;
+    }
+
+    public void Call()
+    {
+        // 만약 소환중인 펫이 있으면 nowPet 지우고 현재 슬롯 펫 소환하도록 수정 할 것
+
+        isCall = true;
+        unCalledBtn.interactable = isCall;
+        PetSlot slot = nowSlot.transform.GetComponent<PetSlot>();
+        GameObject NowPet = slot.petInfo.prefab.gameObject;
+
+        // 펫 복제
+        GameObject obj = Instantiate<GameObject>(NowPet, CalledPetRoot);
+        obj.transform.position = GameManager.instance.XR_Rig.transform.position + new Vector3(-0.5f, -1.72f, 1.5f);
+        Animator anim = obj.transform.GetComponent<Animator>();
+        anim.enabled = true;
+        obj.AddComponent<PetController>();
+    }
+
+    public void UnCalled()
+    {
+        if(CalledPetRoot.transform.childCount > 0)
+        {
+            isCall = false;
+            unCalledBtn.interactable = isCall;
+            GameObject obj = CalledPetRoot.transform.GetChild(0).gameObject;
+            //obj.transform.GetComponent<PetController>().enabled = false;
+            Destroy(obj);
+        }
     }
 }
