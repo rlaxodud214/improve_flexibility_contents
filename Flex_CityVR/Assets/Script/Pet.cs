@@ -28,6 +28,7 @@ public class Pet : MonoBehaviour
     // 펫 소환
     [HideInInspector]
     public bool isCall;
+    public UnityEngine.UI.Button CalledBtn;
     public UnityEngine.UI.Button unCalledBtn;
     public Transform CalledPetRoot;
     //
@@ -43,8 +44,8 @@ public class Pet : MonoBehaviour
         PetSpawnPoint = ItemUse.instance.PetSpawnPoint;
         isCall = false;
         #endregion
-        // DB 연동 사용자가 가지고 있는 펫 수+4 만큼 생성
-        for (int i=0; i<UserPet.Count+2; i++)
+        // DB 연동 사용자가 가지고 있는 펫 수+2 만큼 생성
+        for (int i=0; i<UserPet.Count+3; i++)
         {
             AddSlot();
         }
@@ -65,6 +66,7 @@ public class Pet : MonoBehaviour
             }
         }
         // isCall = true 마지막에 소환된 펫이 있으면 펫 가져오기 DB 연동
+        CalledBtn.interactable = false;
         unCalledBtn.interactable = isCall;
     }
 
@@ -103,8 +105,10 @@ public class Pet : MonoBehaviour
         PetSlot emptySlot = slots.Find(t => t.isUse == false);
         PetInfo lastPet = UserPet.Last().transform.GetComponent<PetInfo>();
 
+        // 빈 슬롯이 없는 경우
         if (!emptySlot)
         {
+            //print("슬롯 생성");
             emptySlot = AddSlot();
         }
 
@@ -124,6 +128,7 @@ public class Pet : MonoBehaviour
     // 슬롯 클릭 시 선택한 슬롯의 펫 TextureRender
     public void SlotClick()
     {
+        CalledBtn.interactable = true;
         nowSlot = null;
         nowSlot = EventSystem.current.currentSelectedGameObject.gameObject;
         PetSlot slot = nowSlot.transform.GetComponent<PetSlot>();
@@ -153,8 +158,7 @@ public class Pet : MonoBehaviour
 
     public void Call()
     {
-        // 만약 소환중인 펫이 있으면 nowPet 지우고 현재 슬롯 펫 소환하도록 수정 할 것
-
+        UnCalled();
         isCall = true;
         unCalledBtn.interactable = isCall;
         PetSlot slot = nowSlot.transform.GetComponent<PetSlot>();
@@ -175,7 +179,6 @@ public class Pet : MonoBehaviour
             isCall = false;
             unCalledBtn.interactable = isCall;
             GameObject obj = CalledPetRoot.transform.GetChild(0).gameObject;
-            //obj.transform.GetComponent<PetController>().enabled = false;
             Destroy(obj);
         }
     }

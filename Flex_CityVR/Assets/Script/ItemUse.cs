@@ -68,7 +68,10 @@ public class ItemUse : MonoBehaviour
 
     public void UseItem()
     {
+        // 사용한 아이템 제거
         slot.ResetItem();
+        choice = null;
+
         if (item.itemName == "일반 펫 상자")
         {
             choice = normalPicker.GetRandomPick();
@@ -119,7 +122,6 @@ public class ItemUse : MonoBehaviour
         Pet.instance.RandomPetAnimation();
         yield return new WaitForSeconds(4f);
         newPet.SetActive(false);
-        choice = null;
         PetCard.SetActive(false);
     }
 

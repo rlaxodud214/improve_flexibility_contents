@@ -86,8 +86,8 @@ public class SceneChange : MonoBehaviour
                 break;
             case "T_fly":
                 break;
-            case "T_window":
-                break;
+/*            case "T_window":
+                break;*/
             case "T_battle":
                 break;
             case "T_chef":

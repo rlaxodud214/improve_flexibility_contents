@@ -61,28 +61,18 @@ public class PhoneControl : MonoBehaviour
         if (phone_on) // 켜져 있으면
         {
             phone_on = false;
-            //print("끔1.  phone_on : " + phone_on);
-            //animator.SetBool("phone_on", false);
-            //animator.SetFloat("Reverse", -1.0f);
-            //animator.SetBool("phone_off", true);
             Phone.SetActive(false);
             Phone.transform.GetChild(1).gameObject.SetActive(true);
             Phone.transform.GetChild(2).gameObject.SetActive(false);
-            //print("끔2.  phone_on : " + phone_on);
             startPhone = false;
             yield return new WaitForSeconds(2f);
         }
         else // 꺼져 있으면
         {
             phone_on = true;
-            //print("켬1.  phone_on : " + phone_on);
-            //animator.SetBool("phone_on", true);
-            //animator.SetBool("phone_off", false);
-            //animator.SetFloat("Reverse", 1.0f);
             Phone.SetActive(true);
             Phone.transform.GetChild(1).gameObject.SetActive(true);
             Phone.transform.GetChild(2).gameObject.SetActive(false);
-            //print("켬2.  phone_on : " + phone_on);
             startPhone = false;
             yield return new WaitForSeconds(2f);
         }
