@@ -37,9 +37,9 @@ public class Flex_SceneChangeManager : MonoBehaviour
         SceneManager.LoadScene("3-1.Flexibility_Measurement");
     }
 
-    public void ContentScene()
+    public void RecentResultScene()
     {
-        SceneManager.LoadScene("3-2.Content");
+        SceneManager.LoadScene("3-2.RecentResult");
     }
 
     public void ResultScene()

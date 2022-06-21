@@ -15,13 +15,17 @@ public class Measurement_btn_change : MonoBehaviour
     public GameObject Change_Origin;
     public Vector3 sensorEulerData;
     public Vector3 offset;
-    public float Angle; // data
-    public float[] Angle_Value; // Max_Value_에서 1이 굴곡, 측면 굴곡, 좌측 회전에 해당함
+    public int Angle; // data
+    public int[] Angle_Value; // Max_Value_에서 1이 굴곡, 측면 굴곡, 좌측 회전에 해당함
     public int num;
     public bool isstart;
     public GameObject[] panels;
     public GameObject[] Left, Right; // [4] - 0 : 캐릭터 Image, 1 : 텍스트, 2 : 막대바_Up, 3 : 막대바_Down
     public Sprite[] Image; // 1_1, 1_2, 2_1, 2_2, 3_1, 3_2
+
+    public User user;   // 현재 user 객체
+    public Measurement measurement;
+    public int flexion, extension, leftFlexion, rightFlexion, leftRotation, rightRotation;
 
     public GameObject M_Sportsman;
 
@@ -42,11 +46,17 @@ public class Measurement_btn_change : MonoBehaviour
     }
     #endregion
 
+    private void Awake()
+    {
+        user = UserDataManager.instance.user;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        print("User_info_temp.user_age : "+ User_info_temp.user_age);
-        user_age = User_info_temp.user_age;
+        // print("User_info_temp.user_age : "+ User_info_temp.user_age);
+
+        user_age = user.age;
         user_age = user_age / 10;
         user_age = int.Parse(user_age.ToString() + "0"); // user 연령대 구하기
         if (user_age >= 60)
@@ -61,7 +71,7 @@ public class Measurement_btn_change : MonoBehaviour
         set_init();
         num = 1;
         isstart = false;
-        Angle_Value = new float[6] { 0, 0, 0, 0, 0, 0 };
+        Angle_Value = new int[6] { 0, 0, 0, 0, 0, 0 };
     }
 
     // Update is called once per frame
@@ -75,22 +85,22 @@ public class Measurement_btn_change : MonoBehaviour
         switch (num)
         {
             case 1:
-                Angle = sensorEulerData.z;
+                Angle = (int)sensorEulerData.z;
                 break;
 
             case 2:
-                Angle = sensorEulerData.y;
+                Angle = (int)sensorEulerData.y;
                 break;
 
             case 3:
-                Angle = sensorEulerData.x;
+                Angle = (int)sensorEulerData.x;
                 break;
         }
-        Change_Origin.GetComponent<Image>().fillAmount = Math.Abs(Angle) / 360;
+        Change_Origin.GetComponent<Image>().fillAmount = Math.Abs((float)Angle) / 360;
         // 좌측굴곡, 굴곡, 좌측회전
         if (Angle < 0)
         {
-            Change_Origin.transform.eulerAngles = new Vector3(0, 0, 180 - Angle);
+            Change_Origin.transform.eulerAngles = new Vector3(0, 0, 180 - (float)Angle);
             Angle = Math.Abs(Angle);
             switch (num)
             {
@@ -98,8 +108,8 @@ public class Measurement_btn_change : MonoBehaviour
                     if (Angle > Angle_Value[0])
                     {
                         Angle_Value[0] = Angle;
-                        UserData.instance.angleValues[0] = Angle_Value[0];
-                        Left[2].GetComponent<Image>().fillAmount = Angle / 90;
+                        leftFlexion = Angle_Value[0];
+                        Left[2].GetComponent<Image>().fillAmount = (float)Angle / 90;
                     }
 
                     break;
@@ -108,8 +118,8 @@ public class Measurement_btn_change : MonoBehaviour
                     if (Angle > Angle_Value[3])
                     {
                         Angle_Value[3] = Angle;
-                        UserData.instance.angleValues[3] = Angle_Value[3];
-                        Right[2].GetComponent<Image>().fillAmount = Angle / 90;
+                        flexion = Angle_Value[3];
+                        Right[2].GetComponent<Image>().fillAmount = (float)Angle / 90;
                     }
                     break;
 
@@ -117,8 +127,8 @@ public class Measurement_btn_change : MonoBehaviour
                     if (Angle > Angle_Value[4])
                     {
                         Angle_Value[4] = Angle;
-                        UserData.instance.angleValues[4] = Angle_Value[4];
-                        Left[2].GetComponent<Image>().fillAmount = Angle / 90;  // 수정
+                        leftRotation = Angle_Value[4];
+                        Left[2].GetComponent<Image>().fillAmount = (float)Angle / 90;  // 수정
                     }
                     break;
             }
@@ -134,8 +144,8 @@ public class Measurement_btn_change : MonoBehaviour
                     if (Angle > Angle_Value[1])
                     {
                         Angle_Value[1] = Angle;
-                        UserData.instance.angleValues[1] = Angle_Value[1];
-                        Right[2].GetComponent<Image>().fillAmount = Angle / 90;
+                        rightFlexion = Angle_Value[1];
+                        Right[2].GetComponent<Image>().fillAmount = (float)Angle / 90;
                     }
                     break;
 
@@ -143,8 +153,8 @@ public class Measurement_btn_change : MonoBehaviour
                     if (Angle > Angle_Value[2])
                     {
                         Angle_Value[2] = Angle;
-                        UserData.instance.angleValues[2] = Angle_Value[2];
-                        Left[2].GetComponent<Image>().fillAmount = Angle / (90 * 1.2f);
+                        extension = Angle_Value[2];
+                        Left[2].GetComponent<Image>().fillAmount = (float)Angle / (90 * 1.2f);
                     }
                     break;
 
@@ -152,8 +162,8 @@ public class Measurement_btn_change : MonoBehaviour
                     if (Angle > Angle_Value[5])
                     {
                         Angle_Value[5] = Angle;
-                        UserData.instance.angleValues[5] = Angle_Value[5];
-                        Right[2].GetComponent<Image>().fillAmount = Angle / 90;
+                        rightRotation = Angle_Value[5];
+                        Right[2].GetComponent<Image>().fillAmount = (float)Angle / 90;
                     }
 
                     break;
@@ -176,7 +186,7 @@ public class Measurement_btn_change : MonoBehaviour
                 for (int i = 0; i < 5; i++)
                     offset += sensorEulerData;
 
-                PLANE.text = "CORONAL PLANE";
+                PLANE.text = "좌/우측 굴곡";
                 Left[0].GetComponent<Image>().sprite = Image[0];
                 Right[0].GetComponent<Image>().sprite = Image[1];
                 Left[1].GetComponent<Text>().text = "좌측 굴곡";
@@ -191,7 +201,7 @@ public class Measurement_btn_change : MonoBehaviour
                 for (int i = 0; i < 5; i++)
                     offset += sensorEulerData;
 
-                PLANE.text = "SAGITTAL PLANE";
+                PLANE.text = "굴곡/신전";
                 Left[0].GetComponent<Image>().sprite = Image[2];
                 Right[0].GetComponent<Image>().sprite = Image[3];
                 Left[1].GetComponent<Text>().text = "굴곡";
@@ -206,7 +216,7 @@ public class Measurement_btn_change : MonoBehaviour
                 for (int i = 0; i < 5; i++)
                     offset += sensorEulerData;
 
-                PLANE.text = "TRANSVERSE PLANE";
+                PLANE.text = "좌/우측 회전";
                 Left[0].GetComponent<Image>().sprite = Image[4];
                 Right[0].GetComponent<Image>().sprite = Image[5];
                 Left[1].GetComponent<Text>().text = "좌측 회전";
@@ -223,10 +233,18 @@ public class Measurement_btn_change : MonoBehaviour
                 Invoke("p0_false", 2.0f);
                 break;
 
-            case 5: // RESULE
-                UnityEngine.SceneManagement.SceneManager.LoadScene("3-3.Result");
+            case 5: // RESULT
+                measurement = DBManager.CreateMeasurementData(flexion, extension, leftFlexion, rightFlexion, leftRotation, rightRotation);
+                StartCoroutine(SaveMeasurementData(measurement));
                 break;
         }
+    }
+
+    IEnumerator SaveMeasurementData(Measurement data)
+    {
+        yield return StartCoroutine(DBManager.SaveMeasurement(data));   //  측정한 데이터 저장
+        UserDataManager.instance.recentData = data;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("3-2.RecentResult");
     }
 
     private void set_init()

@@ -1,22 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainManager : MonoBehaviour
 {
-    // public LpmsTest Lpms;
+    public User user;
 
-    // Start is called before the first frame update
+    public Text nameText;
+    public Text ageText;
+    public Text genderText;
+
+    private void Awake()
+    {
+        user = UserDataManager.instance.user;
+    }
+
     void Start()
-    {
-        // Lpms.Excute();
-        // Load 하기 전에  LPMS 연결을 끊고 해야함 중요!!!!!!!!!
-        System.Diagnostics.Process.Start(Application.persistentDataPath+ "/Contents/골키퍼게임/Designteam_Game.exe");
+    {      
+        nameText.text = "이름: " + user.name;
+        ageText.text = "나이: " + user.age.ToString();
+        genderText.text = "성별: " + (user.gender ? "남성" : "여성");    
     }
 
-    // Update is called once per frame
-    void Update()
+/*    private void Update()
     {
-        
-    }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene("3-3.RecentResult");
+        }
+    }*/
 }
