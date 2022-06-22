@@ -15,7 +15,6 @@ public class GKSoundManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = GetComponent<GKSoundManager>();
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -37,11 +36,6 @@ public class GKSoundManager : MonoBehaviour
     public void EffectSoundPlay()
     {
         effectADS.PlayOneShot(btnClick);
-    }
-    
-    public void GameStart()
-    {
-        SceneManager.LoadScene("GoalKeeper");
     }
     
 }

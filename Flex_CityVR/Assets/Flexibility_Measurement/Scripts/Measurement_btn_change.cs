@@ -32,7 +32,7 @@ public class Measurement_btn_change : MonoBehaviour
     //연령별 평균 데이터
     //0굴곡,1신전,2좌측굴,3우측굴,4좌측회전,5우측회전
     private int user_age;
-    private float[] age20_mean = { 95f, 36.6f, 48.2f, 48.1f, 34.4f, 34.6f }; 
+    private float[] age20_mean = { 95f, 36.6f, 48.2f, 48.1f, 34.4f, 34.6f };
     private float[] age30_mean = { 94f, 34.7f, 47.4f, 47.5f, 33.8f, 34.5f };
     private float[] age65_mean = { 94f, 32.1f, 39.2f, 39.5f, 34.3f, 33.6f };
     private float[] use_mean;

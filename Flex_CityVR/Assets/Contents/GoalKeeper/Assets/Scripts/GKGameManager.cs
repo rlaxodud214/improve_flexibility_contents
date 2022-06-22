@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GKGameManager : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class GKGameManager : MonoBehaviour
     public GameObject ball;
     public GameObject Kicker;
 
-    public int level;
+    public int level;   // 몇 단계인지
+    public int life;    // 생명
+    public int shootingCount;   // Kicker가 공을 찬 횟수(리워드 산정용)
 
     #endregion
 
@@ -25,10 +28,12 @@ public class GKGameManager : MonoBehaviour
 
     float playtime; // 플레이타임
     string min, sec;
-    public bool isTimerActive; // 타이머 작동 여부
+    bool isTimerActive; // 타이머 작동 여부
 
     #endregion
 
+    const int minReward = 100;
+    const int maxReward = 500;
 
     #region MonoBehaviour Callbacks
 
@@ -46,8 +51,10 @@ public class GKGameManager : MonoBehaviour
         backwardAnim = false;
         forwardAnim = false;
 
-        chance = 3; // 데모용 수정 5->2
+        chance = 5; // 데모용 수정 5->2
         level = 1;
+        life = 5;
+        shootingCount = 0;
 
         // 게임 플레이 시간
         playtime = 0f;
@@ -58,6 +65,10 @@ public class GKGameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene("mainCity");
+        }
         // 타이머
         if (isTimerActive)
         {
@@ -70,6 +81,7 @@ public class GKGameManager : MonoBehaviour
         if (isStart)
         {
             isStart = false;
+            ballController.stageDone = false;
             StartCoroutine(StartKicking());
         }
         
@@ -102,10 +114,7 @@ public class GKGameManager : MonoBehaviour
 
     IEnumerator StartKicking()
     {
-        if (level == 3)
-        {
-            yield return null;
-        }
+        shootingCount++;
 
         KickerAnim.SetTrigger("backward");
         backwardAnim = true;
@@ -119,7 +128,8 @@ public class GKGameManager : MonoBehaviour
 
         KickerAnim.SetTrigger("kick");
         ballController.KickingBall();
-        yield return new WaitForSeconds(3f);    // 3초 대기
+
+        yield return new WaitUntil(() => ballController.stageDone == true);
 
         // 골 막기 성공 여부
         if (ballController.isSuccess)
@@ -131,21 +141,47 @@ public class GKGameManager : MonoBehaviour
         {
             GKUIManager.Instance.ChangeToggleColor(false);
             chance--;
+            life--;
         }
 
         yield return new WaitForSeconds(2f);
 
-        // 5번의 기회 동안 게임오버되지 않으면 다음 level로
-        if (chance == 0)
+        if (life <= 0)
         {
-            chance = 3; // 데모용 수정 5->2
-            level++;
-            ballController.LevelUp(level);
-            GKUIManager.Instance.ChangeLevel(level);
-            GKUIManager.Instance.InitiateToggles();
+            string totalPlaytime = min + ":" + sec;
+            int reward;
+
+            // 최소 기준치 미달 시 reward 지급 X
+            if (shootingCount < 8)
+                reward = 0;
+            else
+            {
+                reward = minReward + (shootingCount - 8) * ((maxReward - minReward) / (14 - 8));
+            }
+
+            // 최대값을 넘을 경우 reward를 최댓값으로 설정
+            if (reward > 500)
+                reward = 500;
+
+            GKUIManager.Instance.ShowResult(reward, totalPlaytime);
         }
 
-        isStart = true;
+        else
+        {
+            // 5번의 기회 동안 게임오버되지 않으면 다음 level로
+            if (chance == 0)
+            {
+                chance = 5; // 데모용 수정 5->2
+                level++;
+                ballController.LevelUp(level);
+                GKUIManager.Instance.ChangeLevel(level);
+                GKUIManager.Instance.InitiateToggles();
+
+                
+            }
+
+            isStart = true;
+        }
     }
 
     #endregion

@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Flexibility_Measurement/Scene/1.Login.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Flexibility_Measurement/Scene/2.Register.unity
+    guid: b728a4a8a1d539145bd27f32b20ba0c0
+  - enabled: 1
     path: Assets/Scenes/mainCity.unity
     guid: 5ed14ac428c119a4bbe00136c6a6dddd
   - enabled: 1

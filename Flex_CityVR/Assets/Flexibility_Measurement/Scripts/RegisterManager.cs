@@ -86,11 +86,14 @@ public class RegisterManager : MonoBehaviour
     public void Register()
     {
         // 정보를 가지고 playfab 회원가입 시도 RequireBothUsernameAndEmail = false -> 이메일만으로 가입 가능
-        var request1 = new RegisterPlayFabUserRequest {
-            Email = EmailInput.text, Password = PasswordInput.text, DisplayName = EmailInput.text, 
-            RequireBothUsernameAndEmail = false 
-        };     
-        PlayFabClientAPI.RegisterPlayFabUser(request1, OnRegisterSuccess, ErrorHandler);    
+        var request1 = new RegisterPlayFabUserRequest
+        {
+            Email = EmailInput.text,
+            Password = PasswordInput.text,
+            DisplayName = EmailInput.text,
+            RequireBothUsernameAndEmail = false
+        };
+        PlayFabClientAPI.RegisterPlayFabUser(request1, OnRegisterSuccess, ErrorHandler);
     }
 
     // 회원정보 저장을 위해 먼저 입력된 정보를 가지고 로그인 시도 -> 성공 시 OnLoginSuccess 메소드 호출

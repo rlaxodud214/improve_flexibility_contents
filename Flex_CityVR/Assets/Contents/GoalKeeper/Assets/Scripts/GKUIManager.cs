@@ -36,6 +36,13 @@ public class GKUIManager : MonoBehaviour
     public ToggleGroup ChancesTG;
     public List<Toggle> toggles;
 
+    public GameObject ResultPanel;
+    public List<Image> StarImages;  // 인스펙터 창에서 별 이미지 오브젝트 넣기
+    public Text RewardText;
+    public Text TotalPlaytimeText;
+    
+    
+
     public int toggleIdx;   // toggles 리스트에 접근하기 위한 idx
 
     #endregion
@@ -45,6 +52,9 @@ public class GKUIManager : MonoBehaviour
     Color RED;
     Color GREEN;
     Color DEFAULT;
+
+
+    Color STARON, STAROFF;  // 별 색깔을 담을 Color 오브젝트
 
     #endregion
 
@@ -59,7 +69,6 @@ public class GKUIManager : MonoBehaviour
         else
         {
             instance = this;
-            DontDestroyOnLoad(this.gameObject);
         }
     }
 
@@ -70,6 +79,14 @@ public class GKUIManager : MonoBehaviour
         ColorUtility.TryParseHtmlString("#FF8888", out RED);
         ColorUtility.TryParseHtmlString("#8DFF88", out GREEN);
         ColorUtility.TryParseHtmlString("#FFFFFF", out DEFAULT);
+
+        ColorUtility.TryParseHtmlString("#FFCC47", out STARON); // 노란별 색
+        ColorUtility.TryParseHtmlString("#374355", out STAROFF); // 까만별 색
+
+        for (int i = 0; i < StarImages.Count; i++)
+        {
+            StarImages[i].color = STAROFF;
+        }
 
         // 토글 초기화
         InitiateToggles();
@@ -89,6 +106,29 @@ public class GKUIManager : MonoBehaviour
         {
             Time.timeScale = 1f;
         }
+    }
+
+    /// <summary>
+    /// 결과화면 띄우기
+    /// </summary>
+    /// <param name="reward">리워드</param>
+    /// <param name="playtime">플레이타임</param>
+    public void ShowResult(int reward, string playtime)
+    {
+        Time.timeScale = 0f;    // 게임정지
+
+        // 리워드 범위 별로 별 추가
+        if (reward >= 100)
+            StarImages[0].color = STARON;
+        if (reward >= 234)
+            StarImages[1].color = STARON;
+        if (reward >= 367)
+            StarImages[2].color = STARON;
+
+        RewardText.text = reward.ToString();
+        TotalPlaytimeText.text = playtime;
+
+        ResultPanel.SetActive(true);
     }
     
     // 레벨 변경

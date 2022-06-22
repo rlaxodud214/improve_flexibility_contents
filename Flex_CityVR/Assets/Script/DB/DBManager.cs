@@ -101,8 +101,8 @@ public class DBManager
     /// <param name="date">저장일(default는 null)</param>
     /// <returns></returns>
     public static Measurement CreateMeasurementData(
-        int flexion, int extension, 
-        int leftFlexion, int rightFlexion, 
+        int flexion, int extension,
+        int leftFlexion, int rightFlexion,
         int leftRotation, int rightRotation,
         string date = null)
     {

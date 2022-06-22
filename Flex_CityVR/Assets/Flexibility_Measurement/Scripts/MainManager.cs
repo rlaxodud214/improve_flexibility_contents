@@ -18,17 +18,17 @@ public class MainManager : MonoBehaviour
     }
 
     void Start()
-    {      
+    {
         nameText.text = "이름: " + user.name;
         ageText.text = "나이: " + user.age.ToString();
-        genderText.text = "성별: " + (user.gender ? "남성" : "여성");    
+        genderText.text = "성별: " + (user.gender ? "남성" : "여성");
     }
 
-/*    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+    /*    private void Update()
         {
-            SceneManager.LoadScene("3-3.RecentResult");
-        }
-    }*/
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SceneManager.LoadScene("3-3.RecentResult");
+            }
+        }*/
 }

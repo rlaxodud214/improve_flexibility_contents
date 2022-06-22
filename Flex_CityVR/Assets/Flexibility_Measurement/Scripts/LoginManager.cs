@@ -48,10 +48,10 @@ public class LoginManager : MonoBehaviour
 
     // 로그인 메소드 -> 성공 시 로그 찍음
     public void Login()
-    {      
+    {
         // 테스트용
         var request = new LoginWithEmailAddressRequest { Email = "soun997@naver.com", Password = "123456" };
-        
+
         // var request = new LoginWithEmailAddressRequest { Email = EmailInput.text, Password = PasswordInput.text };
         PlayFabClientAPI.LoginWithEmailAddress(request, LoginSuccess, ErrorHandler);
     }
@@ -188,6 +188,6 @@ public class LoginManager : MonoBehaviour
                 Debug.LogErrorFormat("Error: {0}, ErrorMessage: {1}", error.Error, error.ErrorMessage);
                 ErrorText.text = "예기치 못한 오류가 발생했습니다. 다시 시도해주세요.";
                 break;
-        }     
+        }
     }
 }

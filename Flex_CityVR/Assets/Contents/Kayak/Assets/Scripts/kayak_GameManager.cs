@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class kayak_GameManager : MonoBehaviour
@@ -79,6 +80,10 @@ public class kayak_GameManager : MonoBehaviour
                     Application.Quit();
                 }
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene("mainCity");
         }
 
         #region 카메라 Rig 조정

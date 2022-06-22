@@ -18272,7 +18272,7 @@ MonoBehaviour:
   sensorEulerData: {x: 0, y: 0, z: 0}
   offset: {x: 0, y: 0, z: 0}
   Angle: 0
-  Angle_Value: []
+  Angle_Value: 
   num: 0
   isstart: 0
   panels:
@@ -18295,6 +18295,31 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f617af47dcd23134da89be5be56bf22e, type: 3}
   - {fileID: 21300000, guid: c0e2eb28040256b49928e100e9a7616f, type: 3}
   - {fileID: 21300000, guid: 1b0a5ab6a8ccf56408c5d2431ba442e6, type: 3}
+  user:
+    email: 
+    password: 
+    name: 
+    age: 0
+    gender: 0
+    registrationDate: 
+    displayName: 
+    money: 0
+    pets: []
+  measurement:
+    date: 
+    flexion: 0
+    extension: 0
+    leftFlexion: 0
+    rightFlexion: 0
+    leftRotation: 0
+    rightRotation: 0
+    totalFlexibility: 0
+  flexion: 0
+  extension: 0
+  leftFlexion: 0
+  rightFlexion: 0
+  leftRotation: 0
+  rightRotation: 0
   M_Sportsman: {fileID: 8118806479502811778}
 --- !u!114 &1377100701
 MonoBehaviour:
@@ -24699,7 +24724,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1842443713}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1842443715
 Camera:
   m_ObjectHideFlags: 0

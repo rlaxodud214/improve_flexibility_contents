@@ -18,6 +18,7 @@ public class BallController : MonoBehaviour
 
     public int level;
     public bool isSuccess;
+    public bool stageDone;
 
     #endregion
 
@@ -79,9 +80,10 @@ public class BallController : MonoBehaviour
         parabolaFly = new ParabolaFly(ParabolaRoot.transform);
 
         isSuccess = false;
+        stageDone = false;
 
         level = 1;
-        lineCount = 70;
+        lineCount = 80;
 
         targets.Add(ParabolaRoot.transform.GetChild(ParabolaRoot.transform.childCount - 1));    // 마지막 포인트도 targets에 넣어줌
 
@@ -129,20 +131,22 @@ public class BallController : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && stageDone == false)
         {
             Debug.Log("공 막음");
             StopFollow();
             Animation = false;
             isSuccess = true;
+            stageDone = true;
         }
 
-        else if (collision.gameObject.CompareTag("GoalNet"))
+        else if (collision.gameObject.CompareTag("GoalNet") && stageDone == false)
         {
             Debug.Log("골 먹힘");
             StopFollow();
             Animation = false;
             isSuccess = false;
+            stageDone = true;
         }
     }
 
@@ -199,18 +203,20 @@ public class BallController : MonoBehaviour
 
     public void LevelUp(int level)
     {
-/*        if (level == 2)
+        if (lineCount <= 20)
+            return;
+
+        lineCount -= 20;
+
+        if (level == 5)
         {
+            targets.Clear();
             for (int i = 1; i < ParabolaRoot.transform.childCount; i += 2)
             {
                 targets.Add(ParabolaRoot.transform.GetChild(i));   // 타겟은 짝수번째의 point
             }
-            targets.Add(ParabolaRoot.transform.GetChild(chil))
-            lineCount = 60;
-        }*/
-        if (level == 2)
-        {
-            lineCount -= 20;
+            targets.Add(ParabolaRoot.transform.GetChild(ParabolaRoot.transform.childCount - 1));    // 마지막 포인트도 넣어줌
+            lineCount = 80;
         }
     }
 
