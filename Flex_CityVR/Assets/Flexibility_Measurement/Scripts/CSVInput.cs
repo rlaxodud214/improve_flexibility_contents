@@ -32,7 +32,7 @@ public class CSVInput : MonoBehaviour
     public List<Text> userDataText = new List<Text>();
     public Text nameText, ageText, genderText;
 
-    public Text handle, percentage; // 사용자 백분위 표시 
+    public Text handle, percentage, LateUpdate; // 사용자 백분위 표시 
     public Slider percnetageSlider;
     #endregion
 
@@ -46,6 +46,7 @@ public class CSVInput : MonoBehaviour
         nameText.text = "이름: " + user.name;
         ageText.text = "나이: " + user.age;
         genderText.text = "성별: " + (user.gender ? "남성" : "여성");
+        LateUpdate.text = "최근 측정 일자 : " + recentData.date;
 
         // 측정값 슬라이더 초기화 -> 나중에 순서 바꾸던가 해야될 듯
         userDataSlider[0].maxValue = mean_Slider[2].maxValue;

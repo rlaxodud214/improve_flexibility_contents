@@ -107,7 +107,7 @@ public class DBManager
         string date = null)
     {
         Measurement measurement = new Measurement();
-        measurement.date = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
+        measurement.date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         if (date != null)
             measurement.date = date;
         measurement.flexion = flexion;
@@ -133,7 +133,7 @@ public class DBManager
     public static GameResult CreateGameResult(string gameID, string playtime, int score, int reward, string date = null)
     {
         GameResult gameResult = new GameResult();
-        gameResult.date = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss");
+        gameResult.date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         if (date != null)
             gameResult.date = date;
         gameResult.gameID = gameID;
@@ -144,7 +144,7 @@ public class DBManager
         return gameResult;
     }
 
-    // 초단위의 시간을 넣으면 string타입으로 변환(format: HH-mm-ss)
+    // 초단위의 시간을 넣으면 string타입으로 변환(format: HH:mm:ss)
     public static string TimeToString(int sec)
     {
         string time = "";

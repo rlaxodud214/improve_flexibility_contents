@@ -33,10 +33,6 @@ public class UserDataManager : MonoBehaviour
 
     void Start()
     {
-        series1Data1 = new List<string>();
-        series1Data2 = new List<string>();
-        series1Data3 = new List<string>();
-        series1Data4 = new List<string>();
         StartCoroutine(InitData());      
     }
 
@@ -79,25 +75,27 @@ public class UserDataManager : MonoBehaviour
         DateTime recentDateKey = DateTime.MinValue; // null으로 초기화
         DateTime compareDateKey = DateTime.MinValue; // null으로 초기화
         DateTime nowDate = DateTime.MinValue; // null으로 초기화
+        
+        temps.Clear();
+        temp.Clear();
 
         // 여러 key 값중 Max값 찾는 알고리즘 느낌으로 구현
         foreach (string key in measurements.Keys) // 키 값들중 하나씩 빼서 쓰기
         {
-            
             // DateTime.ParseExact(변환할 string 값, format, provider)
             // "yyyy-MM-dd HH:mm:ss" 타입의 string 객체를 DateTime 객체로 형변환
             compareDateKey = DateTime.ParseExact(key, "yyyy-MM-dd HH:mm:ss", null);
-            // Debug.Log("Key : " + key + ", (int)compareDateKey.DayOfWeek : " + (int)compareDateKey.DayOfWeek);
+            Debug.Log("Key : " + key + ", (int)compareDateKey.DayOfWeek : " + (int)compareDateKey.DayOfWeek);
             string result = compareDateKey.ToString("yyyy-MM-dd HH:mm:ss");
             temp.Add(measurements[result]);
 
             // compareDateKey.DayOfWeek : 일요일이 0, 월요일이 1, 토요일이 6
             if ((int)compareDateKey.DayOfWeek == 1)
             {
-                /*Debug.Log("--------------------------------------------------------------------");
+                Debug.Log("--------------------------------------------------------------------");
                 foreach (Measurement m in temp)
-                    Debug.Log("1. 데이터 : " + m.date + m.flexion + ", " + m.extension + ", " + m.leftFlexion + ", " + m.rightFlexion + ", " + m.leftRotation + ", " + m.totalFlexibility + ", " + (int)compareDateKey.DayOfWeek);
-                Debug.Log("--------------------------------------------------------------------");*/
+                    Debug.Log("1. 데이터 : " + m.date + ", " + m.flexion + ", " + m.extension + ", " + m.leftFlexion + ", " + m.rightFlexion + ", " + m.leftRotation + ", " + m.totalFlexibility + ", " + (int)compareDateKey.DayOfWeek);
+                Debug.Log("--------------------------------------------------------------------");
 
                 temps.Add(temp);
                 temp = new List<Measurement>(); // [n주 데이터]
@@ -114,8 +112,14 @@ public class UserDataManager : MonoBehaviour
     }
 
 
-    IEnumerator InitData()
+    public IEnumerator InitData()
     {
+        Debug.Log("InitData() 호출댐");
+        series1Data1 = new List<string>();
+        series1Data2 = new List<string>();
+        series1Data3 = new List<string>();
+        series1Data4 = new List<string>();
+
         yield return StartCoroutine(DBManager.LoadUser((result) => user = result)); // User 객체 로드
         yield return StartCoroutine(DBManager.LoadMeasurement((result) => measurements = result));  // Dictionary<string, Measurement> 딕셔너리 로드
         
@@ -138,23 +142,29 @@ public class UserDataManager : MonoBehaviour
         Debug.Log("GraphData[5].Count : " + GraphData[5].Count);
         Debug.Log("=====================================================================");
 
+        var temp = new Measurement();
+        var temp_backup = new DateTime();
+        var temp_Date = new DateTime();
 
         // 일요일이 0, 월요일이 1, 토요일이 6
         for (int i=0; i < 35 + dayofweek; i++)
         {
-            var temp = new Measurement();
-            if(index == 0)
-                temp = GraphData[index][index1 % dayofweek];
+            temp_backup = temp_Date;
+            if (index == 0)
+                temp = GraphData[index][index1 % GraphData[index].Count];
             else
                 temp = GraphData[index][index1 % 7];
 
-            var temp_Date = DateTime.Parse(temp.date);
+            Debug.Log("temp.date : " + temp.date);
+            temp_Date = DateTime.ParseExact(temp.date, "yyyy-MM-dd HH:mm:ss", null);
+            
             // Debug.Log("index : " + index + ", " + "index1 : " + index1);
             // Debug.Log("temp_Date : " + temp_Date.Date + ", " + "temp_Date_minus.Date : " + temp_Date_minus.Date + ", "+ (int)temp_Date_minus.DayOfWeek);
 
-            // 만약 DB 데이터가 현재 날짜를 초과할 경우
-            if(DateTime.Compare(temp_Date_minus.Date, temp_Date.Date) < 0)
+            // 만약 DB 데이터가 현재 날짜를 초과할 경우 or DB 데이터에서 같은 날이 있을 경우 제일 처음(그 날짜 제일 마지막) 데이터 사용
+            if (DateTime.Compare(temp_Date_minus.Date, temp_Date.Date) < 0) //  || DateTime.Compare(temp_backup.Date, temp_Date.Date) < 0
             {
+                index1++;
                 i--;
                 continue;
             }
@@ -202,6 +212,7 @@ public class UserDataManager : MonoBehaviour
         }
         count = 1;
         var now = DateTime.Now;
+        if(series1Data1.Count == 0)
         foreach (Measurement m in measurements_graph)
         {
             // 출처: https://akasi.tistory.com/130 [AKASI-STORY:티스토리]
@@ -215,11 +226,21 @@ public class UserDataManager : MonoBehaviour
 
             // Debug.Log("usWeekNumber : " + usWeekNumber);
             // Debug.Log("calculationDate.Month : " + calculationDate.Month);
-            // Debug.Log("최근" + (count++) + "주 데이터 : " + m.flexion + ", " + m.extension + ", " + m.leftFlexion + ", " + m.rightFlexion + ", " + m.leftRotation + ", " + m.rightRotation + ", " + m.totalFlexibility);
-            series1Data1.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.totalFlexibility));
-            series1Data2.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.flexion + m.extension));
-            series1Data3.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.leftFlexion + m.rightFlexion));
-            series1Data4.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.leftRotation + m.rightRotation));
+            Debug.Log("최근" + (count++) + "주 데이터 : " + m.flexion + ", " + m.extension + ", " + m.leftFlexion + ", " + m.rightFlexion + ", " + m.leftRotation + ", " + m.rightRotation + ", " + m.totalFlexibility);
+            if(usWeekNumber == 5)
+            {
+                series1Data1.Add((calculationDate.Month + 1) + "월 " + 1 + "째주," + (m.totalFlexibility));
+                series1Data2.Add((calculationDate.Month + 1) + "월 " + 1 + "째주," + (m.flexion + m.extension));
+                series1Data3.Add((calculationDate.Month + 1) + "월 " + 1 + "째주," + (m.leftFlexion + m.rightFlexion));
+                series1Data4.Add((calculationDate.Month + 1) + "월 " + 1 + "째주," + (m.leftRotation + m.rightRotation));
+            }
+            else {
+                series1Data1.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.totalFlexibility));
+                series1Data2.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.flexion + m.extension));
+                series1Data3.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.leftFlexion + m.rightFlexion));
+                series1Data4.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.leftRotation + m.rightRotation));
+            }
         }
+        Debug.Log("InitData() 실행끝");
     }
 }

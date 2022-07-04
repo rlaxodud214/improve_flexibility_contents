@@ -21,7 +21,7 @@ public class TestScript : MonoBehaviour
 
 
         // GameResult 저장 예시
-        // STEP0 플레이타임 변환(초단위의 시간 -> format이 (HH-mm-ss)인 string)
+        // STEP0 플레이타임 변환(초단위의 시간 -> format이 (HH:mm:ss)인 string)
         int sec = 341;
         string playtime = DBManager.TimeToString(sec);
 

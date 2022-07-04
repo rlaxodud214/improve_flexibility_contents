@@ -1082,7 +1082,7 @@ MonoBehaviour:
   _AxisLabelSkipInterval: 0
   _AxisLabelRotation: 0
   _SetLabelsUsingMaxMin: 0
-  _AxisLabelSize: 12
+  _AxisLabelSize: 15
   _AxisLabelColor: {r: 0.101960786, g: 0.19215687, b: 0.43137255, a: 1}
   _AxisLabelFontStyle: 0
   _AxisLabelFont: {fileID: 12800000, guid: 6ad98db24258a704ea6e12f4f62a2995, type: 3}
@@ -2250,7 +2250,7 @@ MonoBehaviour:
   _AxisLabelSkipInterval: 0
   _AxisLabelRotation: 0
   _SetLabelsUsingMaxMin: 1
-  _AxisLabelSize: 12
+  _AxisLabelSize: 15
   _AxisLabelColor: {r: 0.101960786, g: 0.19215687, b: 0.43137255, a: 1}
   _AxisLabelFontStyle: 0
   _AxisLabelFont: {fileID: 12800000, guid: 6ad98db24258a704ea6e12f4f62a2995, type: 3}

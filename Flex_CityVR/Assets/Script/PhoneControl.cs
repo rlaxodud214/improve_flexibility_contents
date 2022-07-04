@@ -38,7 +38,7 @@ public class PhoneControl : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (InputBridge.Instance.AButton) {
             startPhone = true;

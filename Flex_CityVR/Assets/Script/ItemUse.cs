@@ -35,8 +35,8 @@ public class ItemUse : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        SetPercentage(normalPercentage, 1.8f);
-        SetPercentage(premiumPercentage, 7f);
+        SetPercentage(normalPercentage, 1.8f); //1.8f
+        SetPercentage(premiumPercentage, 7f); //7f
         SettingGacha(normalPicker, normalPercentage);
         SettingGacha(premiumPicker, premiumPercentage);
     }

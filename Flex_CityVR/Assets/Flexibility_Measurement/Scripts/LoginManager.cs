@@ -68,7 +68,7 @@ public class LoginManager : MonoBehaviour
         StartCoroutine(DBManager.SaveGameResult(gameResult));
         StartCoroutine(LoadGameResult());   // 저장하는 데에 시간이 걸리므로 읽어오기 전에 모두 저장할 수 있도록시간지연을 주기 위해 아래에 선언한 LoadGameResult 코루틴 호출*/
 
-        // StartCoroutine(SaveTestValue());  // 테스트 데이터 저장할 떄는 아래 거 주석하고 돌리기
+        //StartCoroutine(SaveTestValue());  // 테스트 데이터 저장할 떄는 아래 거 주석하고 돌리기
         StartCoroutine(CreateUserData());
     }
 

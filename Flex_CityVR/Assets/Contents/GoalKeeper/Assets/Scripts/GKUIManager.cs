@@ -118,6 +118,8 @@ public class GKUIManager : MonoBehaviour
         Time.timeScale = 0f;    // 게임정지
 
         // 리워드 범위 별로 별 추가
+        if (reward < 100)
+            RewardText.text = "0";
         if (reward >= 100)
             StarImages[0].color = STARON;
         if (reward >= 234)

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GKSceneManager : MonoBehaviour
 {
+    public GameObject pausePanel;
     public void Home()
     {
         SceneManager.LoadScene("mainCity");
@@ -14,5 +15,10 @@ public class GKSceneManager : MonoBehaviour
     public void Replay()
     {
         SceneManager.LoadScene("GoalKeeper");
+    }
+    
+    public void Resume()
+    {
+        pausePanel.SetActive(false);
     }
 }

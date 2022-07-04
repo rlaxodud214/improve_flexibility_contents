@@ -28,6 +28,7 @@ public class Measurement_btn_change : MonoBehaviour
     public int flexion, extension, leftFlexion, rightFlexion, leftRotation, rightRotation;
 
     public GameObject M_Sportsman;
+    public Button ResultBtn;
 
     //연령별 평균 데이터
     //0굴곡,1신전,2좌측굴,3우측굴,4좌측회전,5우측회전
@@ -115,10 +116,10 @@ public class Measurement_btn_change : MonoBehaviour
                     break;
 
                 case 2:
-                    if (Angle > Angle_Value[3])
+                    if (Angle > Angle_Value[2])
                     {
-                        Angle_Value[3] = Angle;
-                        flexion = Angle_Value[3];
+                        Angle_Value[2] = Angle;
+                        flexion = Angle_Value[2];
                         Right[2].GetComponent<Image>().fillAmount = (float)Angle / 90;
                     }
                     break;
@@ -150,10 +151,10 @@ public class Measurement_btn_change : MonoBehaviour
                     break;
 
                 case 2:
-                    if (Angle > Angle_Value[2])
+                    if (Angle > Angle_Value[3])
                     {
-                        Angle_Value[2] = Angle;
-                        extension = Angle_Value[2];
+                        Angle_Value[3] = Angle;
+                        extension = Angle_Value[3];
                         Left[2].GetComponent<Image>().fillAmount = (float)Angle / (90 * 1.2f);
                     }
                     break;
@@ -236,6 +237,7 @@ public class Measurement_btn_change : MonoBehaviour
             case 5: // RESULT
                 measurement = DBManager.CreateMeasurementData(flexion, extension, leftFlexion, rightFlexion, leftRotation, rightRotation);
                 StartCoroutine(SaveMeasurementData(measurement));
+                ResultBtn.interactable = false;
                 break;
         }
     }
@@ -244,6 +246,10 @@ public class Measurement_btn_change : MonoBehaviour
     {
         yield return StartCoroutine(DBManager.SaveMeasurement(data));   //  측정한 데이터 저장
         UserDataManager.instance.recentData = data;
+        Debug.Log("UserDataManager.instance.InitData() 호출함");
+        StartCoroutine(UserDataManager.instance.InitData());
+        yield return new WaitForSeconds(2f);
+        Debug.Log("UserDataManager.instance.InitData() 갔다가 다시 돌아옴");
         UnityEngine.SceneManagement.SceneManager.LoadScene("3-2.RecentResult");
     }
 
