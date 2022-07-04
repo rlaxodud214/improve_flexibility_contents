@@ -68,23 +68,38 @@ public class ItemUse : MonoBehaviour
 
     public void UseItem()
     {
-        // 사용한 아이템 제거
-        slot.ResetItem();
         choice = null;
 
         if (item.itemName == "일반 펫 상자")
         {
+            // 사용한 아이템 제거
+            slot.ResetItem();
             choice = normalPicker.GetRandomPick();
             PetSetting(choice);
         }
         else if (item.itemName == "프리미엄 펫 상자")
         {
+            slot.ResetItem();
             choice = premiumPicker.GetRandomPick();
             PetSetting(choice);
         }
         else if (item.itemName == "고양이 사료")
         {
-            print("사료 먹이기 성공");
+            Transform CalledPetRoot = Pet.instance.CalledPetRoot;
+
+            // 펫이 있는 경우만 사용 가능
+            if (CalledPetRoot.childCount > 0)
+            {
+                slot.ResetItem();
+                StartCoroutine(UsePetFood());
+                print("사료 먹이기 성공");
+            }
+            else
+            {
+                UIManager.instance.informText_simple.text = "펫을 소환해주세요.";
+                StartCoroutine(UIManager.instance.SimpleInform());
+                print("사료 먹이기 실패");
+            }            
         }
     }
 
@@ -118,11 +133,22 @@ public class ItemUse : MonoBehaviour
         PetCard.SetActive(true);
         petName.text = newPet.transform.GetComponent<PetInfo>().Name;
         petRank.text = newPet.transform.GetComponent<PetInfo>().Rank + " 등급";
-        Pet.instance.anim = newPet.GetComponent<Animation>();
-        Pet.instance.RandomPetAnimation();
+        Animation anim = newPet.GetComponent<Animation>();
+        Pet.instance.RandomPetAnimation(Pet.instance.animArray, anim);
         yield return new WaitForSeconds(4f);
         newPet.SetActive(false);
         PetCard.SetActive(false);
+    }
+
+    IEnumerator UsePetFood()
+    {
+        Transform CalledPetRoot = Pet.instance.CalledPetRoot;
+        Transform CalledPet = CalledPetRoot.GetChild(0);
+        CalledPet.GetComponent<Animator>().enabled = false;
+        Animation anim= CalledPet.GetComponent<Animation>();
+        Pet.instance.RandomPetAnimation(Pet.instance.animArray, anim);
+        yield return new WaitForSeconds(3f);
+        CalledPet.GetComponent<Animator>().enabled = true;
     }
 
 }

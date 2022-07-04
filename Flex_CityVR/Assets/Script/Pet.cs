@@ -139,11 +139,11 @@ public class Pet : MonoBehaviour
         }
         slot.petInfo.prefab.gameObject.SetActive(true);
         petName.text = "" + slot.petInfo.Name;
-        RandomPetAnimation();
+        RandomPetAnimation(animArray, anim);
         previousPrefab = slot.petInfo.prefab;
     }
 
-    public void RandomPetAnimation()
+    public void RandomPetAnimation(List<string> animArray, Animation anim)
     {
         animArray.Clear();
         randNum = -1;
