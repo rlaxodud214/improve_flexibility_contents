@@ -19,10 +19,10 @@ public class UIManager : MonoBehaviour
     private int index = 0;
     public Button ButtonL, ButtonR;
     public List<GameObject> explainPanel;
-    private Button previousBtn;
+    public GameObject previousBtn;
     public List<GameObject> AxisContentPanel;
     private GameObject previousAxisContent;
-    private Color Blue, White;
+    private Color Blue;
     //
     void Awake()
     {
@@ -31,10 +31,8 @@ public class UIManager : MonoBehaviour
         #region 변수 초기화
         UISetting.informType = EinformType.None;    //알림창 타입 초기화
         index = 0;
-        previousBtn = null;
-        previousAxisContent = null;
-        ColorUtility.TryParseHtmlString("2A3542", out Blue);
-        ColorUtility.TryParseHtmlString("FFFFFF", out White);
+        previousAxisContent = AxisContentPanel[0];
+        Blue = new Color(42/255f, 53/255f, 66/255f); // 색상을 RGB 값으로 스크립트 변경하려면 255로 나눠줘야 함
         #endregion
     }
     // Start is called before the first frame update
@@ -115,6 +113,7 @@ public class UIManager : MonoBehaviour
     #region 메인시티 소개창 UI
     public void OnExplain()
     {
+        index = 0;
         InitExplain(explainPanel);
         InitExplain(AxisContentPanel);
     }
@@ -124,11 +123,11 @@ public class UIManager : MonoBehaviour
         {
             if (i == 0)
             {
-                list[index].SetActive(true);
+                list[i].SetActive(true);
             }
             else
             {
-                list[index].SetActive(false);
+                list[i].SetActive(false);
             }
         }
     }
@@ -154,21 +153,21 @@ public class UIManager : MonoBehaviour
         explainPanel[index].SetActive(true);
     }
 
-    public void SelectAxisBtn(Button nowBtn)
+    public void SelectAxisBtn(GameObject nowBtn)
     {
         if(previousBtn != null)
         {
-            previousBtn.image.color = White;
+            previousBtn.GetComponent<Image>().color= Color.white;
             previousBtn.transform.GetChild(0).GetComponent<Text>().color = Blue;
             previousAxisContent.SetActive(false);
         }
-        nowBtn.image.color = Blue;
-        nowBtn.transform.GetChild(0).GetComponent<Text>().color = White;
+        nowBtn.GetComponent<Image>().color = Blue;
+        nowBtn.transform.GetChild(0).GetComponent<Text>().color = Color.white;
         previousBtn = nowBtn;
 
         int index = int.Parse(nowBtn.name.Substring(0, 1)); // 1개, 2개, 3개 축 -> 1,2,3
         AxisContentPanel[index - 1].SetActive(true);
-        previousAxisContent = AxisContentPanel[index - 1].gameObject;
+        previousAxisContent = AxisContentPanel[index - 1];
     }
     #endregion
 }
