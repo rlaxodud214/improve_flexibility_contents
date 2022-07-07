@@ -40,9 +40,9 @@ public class GKUIManager : MonoBehaviour
     public List<Image> StarImages;  // 인스펙터 창에서 별 이미지 오브젝트 넣기
     public Text RewardText;
     public Text TotalPlaytimeText;
-    
-    
 
+
+    public GameObject explainPanel;
     public int toggleIdx;   // toggles 리스트에 접근하기 위한 idx
 
     #endregion
@@ -82,6 +82,7 @@ public class GKUIManager : MonoBehaviour
 
         ColorUtility.TryParseHtmlString("#FFCC47", out STARON); // 노란별 색
         ColorUtility.TryParseHtmlString("#374355", out STAROFF); // 까만별 색
+        explainPanel.SetActive(true);
 
         for (int i = 0; i < StarImages.Count; i++)
         {
