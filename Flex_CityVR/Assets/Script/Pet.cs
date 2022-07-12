@@ -9,7 +9,7 @@ public class Pet : MonoBehaviour
     public Transform contentRoot;
     public GameObject slotPrefab;
 
-    public List<GameObject> UserPet = new List<GameObject>();     // 보유 중인 펫 목록
+    //public List<GameObject> UserPet = new List<GameObject>();     // 보유 중인 펫 목록
     Transform PetSpawnPoint;
     [HideInInspector]
     public List<PetSlot> slots = new List<PetSlot>();
@@ -45,24 +45,26 @@ public class Pet : MonoBehaviour
         isCall = false;
         #endregion
         // DB 연동 사용자가 가지고 있는 펫 수+2 만큼 생성
-        for (int i=0; i<UserPet.Count+3; i++)
+        for (int i = 0; i < UserDataManager.instance.user.pets.Count + 3; i++)
         {
             AddSlot();
         }
 
         // DB 연동 사용자가 가지고 있는 펫이 있으면 펫 슬롯 연동
-        if (UserPet != null)
+        if (UserDataManager.instance.user.pets != null)
         {
-            for(int i=0; i<UserPet.Count; i++)
+            int cnt = 0;
+            foreach (GameObject pet in UserDataManager.instance.myPets.Values)
             {
-                GameObject newPet = Instantiate<GameObject>(UserPet[i], PetSpawnPoint);
+                GameObject newPet = Instantiate<GameObject>(pet, PetSpawnPoint);
                 newPet.transform.GetComponent<PetInfo>().prefab = newPet;
                 newPet.transform.position = PetSpawnPoint.GetChild(0).position;
                 newPet.transform.localEulerAngles = new Vector3(0, -180, 0);
 
                 PetInfo info = newPet.transform.GetComponent<PetInfo>();
-                slots[i].GetComponent<PetSlot>().SetSlot(info);
+                slots[cnt].GetComponent<PetSlot>().SetSlot(info);
                 newPet.SetActive(false);
+                cnt++;
             }
         }
         // isCall = true 마지막에 소환된 펫이 있으면 펫 가져오기 DB 연동
@@ -94,7 +96,9 @@ public class Pet : MonoBehaviour
         }
         else
         {
-            UserPet.Add(pet);
+            UserDataManager.instance.myPets.Add(newName, pet);
+            UserDataManager.instance.user.pets.Add(newName);    // DB에 저장해야 하므로
+            StartCoroutine(DBManager.SaveUser(UserDataManager.instance.user));
             AddPet();
         }
     }
@@ -103,7 +107,7 @@ public class Pet : MonoBehaviour
     public void AddPet()
     {
         PetSlot emptySlot = slots.Find(t => t.isUse == false);
-        PetInfo lastPet = UserPet.Last().transform.GetComponent<PetInfo>();
+        PetInfo lastPet = UserDataManager.instance.myPets.Values.Last().transform.GetComponent<PetInfo>();
 
         // 빈 슬롯이 없는 경우
         if (!emptySlot)

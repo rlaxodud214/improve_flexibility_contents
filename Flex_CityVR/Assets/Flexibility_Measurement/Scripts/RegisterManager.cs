@@ -111,12 +111,19 @@ public class RegisterManager : MonoBehaviour
             EmailInput.text, PasswordInput.text, NameInput.text,
             Int32.Parse(AgeInput.text), gender, DateTime.Now
             );
+        string userInfo = JsonUtility.ToJson(user);
 
-        string userInfo = DBManager.UserToJson(user);
+        InventorySlot inventory = DBManager.CreateInventorySlot(0, 0, 0);
+        string inventoryInfo = JsonUtility.ToJson(inventory);
 
         var request3 = new UpdateUserDataRequest
         {
-            Data = new Dictionary<string, string>() { { "User", userInfo }, { "Measurement", "{}" }, { "GameResult", "{}" } },
+            Data = new Dictionary<string, string>() { 
+                { "User", userInfo },
+                { "Measurement", "{}" }, 
+                { "GameResult", "{}" },
+                { "Inventory", inventoryInfo }
+            },       
             Permission = UserDataPermission.Public
         };
 

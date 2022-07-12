@@ -26,10 +26,10 @@ public class TestScript : MonoBehaviour
         string playtime = DBManager.TimeToString(sec);
 
         // STEP1 게임결과를 담은 GameResult 객체 생성
-        GameResult gameResult = DBManager.CreateGameResult("battle_city", playtime, 1080, 390);
+        //GameResult gameResult = DBManager.CreateGameResult("battle_city", playtime, 1080, 390);
 
         // STEP2 SaveGameResult의 매개변수로 gameResult 전달
-        StartCoroutine(DBManager.SaveGameResult(gameResult));
+        //StartCoroutine(DBManager.SaveGameResult(gameResult));
 
         // GameResult 불러오기는 Measurement 불러오기와 동일하게 수행
     }

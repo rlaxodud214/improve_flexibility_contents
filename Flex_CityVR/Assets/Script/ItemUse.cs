@@ -74,12 +74,16 @@ public class ItemUse : MonoBehaviour
         {
             // 사용한 아이템 제거
             slot.ResetItem();
+            UserDataManager.instance.inventory.normalBox--;
+            StartCoroutine(DBManager.SaveInventory(UserDataManager.instance.inventory));
             choice = normalPicker.GetRandomPick();
             PetSetting(choice);
         }
         else if (item.itemName == "프리미엄 펫 상자")
         {
             slot.ResetItem();
+            UserDataManager.instance.inventory.premiumBox--;
+            StartCoroutine(DBManager.SaveInventory(UserDataManager.instance.inventory));
             choice = premiumPicker.GetRandomPick();
             PetSetting(choice);
         }
@@ -91,6 +95,8 @@ public class ItemUse : MonoBehaviour
             if (CalledPetRoot.childCount > 0)
             {
                 slot.ResetItem();
+                UserDataManager.instance.inventory.petFood--;
+                StartCoroutine(DBManager.SaveInventory(UserDataManager.instance.inventory));
                 StartCoroutine(UsePetFood());
                 print("사료 먹이기 성공");
             }

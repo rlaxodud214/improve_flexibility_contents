@@ -26,7 +26,7 @@ public class UIManager : MonoBehaviour
     //
     void Awake()
     {
-        UIManager.instance = this;
+        instance = this;
 
         #region 변수 초기화
         UISetting.informType = EinformType.None;    //알림창 타입 초기화

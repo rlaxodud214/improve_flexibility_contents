@@ -17,7 +17,7 @@ public class CharManager : MonoBehaviour
     {
         if (instance == null) instance = this;
         else if (instance != null) return;
-        DontDestroyOnLoad(gameObject);
+
 
         #region 변수 초기화
         index = 0;

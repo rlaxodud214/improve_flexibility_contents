@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.instance = this;
+        instance = this;
         XR_Rig = GameObject.Find("XR Rig");
     }
 

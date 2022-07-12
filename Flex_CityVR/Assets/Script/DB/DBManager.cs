@@ -9,8 +9,8 @@ using UnityEngine;
 
 public class DBManager
 {
-    public static bool isDone = false;  // 비동기함수 컨트롤
-    public static bool isSaveDone = false;
+    //public static bool isDone = false;  // 비동기함수 컨트롤
+    //public static bool isSaveDone = false;
 
     // List <T> 리스트 직렬화를 위한 클래스
     [Serializable]
@@ -83,6 +83,7 @@ public class DBManager
         user.age = age;
         user.gender = gender;
         user.registrationDate = regDate.ToString("yyyy-MM-dd");
+        user.displayName = name;
         user.money = 0;
         user.pets = null;
 
@@ -129,8 +130,8 @@ public class DBManager
     /// <param name="score">점수</param>
     /// <param name="reward">리워드</param>
     /// <param name="date">저장일(default는 null)</param>
-    /// <returns></returns>
-    public static GameResult CreateGameResult(string gameID, string playtime, int score, int reward, string date = null)
+    /// <returns>데이터를 채운 GameResult 객체 반환</returns>
+    public static GameResult CreateGameResult(string gameID, string playtime, int reward, string date = null)
     {
         GameResult gameResult = new GameResult();
         gameResult.date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
@@ -138,10 +139,30 @@ public class DBManager
             gameResult.date = date;
         gameResult.gameID = gameID;
         gameResult.playtime = playtime;
-        gameResult.score = score;
         gameResult.reward = reward;
 
         return gameResult;
+    }
+
+    /// <summary>
+    /// InventorySlot 객체 생성
+    /// </summary>
+    /// <param name="petFood">펫 먹이 수량</param>
+    /// <param name="normalBox">노말 박스 수량</param>
+    /// <param name="premiumBox">프리미엄 박스 수량</param>
+    /// <returns>데이터를 채운 Inventory Slot 반환</returns>
+    public static InventorySlot CreateInventorySlot(int petFood = 0, int normalBox = 0, int premiumBox = 0)
+    {
+        InventorySlot inventory = new InventorySlot();
+
+        if (petFood != 0)
+            inventory.petFood += petFood;
+        if (normalBox != 0)
+            inventory.normalBox += normalBox;
+        if (premiumBox != 0)
+            inventory.premiumBox += premiumBox;
+
+        return inventory;
     }
 
     // 초단위의 시간을 넣으면 string타입으로 변환(format: HH:mm:ss)
@@ -154,23 +175,36 @@ public class DBManager
         hour = min / 60;
         min = min % 60;
 
-        time = hour.ToString("D2") + min.ToString("D2") + sec.ToString("D2");
+        time = hour.ToString("D2") + ":" + min.ToString("D2") + ":" + sec.ToString("D2");
 
         return time;
     }
 
-    // User객체를 Json형식으로
-    public static string UserToJson(User user)
+    // User 정보 업데이트
+    public static IEnumerator SaveUser(User user)
     {
-        string userInfo = "";
-        userInfo = JsonUtility.ToJson(user);
+        bool isDone = false;
+        string userInfo = JsonUtility.ToJson(user);
 
-        return userInfo;
+        var request = new UpdateUserDataRequest
+        {
+            Data = new Dictionary<string, string>() { { "User", userInfo } },
+            Permission = UserDataPermission.Public
+        };
+
+        PlayFabClientAPI.UpdateUserData(request, (finalResult) => {
+            Debug.Log(userInfo);
+            isDone = true;
+        }, (error) => { Debug.LogError("error occured: " + error.Error + " error msg: " + error.Error); });
+
+        yield return new WaitUntil(() => isDone == true);
+        isDone = false;
     }
 
     // User 객체 로드
     public static IEnumerator LoadUser(Action<User> callback = null)
     {
+        bool isDone = false;
         User user = new User();
         string info = "";
 
@@ -203,6 +237,7 @@ public class DBManager
     // Measurement 객체 저장
     public static IEnumerator SaveMeasurement(Measurement measurement, string key = null)
     {
+        bool isDone = false;
         Dictionary<string, Measurement> measurements = new Dictionary<string, Measurement>(); // 새로운 데이터
         Dictionary<string, Measurement> DBData = new Dictionary<string, Measurement>(); // DB 데이터
         string info = "";
@@ -270,6 +305,7 @@ public class DBManager
     // Dictionary<string, Measurement> -> 측정값 전체 로드
     public static IEnumerator LoadMeasurement(Action<Dictionary<string, Measurement>> callback = null)
     {
+        bool isDone = false;
         Dictionary<string, Measurement> measurements = new Dictionary<string, Measurement>();
         string info = "";
 
@@ -302,6 +338,7 @@ public class DBManager
     // GaemResult 객체 저장
     public static IEnumerator SaveGameResult(GameResult gameResult, string key = null)
     {
+        bool isDone = false;
         Dictionary<string, GameResult> gameResults = new Dictionary<string, GameResult>();
         string info = "";
 
@@ -352,6 +389,7 @@ public class DBManager
     // Dictionary<string, GaemResult> -> 게임결과 전체 로드
     public static IEnumerator LoadGameResult(Action<Dictionary<string, GameResult>> callback = null)
     {
+        bool isDone = false;
         Dictionary<string, GameResult> gameResults = new Dictionary<string, GameResult>();
         string info = "";
 
@@ -360,7 +398,7 @@ public class DBManager
             Keys = null
         }, result =>
         {
-            if (result.Data == null || !result.Data.ContainsKey("Measurement_test"))
+            if (result.Data == null || !result.Data.ContainsKey("GameResult"))
             {
                 Debug.Log("No GameResult Data");
             }
@@ -368,6 +406,7 @@ public class DBManager
             {
                 info = result.Data["GameResult"].Value;
                 gameResults = JsonUtility.FromJson<Serialization<string, GameResult>>(info).ToDictionary();
+                Debug.Log("gameResults: " + gameResults);
                 isDone = true;
             }
         }, (error) =>
@@ -381,6 +420,67 @@ public class DBManager
         callback.Invoke(gameResults);
     }
 
+
+    public static IEnumerator SaveInventory(InventorySlot inventory, int petFood = 0, int normalBox = 0, int premiumBox = 0)
+    {
+        bool isDone = false;
+
+        if (petFood != 0)
+            inventory.petFood += petFood;
+        if (normalBox != 0)
+            inventory.normalBox += normalBox;
+        if (premiumBox != 0)
+            inventory.premiumBox += premiumBox;
+
+        string intventoryInfo = JsonUtility.ToJson(inventory);
+
+        var request = new UpdateUserDataRequest
+        {
+            Data = new Dictionary<string, string>() { { "Inventory", intventoryInfo } },
+            Permission = UserDataPermission.Public
+        };
+
+        PlayFabClientAPI.UpdateUserData(request, (finalResult) => {
+            Debug.Log(intventoryInfo);
+            isDone = true;
+        }, (error) => { Debug.LogError("error occured: " + error.Error + " error msg: " + error.Error); });
+
+        yield return new WaitUntil(() => isDone == true);
+        isDone = false;
+    }
+
+    public static IEnumerator LoadInventory(Action<InventorySlot> callback = null)
+    {
+        bool isDone = false;
+        InventorySlot inventory = new InventorySlot();
+        string inventoryInfo = "";
+
+        PlayFabClientAPI.GetUserData(new GetUserDataRequest()
+        {
+            Keys = null
+        }, result =>
+        {
+            if (result.Data == null || !result.Data.ContainsKey("Inventory"))
+            {
+                Debug.Log("No Inventory Data");
+            }
+            else
+            {
+                inventoryInfo = result.Data["Inventory"].Value;
+                Debug.Log("inventoryInfo: " + inventoryInfo);
+                inventory = JsonUtility.FromJson<InventorySlot>(inventoryInfo);
+                isDone = true;
+            }
+        }, (error) =>
+        {
+            Debug.Log("Inventory 가져오기 실패");
+        });
+
+        yield return new WaitUntil(() => isDone == true);
+        isDone = false;
+
+        callback.Invoke(inventory);
+    }
 
     /*public enum Form{
     Measurement = 1,

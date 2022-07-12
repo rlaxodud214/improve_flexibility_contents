@@ -28,7 +28,7 @@ public class Store : MonoBehaviour
     private void Awake()
     {
         Store.instance = this;
-        UserMoney = 1000000;
+        UserMoney = UserDataManager.instance.user.money;
         // UserMoney 연동
         getItemCost = 0;
         itemIndex = 0;
@@ -80,11 +80,33 @@ public class Store : MonoBehaviour
         if (canBuy)
         {
             UIManager.instance.informText_simple.text = "구매를 완료했습니다.";
+
             UserMoney -= getItemCost;
+            UserDataManager.instance.user.money = UserMoney;    // 구매 금액만큼 DB 데이터에서 차감
+            StartCoroutine(DBManager.SaveUser(UserDataManager.instance.user));
             UserMoneyText.text = GetThousandComma(UserMoney).ToString();
 
             // 구매한 아이템의 ItemInfo 전달
             var itemInfo = petItemRoot.GetChild(itemIndex).GetComponent<ItemInfo>();
+            switch (itemInfo.itemName)
+            {
+                case "고양이 사료":
+                    UserDataManager.instance.inventory.petFood++;
+                    StartCoroutine(DBManager.SaveInventory(UserDataManager.instance.inventory));
+                    break;
+                case "일반 펫 상자":
+                    UserDataManager.instance.inventory.normalBox++;
+                    StartCoroutine(DBManager.SaveInventory(UserDataManager.instance.inventory));
+                    break;
+                case "프리미엄 펫 상자":
+                    UserDataManager.instance.inventory.premiumBox++;
+                    StartCoroutine(DBManager.SaveInventory(UserDataManager.instance.inventory));
+                    break;
+                default:
+                    Debug.LogError("Store.cs: DB에 구매한 아이템을 추가하지 못했습니다.");
+                    break;
+            }
+
             Inventory.instance.UpdateItem(itemInfo);
         }
         else

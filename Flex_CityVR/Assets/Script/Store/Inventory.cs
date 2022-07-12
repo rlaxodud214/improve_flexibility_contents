@@ -8,6 +8,7 @@ public class Inventory : MonoBehaviour
     public Transform slotRoot;
     public GameObject slotPrefab;
     public List<Slot> slots = new List<Slot>();
+    public List<ItemInfo> items = new List<ItemInfo>();
 
     public static Inventory instance;
 
@@ -26,6 +27,23 @@ public class Inventory : MonoBehaviour
             slot.image = obj.transform.GetChild(0).GetComponent<UnityEngine.UI.Image>();
             slots.Add(slot);
         }
+
+        // 펫먹이 개수 초기화
+        int petFood = UserDataManager.instance.inventory.petFood;
+
+        for (int i = 0; i < petFood; i++)
+            UpdateItem(items[0]);
+
+        // 일반상자 개수 초기화
+        int normalBox = UserDataManager.instance.inventory.normalBox;
+        for (int i = 0; i < normalBox; i++)
+            UpdateItem(items[1]);
+
+        // 프리미엄상자 개수 초기화
+        int premiumBox = UserDataManager.instance.inventory.premiumBox;
+        for (int i = 0; i < premiumBox; i++)
+            UpdateItem(items[2]);
+
     }
 
     // Start is called before the first frame update
@@ -52,4 +70,5 @@ public class Inventory : MonoBehaviour
         Slot slot = obj.transform.GetComponent<Slot>();
         ItemUse.instance.SlotClick(slot);
     }
+
 }

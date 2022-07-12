@@ -163,6 +163,13 @@ public class GKGameManager : MonoBehaviour
             if (reward > 500)
                 reward = 500;
 
+            
+            string resultPlaytime = DBManager.TimeToString((int)playtime);  // 플레이타임을 DB에 넣을 수 있는 형태(string)으로 변경
+            // 게임결과 정보를 담은 gameResult 객체를 만듦
+            // 매개변수 1: 게임이름, 2: 플레이타임, 3: 리워드
+            GameResult gameResult = DBManager.CreateGameResult("Goalkeeper", resultPlaytime, reward);
+            StartCoroutine(DBManager.SaveGameResult(gameResult));   // DB저장 시도
+
             GKUIManager.Instance.ShowResult(reward, totalPlaytime);
         }
 
