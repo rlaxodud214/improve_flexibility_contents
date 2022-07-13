@@ -32,6 +32,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Contents/GoalKeeper/Assets/Scenes/GoalKeeper.unity
     guid: dcca352d41c6e8144a80f3d362e21595
+  - enabled: 1
+    path: Assets/Contents/Battle_City/Assets/Scenes/BattleCity.unity
+    guid: b224ad7a4e5477247bd28e13f715711f
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
