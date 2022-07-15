@@ -35,6 +35,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Contents/Battle_City/Assets/Scenes/BattleCity.unity
     guid: b224ad7a4e5477247bd28e13f715711f
+  - enabled: 1
+    path: Assets/Contents/Super_Bird/Assets/Scenes/Bird_GameScene.unity
+    guid: 425f967412315a44ba4d1ac9cf09189d
+  - enabled: 1
+    path: Assets/Contents/Super_Bird/Assets/Scenes/Bird_MainScene.unity
+    guid: 727dba67942977d449fe9752b3633f81
+  - enabled: 1
+    path: Assets/Contents/Super_Bird/Assets/Scenes/Bird_SelectScene.unity
+    guid: 4b5e1b0b97d8baf4b9b083f436ca5401
+  - enabled: 1
+    path: Assets/Contents/Super_Bird/Assets/Scenes/Bird_TutorialScnen.unity
+    guid: ea1308a440fae384c9931a658007f1c2
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000

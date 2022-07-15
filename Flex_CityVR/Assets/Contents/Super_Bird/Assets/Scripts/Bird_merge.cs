@@ -37,7 +37,7 @@ public class Bird_merge : MonoBehaviour
 
     public void OnSelect(string charname)
     {
-        print("snfma");
+        Charname = charname;
         ChickenCheck.SetActive(false);
         CondorCheck.SetActive(false);
         DragonCheck.SetActive(false);

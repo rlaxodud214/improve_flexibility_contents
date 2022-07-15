@@ -143,7 +143,7 @@ public class Bird_UIManagerGame : MonoBehaviour
             StarImages[2].color = STARON;
 
 
-        RewardText.text = "+ " + reward;
+        RewardText.text = "" + reward;
 
 
        /* string resultPlaytime = DBManager.TimeToString((int)playtime);  // 플레이타임을 DB에 넣을 수 있는 형태(string)으로 변경

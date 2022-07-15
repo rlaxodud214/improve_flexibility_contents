@@ -916,7 +916,7 @@ GameObject:
   - component: {fileID: 626796537}
   - component: {fileID: 626796536}
   m_Layer: 5
-  m_Name: Canvas (1)
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -991,7 +991,7 @@ RectTransform:
   m_GameObject: {fileID: 626796535}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.25}
-  m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
+  m_LocalScale: {x: 0.000762609, y: 0.000762609, z: 0.000762609}
   m_Children:
   - {fileID: 1110459681}
   - {fileID: 1868849094}
