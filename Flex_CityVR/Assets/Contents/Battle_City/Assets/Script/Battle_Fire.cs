@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class Battle_Fire : MonoBehaviour
 {
-    public GameObject Bullet;
+    public GameObject Battle_Bullet;
     public Transform FirePos;
     public GameObject clone;
     public LineRenderer Line_Renderer;
@@ -53,8 +53,8 @@ public class Battle_Fire : MonoBehaviour
             if(InputBridge.Instance.AButtonUp || Input.GetKeyUp(KeyCode.S))
             {   //포탄 복제
                 LineRenderer_position.Clear();
-                clone = Instantiate(Bullet, FirePos.position, FirePos.rotation);
-                SoundManager.instance.FireSound();
+                clone = Instantiate(Battle_Bullet, FirePos.position, FirePos.rotation);
+                Battle_SoundManager.instance.FireSound();
                 reset = true;
                 fireActive = false;
             }

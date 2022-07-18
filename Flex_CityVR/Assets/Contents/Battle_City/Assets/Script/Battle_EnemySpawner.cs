@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemySpawner : MonoBehaviour
+public class Battle_EnemySpawner : MonoBehaviour
 {
-    public static EnemySpawner instance;   // 싱글톤
+    public static Battle_EnemySpawner instance;   // 싱글톤
 
     public Transform player;
     public GameObject enemyPrefab;

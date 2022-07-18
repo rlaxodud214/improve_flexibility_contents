@@ -27,7 +27,7 @@ public class Battle_Effect : MonoBehaviour
     }
 
     // public void Notshot() { // 피해가는 모션 
-    //     SoundManager.instance.MissSound();
+    //     Battle_SoundManager.instance.MissSound();
     //     tr = GetComponent<Transform>();
     //     tr.position = new Vector3(1,4,-4);
     //     rigid = GetComponent<Rigidbody>();
@@ -37,7 +37,7 @@ public class Battle_Effect : MonoBehaviour
     public void Explosion() // 팡 터지는 모션
     {
         var enemy = GameObject.Find("Enemy(Clone)");
-        SoundManager.instance.BombSound();
+        Battle_SoundManager.instance.BombSound();
         GameObject t_clone = Instantiate(goPrefab, enemy.transform.position, Quaternion.identity);
         Destroy(t_clone, 5.5f);
         Rigidbody[] t_rigids = t_clone.GetComponentsInChildren<Rigidbody>();
@@ -51,7 +51,7 @@ public class Battle_Effect : MonoBehaviour
     public void Shot()
     {
         var enemy = GameObject.Find("Enemy(Clone)");
-        SoundManager.instance.BombSound();
+        Battle_SoundManager.instance.BombSound();
         GameObject clonedBattle_Effect = Instantiate(explosion, enemy.transform.position, Quaternion.identity);
         Destroy(clonedBattle_Effect, 2f);
     }

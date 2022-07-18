@@ -224,7 +224,7 @@ public class Battle_UIManager : MonoBehaviour
             SuccessPanel.SetActive(true);
             NextLevel();
             yield return new WaitForSeconds(4.5f);
-            EnemySpawner.instance.InstantiateEnemy();
+            Battle_EnemySpawner.instance.InstantiateEnemy();
             InitEnemyLife();            
             Battle_Fire.instance.fireActive = true;
         }

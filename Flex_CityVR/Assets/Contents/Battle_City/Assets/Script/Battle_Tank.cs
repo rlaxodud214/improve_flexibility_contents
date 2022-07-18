@@ -20,6 +20,7 @@ public class Battle_Tank : MonoBehaviour
     public float deg1;  // 위/아래 회전
     public float deg2;  // 왼쪽/오른쪽 회전
 
+    public int[] playerMax;
 
     #endregion
 
@@ -41,6 +42,8 @@ public class Battle_Tank : MonoBehaviour
         {
             instance = this;
         }
+
+        OpenZenMoveObject.Instance.runstart();
     }
 
 
@@ -55,6 +58,8 @@ public class Battle_Tank : MonoBehaviour
         deg1 = 0;
         deg2 = 0;
 
+        playerMax = new int[] { 70, -10, -25, 25, -30, 30 };
+
         rotspeed = 5f;
         turretSpeed = 5f;
 
@@ -66,10 +71,10 @@ public class Battle_Tank : MonoBehaviour
         // print("move : " + move);
         if(move == true)
         {
-            if(Input.GetKey(KeyCode.UpArrow))
-            { 
+            if (OpenZenMoveObject.Instance.sensorEulerData.y >= playerMax[0])
+            {
                 // 최대각도를 설정해준거구나!!
-                if(-45 < deg1 && deg1 <= 20)
+                if (-45 < deg1 && deg1 <= 20)
                 {
                     CamX.Rotate(-speed, 0, 0);
                     CannonRoot.Rotate(-speed, 0, 0);
@@ -82,9 +87,9 @@ public class Battle_Tank : MonoBehaviour
                     deg1 = -45f;
                 }
             }
-            else if(Input.GetKey(KeyCode.DownArrow))
+            else if (OpenZenMoveObject.Instance.sensorEulerData.y <= playerMax[1])
             {
-                if(-45 <= deg1 && deg1 < 20)
+                if (-45 <= deg1 && deg1 < 20)
                 {
                     CamX.Rotate(speed, 0, 0);
                     CannonRoot.Rotate(speed, 0, 0);
@@ -98,7 +103,7 @@ public class Battle_Tank : MonoBehaviour
                 }
             }
 
-            else if(Input.GetKey(KeyCode.LeftArrow))
+            else if (OpenZenMoveObject.Instance.sensorEulerData.x <= playerMax[4])
             {
                 if(-180f < deg2 && deg2 <= 180)
                 {
@@ -113,7 +118,7 @@ public class Battle_Tank : MonoBehaviour
                     deg2 = -180f;
                 }
             }
-            else if (Input.GetKey(KeyCode.RightArrow))
+            else if (OpenZenMoveObject.Instance.sensorEulerData.x >= playerMax[5])
             {
                 if(-180 <= deg2 && deg2 < 180)
                 {

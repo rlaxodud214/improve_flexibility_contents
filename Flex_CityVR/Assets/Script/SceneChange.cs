@@ -46,6 +46,7 @@ public class SceneChange : MonoBehaviour
                 SceneManager.LoadScene("KayakGame");
                 break;
             case "T_fly":
+                SceneManager.LoadScene("Bird_MainScene");
                 break;
 /*            case "T_window":
                 break;*/

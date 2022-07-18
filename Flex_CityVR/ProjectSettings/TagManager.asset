@@ -14,6 +14,9 @@ TagManager:
   - TrafficLightCrosswalk
   - Soccer
   - Pet
+  - Collider
+  - Bullet
+  - EnemySlider
   layers:
   - Default
   - TransparentFX

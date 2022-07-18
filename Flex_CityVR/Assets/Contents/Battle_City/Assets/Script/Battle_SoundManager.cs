@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public class Battle_SoundManager : MonoBehaviour
 {
     //public AudioSource BombSource;
     //public AudioSource FireSource;
@@ -12,13 +12,13 @@ public class SoundManager : MonoBehaviour
     public AudioClip BombClip;
     public AudioClip FireClip;
     public AudioClip MissClip;
-    public static SoundManager instance;
+    public static Battle_SoundManager instance;
     
 
     void Awake(){
-        if(SoundManager.instance == null)
+        if(Battle_SoundManager.instance == null)
         {
-            SoundManager.instance = this;
+            Battle_SoundManager.instance = this;
             DontDestroyOnLoad(instance);
         }
         else{

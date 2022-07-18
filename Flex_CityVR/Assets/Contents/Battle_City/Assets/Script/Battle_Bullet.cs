@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 // 대포알에 들어가있는 컴포넌트
-public class Bullet : MonoBehaviour
+public class Battle_Bullet : MonoBehaviour
 {
 
     #region Public Fields
 
-    public static Bullet instance;
+    public static Battle_Bullet instance;
 
     public float speed;
     public bool start;

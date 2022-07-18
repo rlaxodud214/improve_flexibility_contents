@@ -3390,6 +3390,7 @@ GameObject:
   - component: {fileID: 2356009361004315537}
   - component: {fileID: 3281999697973603305}
   - component: {fileID: 898503681105554936}
+  - component: {fileID: 2356009361004315541}
   m_Layer: 0
   m_Name: Chicken
   m_TagString: Untagged
@@ -3409,7 +3410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45dd1ba0201f7754788fbe2964dc5851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSlider: {fileID: 1961356035}
+  TutorialSlider: {fileID: 1961356035}
 --- !u!1 &2356009361004315538
 GameObject:
   m_ObjectHideFlags: 0
@@ -3463,6 +3464,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2356009361004315541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2356009361004315536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 404cb39eb64ed784d9d31c79e9621a5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensorEulerData: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 0, z: 0}
+  save_offset: 0
+  OpenZenIoType: 1
+  OpenZenIdentifier: 00:04:3E:9B:A2:A5
 --- !u!1 &2356009361004315542
 GameObject:
   m_ObjectHideFlags: 0
@@ -3580,7 +3598,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2356009361004315536}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 7}
+  m_LocalPosition: {x: 0, y: -0.28, z: 7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2356009361004814240}

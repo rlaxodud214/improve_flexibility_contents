@@ -100,7 +100,7 @@ public class OpenZenMoveObject : MonoBehaviour
                         sensorEulerData.y = (float)dataset(sensorEulerData.y);
                         sensorEulerData.z = (float)dataset(sensorEulerData.z);
 
-                        // print("x : " + sensorEulerData.x.ToString("N0") + ", y : " + sensorEulerData.y.ToString("N0") + ", z : " + sensorEulerData.z.ToString("N0"));
+                        //print("x : " + sensorEulerData.x.ToString("N0") + ", y : " + sensorEulerData.y.ToString("N0") + ", z : " + sensorEulerData.z.ToString("N0"));
                         break;
                 }
             }

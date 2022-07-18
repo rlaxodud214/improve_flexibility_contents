@@ -5,25 +5,27 @@ using UnityEngine.UI;
 
 public class Bird_TutorialMove : MonoBehaviour
 {
-    public Slider MoveSlider;
+    public Slider TutorialSlider;
     void Start()
     {
-        MoveSlider = GameObject.FindGameObjectWithTag("slider").GetComponent<Slider>();
-        MoveSlider.value = 0;
-        MoveSlider.maxValue = 95f;
-        MoveSlider.minValue = -36.6f;
+        TutorialSlider.value = 0;
+        TutorialSlider.maxValue = 95f;
+        TutorialSlider.minValue = -36.6f;
+        OpenZenMoveObject.Instance.runstart();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (MoveSlider.value > 0)
+        if (TutorialSlider.value > 0)
         {
-            transform.position = new Vector3(0, (-1.5f / MoveSlider.maxValue) * MoveSlider.value, 0);
+            //transform.position = new Vector3(0, (-1.5f / TutorialSlider.maxValue) * TutorialSlider.value, 0);
+            transform.position = new Vector3(0, (-1.5f / 95f) * OpenZenMoveObject.Instance.sensorEulerData.y * -1.3f, 0);
         }
-        else if (MoveSlider.value < 0)
+        else if (TutorialSlider.value < 0)
         {
-            transform.position = new Vector3(0, (2.7f / MoveSlider.minValue) * MoveSlider.value, 0);
+            //transform.position = new Vector3(0, (2.7f / TutorialSlider.minValue) * TutorialSlider.value, 0);
+            transform.position = new Vector3(0, (2.7f / -36.6f) * OpenZenMoveObject.Instance.sensorEulerData.y * -1.3f, 0);
         }
     }
 }
