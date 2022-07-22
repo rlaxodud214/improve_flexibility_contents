@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Bird_CharacterMove : MonoBehaviour
 {
-    public Slider MoveSlider;
+    //public Slider MoveSlider;
 
     public float Flexion = 0 ; //굴곡
     public float Extension = 0; //신전
@@ -19,12 +19,17 @@ public class Bird_CharacterMove : MonoBehaviour
     public AudioClip clip;
     public bool istuto =false;
 
+    private float value;
+    public List<float> weights = new List<float>();
+
     void Start()
     {
-        MoveSlider = GameObject.FindGameObjectWithTag("slider").GetComponent<Slider>();
+/*        MoveSlider = GameObject.FindGameObjectWithTag("slider").GetComponent<Slider>();
         MoveSlider.value = 0;
         MoveSlider.maxValue = 95f;
-        MoveSlider.minValue = -36.6f;
+        MoveSlider.minValue = -36.6f;*/
+        weights.Add(1f);
+        weights.Add(1f);
     }
 
     // Update is called once per frame
@@ -35,48 +40,48 @@ public class Bird_CharacterMove : MonoBehaviour
             if (!istuto)
             {
                 // IMU 연동 시 사용
-                // MoveSlider.value = OpenZenMoveObject.Instance.sensorEulerData.y * -1.3f;
+                 value = OpenZenMoveObject.Instance.sensorEulerData.y * -1.3f;
 
-                if (MoveSlider.value > 0)
+                if (value > 4.4)
                 {
-                    if (MoveSlider.value < Flexion)
+/*                    if (MoveSlider.value < Flexion)
                     {
                         Flexion = MoveSlider.value;
-                    }
+                    }*/
 
-                    transform.position = new Vector3(0, (-5.5f / MoveSlider.maxValue) * MoveSlider.value, -17);
+                    transform.position = new Vector3(0, (-5.5f / 95f) * value, -17);
                 }
-                else if (MoveSlider.value < 0)
+                else if (value < -4.4)
                 {
-                    if (MoveSlider.value > Extension)
+/*                    if (MoveSlider.value > Extension)
                     {
                         Extension = MoveSlider.value;
-                    }
+                    }*/
 
-                    transform.position = new Vector3(0, (6.7f / MoveSlider.minValue) * MoveSlider.value, -17);
+                    transform.position = new Vector3(0, (6.7f / -36.6f) * value, -17);
                 }
 
                 if (!Bird_UIManagerGame._instance.pausePanel.activeSelf && !Bird_UIManagerGame._instance.endPanel.activeSelf)
                 {
-                    if (isDown && MoveSlider.value > upTemp)
+                    if (isDown && value > upTemp)
                     {
                         Bird_SoundManager.instance.playoneshot();
                         isDown = false;
                         isUp = true;
-                        downTemp = MoveSlider.value;
+                        downTemp = value;
                     }
 
-                    if (isUp && MoveSlider.value < downTemp)
+                    if (isUp && value < downTemp)
                     {
                         Bird_SoundManager.instance.playoneshot();
                         isDown = true;
                         isUp = false;
-                        upTemp = MoveSlider.value;
+                        upTemp = value;
                     }
                 }
             }
             // 튜토씬
-            else
+/*            else
             {
                 if (MoveSlider.value > 0)
                 {
@@ -86,7 +91,7 @@ public class Bird_CharacterMove : MonoBehaviour
                 {
                     transform.position = new Vector3(0, (2.7f / MoveSlider.minValue) * MoveSlider.value, 0);
                 }
-            }
+            }*/
 
         
     }

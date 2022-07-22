@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Bird_UIManagerGame : MonoBehaviour
 {
-    public GameObject playPanel, pausePanel, endPanel, timePanel, pauseBtn, YSlider;
+    public GameObject playPanel, pausePanel, endPanel, timePanel, pauseBtn;
     public Text gamePlayTime;
     public Text Cleartime_Text;
     public Text RewardText; //리워드
@@ -40,7 +40,7 @@ public class Bird_UIManagerGame : MonoBehaviour
         pausePanel.SetActive(false);
         endPanel.SetActive(false);
         pauseBtn.SetActive(false);
-        YSlider.SetActive(true);
+        /*YSlider.SetActive(true);*/
         playPanel.SetActive(true);
         timePanel.SetActive(false);
 
@@ -51,9 +51,6 @@ public class Bird_UIManagerGame : MonoBehaviour
         {
             StarImages[i].color = STAROFF;
         }
-
-        
-
     }
 
     // Update is called once per frame
@@ -83,6 +80,7 @@ public class Bird_UIManagerGame : MonoBehaviour
         pauseBtn.SetActive(true);;
         playPanel.SetActive(false);
         timePanel.SetActive(true);
+        OpenZenMoveObject.Instance.runstart();
     }
 
     public void Pause()
@@ -128,7 +126,7 @@ public class Bird_UIManagerGame : MonoBehaviour
         Time.timeScale = 0f;
         timerStart = false;
         pauseBtn.SetActive(false);
-        YSlider.SetActive(false);
+        //YSlider.SetActive(false);
         gamePlayTime.text = "";
 
         reward = 100 + ((int)playtime - 30) * ((500 - 100) / (90 - 30));

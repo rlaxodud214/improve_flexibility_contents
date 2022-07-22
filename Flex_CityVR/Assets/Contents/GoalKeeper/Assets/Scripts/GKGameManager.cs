@@ -65,10 +65,10 @@ public class GKGameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+/*        if (Input.GetKeyDown(KeyCode.Space))
         {
             SceneManager.LoadScene("mainCity");
-        }
+        }*/
         // 타이머
         if (isTimerActive)
         {
