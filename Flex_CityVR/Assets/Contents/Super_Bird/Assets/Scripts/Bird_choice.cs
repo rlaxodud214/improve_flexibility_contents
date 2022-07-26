@@ -14,8 +14,8 @@ public class Bird_choice : MonoBehaviour
         if (instance__ == null) instance__ = this;
         else if (instance__ != null) return;
         //DontDestroyOnLoad(gameObject);
-        //player = Instantiate(charPrefabs[(int)Bird_DataManager.instance_.currentCharacter]);
-        player = Instantiate(charPrefabs[0]); //임시
+        player = Instantiate(charPrefabs[(int)Bird_DataManager.instance_.currentCharacter]);
+        //player = Instantiate(charPrefabs[0]); //임시
         XR_Rig.transform.parent = player.transform;
         player.transform.position = new Vector3(0, 0, -17);
     }
