@@ -47,6 +47,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Contents/Super_Bird/Assets/Scenes/Bird_TutorialScnen.unity
     guid: ea1308a440fae384c9931a658007f1c2
+  - enabled: 1
+    path: Assets/Contents/Island_Chef/Assets/Scenes/Chef_Game.unity
+    guid: d3efd7802e0a9f042960238e997d00ed
+  - enabled: 1
+    path: Assets/Contents/Island_Chef/Assets/Scenes/Chef_Main.unity
+    guid: 1f388f5e80e7fd14e976ee81be2b67f0
+  - enabled: 1
+    path: Assets/Contents/Island_Chef/Assets/Scenes/Chef_Tutorial.unity
+    guid: 949c7ca6d3fac9a40ac87853a4c6edab
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000

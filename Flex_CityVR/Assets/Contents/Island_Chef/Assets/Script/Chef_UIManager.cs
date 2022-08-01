@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class Chef_UIManager : MonoBehaviour
 {
-    public GameObject pausePanel, successPanel, failPanel, iteminventory, CompleteFood, UIPanel, interactPanel, returnPanel, stagePanel, ReWard, warningPanel;
+    public GameObject pausePanel, successPanel, failPanel, iteminventory, CompleteFood, UIPanel, interactPanel, returnPanel, stagePanel, ReWard, warningPanel, StartPanel;
     public bool timerStart;
     public Text Playtime_Text;
     public float playtime;
@@ -49,8 +49,9 @@ public class Chef_UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 0f;
         playtime = 0f;  // 플레이타임 초기화
-        timerStart = true;
+        timerStart = false; //true
         pausePanel.SetActive(false);
         successPanel.SetActive(false);
         failPanel.SetActive(false);
@@ -98,7 +99,13 @@ public class Chef_UIManager : MonoBehaviour
         //startPanel.SetActive(false);    // Panel 끄기
     }*/
 
-    
+    public void PlayStart() // 게임 첫 시작시
+    {
+        Time.timeScale = 1f;
+        timerStart = true;
+        StartPanel.SetActive(false);
+    }
+
     public void Pause() // 게임창에서 일시정지 버튼을 눌렀을때
     {
         Time.timeScale = 0f;
@@ -247,8 +254,7 @@ public class Chef_UIManager : MonoBehaviour
     // 게임 종료
     public void Quit()
     {
-        //Application.Quit();
-        setReward();
+        SceneManager.LoadScene("Chef_Main");
     }
 
     IEnumerator returnDelay()

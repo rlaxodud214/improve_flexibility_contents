@@ -16,7 +16,7 @@ public class Chef_SceneChange: MonoBehaviour
     }
     public void Quit()
     {
-        Application.Quit();                 // 게임종료 
+        SceneManager.LoadScene("mainCity");
     }
 
 

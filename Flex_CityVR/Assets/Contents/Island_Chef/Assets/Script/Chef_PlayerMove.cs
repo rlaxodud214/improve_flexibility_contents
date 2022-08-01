@@ -29,16 +29,18 @@ public class Chef_PlayerMove : MonoBehaviour
         XSlider.minValue = -34.4f;
         YSlider.maxValue = 95f;
         YSlider.minValue = -36.6f;*/
+        OpenZenMoveObject.Instance.runstart();
+        OpenZenMoveObject.Instance.Calibration();
     }
 
     // Update is called once per frame
-     void Update()
+     void FixedUpdate()
      {
         IMU_data = OpenZenMoveObject.Instance.sensorEulerData;
         //YSlider.value = OpenZenMoveObject.Instance.sensorEulerData.y * -1.3f;
         //XSlider.value = OpenZenMoveObject.Instance.sensorEulerData.x * 1.3f;
         //print("XSlider.value" + XSlider.value + ", YSlider.value : " + YSlider.value);
-        print("XSlider.value" + IMU_data.x + ", YSlider.value : " + IMU_data.y);
+        //print("XSlider.value" + IMU_data.x + ", YSlider.value : " + IMU_data.y);
          if (IMU_data.y > 9.5)
          {
             //transform.rotation = Quaternion.Euler(new Vector3(0, (XSlider.value / XSlider.maxValue) * 90, 0));
@@ -52,14 +54,14 @@ public class Chef_PlayerMove : MonoBehaviour
                 // transform.Translate(Vector3.up * YSlider.value);
                 transform.Translate(Vector3.up * (IMU_data.y / YmaxValue) * -1f);
         }
-         else if (IMU_data.x > 3.4)
+         else if (IMU_data.x > 9)
          {
             //transform.eulerAngles += new Vector3(0,(XSlider.value / XSlider.maxValue) * 1.5f , 0);
             // transform.eulerAngles += new Vector3(0, XSlider.value, 0);
             transform.eulerAngles += new Vector3(0, (IMU_data.x / XmaxValue) * 1.2f, 0);
 
         }
-         else if (IMU_data.x < -3.4)
+         else if (IMU_data.x < -9)
          {
             //transform.rotation = Quaternion.Euler(new Vector3(0,(XSlider.value / XSlider.maxValue) * 90, 0));
             //transform.eulerAngles += new Vector3(0, (XSlider.value / XSlider.maxValue) * 1.5f, 0);

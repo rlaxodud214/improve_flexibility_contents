@@ -108,8 +108,13 @@ public class OpenZenMoveObject : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Space))
         {
-            offset += sensorEulerData;
+            Calibration();
         }
+    }
+
+    public void Calibration()
+    {
+        offset += sensorEulerData;
     }
 
     // 0~360범위 내의 값만 나오게 하는 코드
