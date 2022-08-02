@@ -215,7 +215,10 @@ public class Chef_UIManager : MonoBehaviour
         if (Reward >= 234)
             StarImages[1].color = STARON;
         if (Reward >= 367)
-            StarImages[2].color = STARON; 
+            StarImages[2].color = STARON;
+
+        if (Reward > 500)
+            Reward = 500;
 
         RewardText.text = "+" + Reward;
         //Playtime_Text.text = playtime/60 + "분" + playtime%60 + "초";

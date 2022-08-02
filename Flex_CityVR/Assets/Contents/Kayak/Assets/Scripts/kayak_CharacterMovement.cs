@@ -83,7 +83,7 @@ public class kayak_CharacterMovement : MonoBehaviour
     {
         //Camera.GetComponent<Animator>().SetBool("Death", true); // VR 미사용시
         yield return new WaitForSeconds(3f);
-        kayak_GameManager.Game.PlayerDeath();
+        kayak_GameManager.Game.Reward();
     }
 
     void TextOff()

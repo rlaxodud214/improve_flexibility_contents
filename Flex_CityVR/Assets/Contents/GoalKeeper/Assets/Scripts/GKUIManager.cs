@@ -128,6 +128,9 @@ public class GKUIManager : MonoBehaviour
         if (reward >= 367)
             StarImages[2].color = STARON;
 
+        if (reward > 500)
+            reward = 500;
+
         RewardText.text = reward.ToString();
         TotalPlaytimeText.text = playtime;
 

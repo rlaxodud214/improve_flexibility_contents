@@ -18,9 +18,10 @@ public class kayak_GameManager : MonoBehaviour
     Vector3 StonePos = new Vector3(117.94f, -3.6f, -28.4f);
 
     public GameObject PausePanel;
-    public GameObject DeathPanel;
+    //public GameObject DeathPanel;
+    public GameObject RewardPanel;
     public GameObject StartPanel;
-
+    public GameObject ExplainPanel;
     public Text SurviveTimeText;
 
     public GameObject StartBtn;
@@ -36,6 +37,24 @@ public class kayak_GameManager : MonoBehaviour
     public GameObject Path;
     public OpenZenMoveObject openZenMoveObjectcs;
     GameObject CreatedShark;
+
+    private int MinReward = 100;
+    private int MaxReward = 500;
+
+    public List<Image> StarImages;  // 인스펙터 창에서 별 이미지 오브젝트 넣기
+    public Text RewardText;
+    public Text TotalPlaytimeText;
+
+    #region 
+    // 색상값을 담을 Color 인스턴스
+    Color RED;
+    Color GREEN;
+    Color DEFAULT;
+
+
+    Color STARON, STAROFF;  // 별 색깔을 담을 Color 오브젝트
+
+    #endregion
 
     public GameObject canvas;
 
@@ -56,7 +75,21 @@ public class kayak_GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ExplainPanel.SetActive(true);
         //StartGame();
+        // 색상값 초기화
+        ColorUtility.TryParseHtmlString("#FF8888", out RED);
+        ColorUtility.TryParseHtmlString("#8DFF88", out GREEN);
+        ColorUtility.TryParseHtmlString("#FFFFFF", out DEFAULT);
+
+        ColorUtility.TryParseHtmlString("#FFCC47", out STARON); // 노란별 색
+        ColorUtility.TryParseHtmlString("#374355", out STAROFF); // 까만별 색
+        //explainPanel.SetActive(true);
+
+        for (int i = 0; i < StarImages.Count; i++)
+        {
+            StarImages[i].color = STAROFF;
+        }
     }
 
     // Update is called once per frame
@@ -81,10 +114,6 @@ public class kayak_GameManager : MonoBehaviour
                 }
             }
         }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SceneManager.LoadScene("mainCity");
-        }
 
         #region 카메라 Rig 조정
         if (Input.GetKey(KeyCode.UpArrow))
@@ -102,12 +131,37 @@ public class kayak_GameManager : MonoBehaviour
         #endregion
     }
 
-    public void PlayerDeath()
+/*    public void PlayerDeath()
     {
         // PauseState = true;
         DeathPanel.SetActive(true);
         //생존시간 * 현재속도 * 1.5=점수
         ScoreText.text = "점수 : " + (SurviveTime * CurrentPlayer.GetComponent<kayak_CharacterMovement>().speed * 1.5f + 10).ToString("N0") + "\n" + SurviveTimeText.text;
+    }*/
+
+    public void Reward()
+    {
+        string min = ((int)SurviveTime / 60).ToString("D2");
+        string sec = ((int)SurviveTime % 60).ToString("D2");
+        int reward = MinReward + ((int)SurviveTime - 40) * ((MaxReward - MinReward) / (120 - 40));
+        Time.timeScale = 0f;    // 게임정지
+
+        // 리워드 범위 별로 별 추가
+        if (reward < 100)
+            RewardText.text = "0";
+        if (reward >= 100)
+            StarImages[0].color = STARON;
+        if (reward >= 234)
+            StarImages[1].color = STARON;
+        if (reward >= 367)
+            StarImages[2].color = STARON;
+
+        if (reward > 500)
+            reward = 500;
+
+        RewardText.text = reward.ToString();
+        TotalPlaytimeText.text = string.Format("{0}:{1}", min, sec);
+        RewardPanel.SetActive(true);
     }
     public void Revive()
     {
@@ -116,7 +170,7 @@ public class kayak_GameManager : MonoBehaviour
         Destroy(CurrentPlayer.transform.Find("XR Rig").gameObject); // VR 사용시
         CurrentPlayer.GetComponent<kayak_CharacterMovement>().enabled = false;
 
-        DeathPanel.SetActive(false);
+        RewardPanel.SetActive(false);
         SurviveTime = 0;
         SurviveTimeText.text = "생존 시간 : " + SurviveTime.ToString("N1") + " 초";
 
@@ -136,7 +190,7 @@ public class kayak_GameManager : MonoBehaviour
         canvas = GameObject.Find("KayakV2 1(Clone)").transform.Find("Canvas (1)").gameObject;
         print(canvas);
         PausePanel = canvas.transform.Find("PausePanel").gameObject;
-        DeathPanel = canvas.transform.Find("DeathPanel").gameObject;
+        RewardPanel = canvas.transform.Find("Reward").gameObject;
         StartPanel = canvas.transform.Find("StartPanel").gameObject;
         SurviveTimeText = canvas.transform.Find("surviveTimeText").GetComponent<Text>();
         StartBtn = canvas.transform.Find("StartBtn").gameObject;
@@ -173,12 +227,18 @@ public class kayak_GameManager : MonoBehaviour
     {
         Time.timeScale = 1;
         PauseState = false;
-        Application.Quit();
+        SceneManager.LoadScene("mainCity");
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
+        Application.Quit();
 #else
                         Application.Quit(); // 어플리케이션 종료
 #endif
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene("KayakGame");
     }
 
     public void StartGame() // VR 미사용 -> 사용

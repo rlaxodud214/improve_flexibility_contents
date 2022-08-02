@@ -54,14 +54,14 @@ public class Chef_PlayerMove : MonoBehaviour
                 // transform.Translate(Vector3.up * YSlider.value);
                 transform.Translate(Vector3.up * (IMU_data.y / YmaxValue) * -1f);
         }
-         else if (IMU_data.x > 9)
+         else if (IMU_data.x > 0)
          {
             //transform.eulerAngles += new Vector3(0,(XSlider.value / XSlider.maxValue) * 1.5f , 0);
             // transform.eulerAngles += new Vector3(0, XSlider.value, 0);
             transform.eulerAngles += new Vector3(0, (IMU_data.x / XmaxValue) * 1.2f, 0);
 
         }
-         else if (IMU_data.x < -9)
+         else if (IMU_data.x < 0)
          {
             //transform.rotation = Quaternion.Euler(new Vector3(0,(XSlider.value / XSlider.maxValue) * 90, 0));
             //transform.eulerAngles += new Vector3(0, (XSlider.value / XSlider.maxValue) * 1.5f, 0);

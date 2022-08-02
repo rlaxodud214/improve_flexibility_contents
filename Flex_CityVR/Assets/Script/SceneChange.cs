@@ -40,8 +40,8 @@ public class SceneChange : MonoBehaviour
             case "T_soccer":
                 SceneManager.LoadScene("GoalKeeper");
                 break;
-            case "T_limbo":
-                break;
+/*            case "T_limbo":
+                break;*/
             case "T_kayak":
                 SceneManager.LoadScene("KayakGame");
                 break;
@@ -54,6 +54,7 @@ public class SceneChange : MonoBehaviour
                 SceneManager.LoadScene("BattleCity");
                 break;
             case "T_chef":
+                SceneManager.LoadScene("Chef_Main");
                 break;
             case "T_arrow":
                 break;
