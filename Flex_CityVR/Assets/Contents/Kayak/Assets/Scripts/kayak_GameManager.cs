@@ -75,6 +75,14 @@ public class kayak_GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        #region Shark Creator
+        for (int i = 0; i < Path.transform.childCount; i++)
+        {
+            GameObject shark = Instantiate<GameObject>(SharkPrefab, SharkParent.transform);
+            shark.transform.GetComponent<PathFollower>().pathCreator = Path.transform.GetChild(i).GetComponent<PathCreator>();
+        }
+        #endregion
+
         ExplainPanel.SetActive(true);
         //StartGame();
         // 색상값 초기화
@@ -148,7 +156,10 @@ public class kayak_GameManager : MonoBehaviour
 
         // 리워드 범위 별로 별 추가
         if (reward < 100)
+        {
             RewardText.text = "0";
+            reward = 0;
+        }
         if (reward >= 100)
             StarImages[0].color = STARON;
         if (reward >= 234)
@@ -158,6 +169,7 @@ public class kayak_GameManager : MonoBehaviour
 
         if (reward > 500)
             reward = 500;
+
 
         RewardText.text = reward.ToString();
         TotalPlaytimeText.text = string.Format("{0}:{1}", min, sec);

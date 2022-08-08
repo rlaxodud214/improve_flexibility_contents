@@ -63,7 +63,7 @@ public class Chef_TutorialUIManager : MonoBehaviour
         CountTry.SetActive(false);
         PlayerMoveExpalinPanel.SetActive(false);
         ExplainInteractPanel.SetActive(false);
-        Invoke("StagePanelOff", 3f); // 게임의 전체적인 진행방식을 3초동안 띄운 뒤에 없어지게함
+        Invoke("PlayerMoveExpalinOn", 3f); // 게임의 전체적인 진행방식을 3초동안 띄운 뒤에 없어지게함
 
         //setExplain();
     }
@@ -93,10 +93,12 @@ public class Chef_TutorialUIManager : MonoBehaviour
         CompleteFood.SetActive(false);
         UIPanel.SetActive(false);
         CountTry.SetActive(false);
-        PlayerMoveExpalinOn();
+        Time.timeScale = 1f;
+        //PlayerMoveExpalinOn();
     }
     public void PlayerMoveExpalinOn()
     {
+        stagePanel.SetActive(false);
         PlayerMoveExpalinPanel.SetActive(true);
         Time.timeScale = 0;
         //Invoke("PlayerMoveExpalinOff", 3f);

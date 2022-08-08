@@ -43,6 +43,7 @@ public class Chef_TutorialInventory : MonoBehaviour
         for (int i = 0; i < maxSlot; i++)
         { 
             GameObject go = Instantiate<GameObject>(slotPrefab, slotPanel.transform);
+            go.transform.GetComponent<RectTransform>().localScale = new Vector3(1.5f, 1.5f, 1.5f);
             go.name = "Slot_" + i;
             Chef_SlotData slot = this.gameObject.AddComponent<Chef_SlotData>();
             //Chef_SlotData slot = new Chef_SlotData();

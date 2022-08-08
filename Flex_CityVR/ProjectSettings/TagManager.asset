@@ -17,6 +17,24 @@ TagManager:
   - Collider
   - Bullet
   - EnemySlider
+  - River
+  - ladder
+  - YSlider
+  - XSlider
+  - RespawnBox
+  - Broccoli
+  - Meat
+  - Tomato
+  - Mushroom
+  - Sausage
+  - Lemon
+  - Banana
+  - Bread
+  - Donut
+  - Apple
+  - GoalNet
+  - Enemy
+  - obstacle
   layers:
   - Default
   - TransparentFX

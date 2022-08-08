@@ -7,8 +7,8 @@ using System.Threading;
 
 public class Chef_PlayerMove : MonoBehaviour
 {
-    public Slider YSlider;
-    public Slider XSlider;
+    //public Slider YSlider;
+    //public Slider XSlider;
     public float speed = 15f;
     public bool isLadder;
     public Vector3 IMU_data;
@@ -29,8 +29,8 @@ public class Chef_PlayerMove : MonoBehaviour
         XSlider.minValue = -34.4f;
         YSlider.maxValue = 95f;
         YSlider.minValue = -36.6f;*/
-        OpenZenMoveObject.Instance.runstart();
-        OpenZenMoveObject.Instance.Calibration();
+        //OpenZenMoveObject.Instance.runstart();
+        //OpenZenMoveObject.Instance.Calibration();
     }
 
     // Update is called once per frame
@@ -54,14 +54,14 @@ public class Chef_PlayerMove : MonoBehaviour
                 // transform.Translate(Vector3.up * YSlider.value);
                 transform.Translate(Vector3.up * (IMU_data.y / YmaxValue) * -1f);
         }
-         else if (IMU_data.x > 0)
+         else if (IMU_data.x > -5)
          {
             //transform.eulerAngles += new Vector3(0,(XSlider.value / XSlider.maxValue) * 1.5f , 0);
             // transform.eulerAngles += new Vector3(0, XSlider.value, 0);
             transform.eulerAngles += new Vector3(0, (IMU_data.x / XmaxValue) * 1.2f, 0);
 
         }
-         else if (IMU_data.x < 0)
+         else if (IMU_data.x < 5)
          {
             //transform.rotation = Quaternion.Euler(new Vector3(0,(XSlider.value / XSlider.maxValue) * 90, 0));
             //transform.eulerAngles += new Vector3(0, (XSlider.value / XSlider.maxValue) * 1.5f, 0);
