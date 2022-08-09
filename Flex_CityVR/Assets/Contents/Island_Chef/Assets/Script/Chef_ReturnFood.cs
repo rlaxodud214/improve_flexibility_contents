@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using BNG;
 
 [System.Serializable]
 public class FoodData
@@ -80,11 +81,12 @@ public class Chef_ReturnFood : MonoBehaviour
 
     private void OnTriggerStay(Collider collision)
     {
-        if (collision.tag == "Player" && Input.GetKey(KeyCode.Space))
+        // VR -> Player 태그는 Locomation에 적용
+        if (collision.tag == "Player" && InputBridge.Instance.RightTriggerUp)
         {
             if (!isDelay)
             {
-                inven = collision.GetComponent<Chef_Inventory>();
+                inven = collision.transform.root.GetComponent<Chef_Inventory>();
 
                 var len = 0;
                 for (int i = 0; i < Chef_ReturnFood._Instance.food[Chef_StageManagement._Instance.stageNum].ingredients.Length; i++)

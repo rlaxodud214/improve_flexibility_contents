@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Threading;
+using BNG;
+
 
 public class Chef_PlayerMove : MonoBehaviour
 {
@@ -48,12 +50,12 @@ public class Chef_PlayerMove : MonoBehaviour
             // transform.Translate(Vector3.forward * YSlider.value );
             transform.Translate(Vector3.forward * (IMU_data.y / YmaxValue) * 0.7f);
         }
-         else if ((IMU_data.y < -3.6) && isLadder)
+/*         else if ((IMU_data.y < -3.6) && isLadder)
          {
                 //transform.Translate(Vector3.up * (YSlider.value / YSlider.maxValue) * -5f );
                 // transform.Translate(Vector3.up * YSlider.value);
                 transform.Translate(Vector3.up * (IMU_data.y / YmaxValue) * -1f);
-        }
+        }*/
          else if (IMU_data.x > -5)
          {
             //transform.eulerAngles += new Vector3(0,(XSlider.value / XSlider.maxValue) * 1.5f , 0);
@@ -67,6 +69,11 @@ public class Chef_PlayerMove : MonoBehaviour
             //transform.eulerAngles += new Vector3(0, (XSlider.value / XSlider.maxValue) * 1.5f, 0);
             // transform.eulerAngles += new Vector3(0, XSlider.value, 0);
             transform.eulerAngles += new Vector3(0, (IMU_data.x / XmaxValue) * 1.2f, 0);
+        }
+
+         if(isLadder && InputBridge.Instance.AButton)
+        {
+            transform.Translate(Vector3.up * -1f);
         }
      }
 
@@ -143,9 +150,10 @@ public class Chef_PlayerMove : MonoBehaviour
         }
     }
 
+
     private void OnTriggerExit(Collider other)
     {
-        
+
         if (other.CompareTag("ladder"))
         {
             print("OnTriggerExit : " + other.gameObject.name);
@@ -155,6 +163,7 @@ public class Chef_PlayerMove : MonoBehaviour
             // print("ladderout");
         }
     }
+
     void inactivewarn()
     {
         Chef_UIManager._Instance.inactivewarning();

@@ -160,7 +160,7 @@ public class Chef_UIManager : MonoBehaviour
     // 게임 재시작
     public void Restart()
     {
-        Chef_StageManagement._Instance.stageNum--;
+        //Chef_StageManagement._Instance.stageNum--;
         SceneManager.LoadScene("Chef_Game");
     }
     public void NextStage() // 음식의 숫자보다 적을 경우에는 다음 게임씬을 불러오고 아니면 End씬 호출

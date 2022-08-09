@@ -209,11 +209,11 @@ public class Player : MonoBehaviour
         if (objectName == "T_kay") dic_contents["T_kayak"] = true;              //카약
         else if (objectName == "T_hos") dic_contents["T_hospital"] = true;      //병원
         else if (objectName == "T_soc") dic_contents["T_soccer"] = true;        //골키퍼
-        else if (objectName == "T_lim") dic_contents["T_limbo"] = true;         //림보
+        //else if (objectName == "T_lim") dic_contents["T_limbo"] = true;         //림보
         else if (objectName == "T_fly") dic_contents["T_fly"] = true;           //건물 피하기
         //else if (objectName == "T_win") dic_contents["T_window"] = true;        //창문 닦기
         else if (objectName == "T_bat") dic_contents["T_battle"] = true;     //포트리스
-        else if (objectName == "T_che") dic_contents["T_chef"] = true;         //음식만들기
+        //else if (objectName == "T_che") dic_contents["T_chef"] = true;         //음식만들기
         else if (objectName == "T_arr") dic_contents["T_arrow"] = true;       //활쏘기
         UIManager.instance.informPanel.SetActive(true);
         UIManager.instance.informText.text = "콘텐츠 수행 장소로 이동하시겠습니까?"; //informtype contetns일때

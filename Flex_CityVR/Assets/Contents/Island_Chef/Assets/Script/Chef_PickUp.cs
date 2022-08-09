@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+//using UnityEngine.UI;
+using BNG;
 
 public class Chef_PickUp : MonoBehaviour
 {
@@ -32,11 +33,12 @@ public class Chef_PickUp : MonoBehaviour
 
     private void OnTriggerStay(Collider collision)
     {
-        if (collision.tag == "Player" && Input.GetKey(KeyCode.Space))
+        // VR -> Player 태그는 Locomation에 적용
+        if (collision.tag == "Player" && InputBridge.Instance.RightTriggerUp)
         {
             if (!isDelay)
             {
-                inven = collision.GetComponent<Chef_Inventory>();
+                inven = collision.transform.root.GetComponent<Chef_Inventory>();
                 for (int i = 0; i < inven.slots.Count; i++)
                 {
                     if (inven.slots[i].isEmpty) 

@@ -47,7 +47,7 @@ public class PhoneControl : MonoBehaviour
         {
             if (startPhone && canCall) {
                 canCall = false;
-                StartCoroutine(phoneCon());
+                StartCoroutine(phoneOn());
             }
         }
     }
@@ -56,7 +56,7 @@ public class PhoneControl : MonoBehaviour
         yield return new WaitForSeconds(2f);
     }
 
-    IEnumerator phoneCon()
+    IEnumerator phoneOn()
     {
         if (phone_on) // 켜져 있으면
         {

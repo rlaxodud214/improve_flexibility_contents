@@ -53,9 +53,9 @@ public class SceneChange : MonoBehaviour
             case "T_battle":
                 SceneManager.LoadScene("BattleCity");
                 break;
-            case "T_chef":
+/*            case "T_chef":
                 SceneManager.LoadScene("Chef_Main");
-                break;
+                break;*/
             case "T_arrow":
                 break;
             default:

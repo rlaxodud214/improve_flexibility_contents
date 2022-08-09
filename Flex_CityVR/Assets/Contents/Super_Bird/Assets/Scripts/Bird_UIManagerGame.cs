@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class Bird_UIManagerGame : MonoBehaviour
 {
-    public GameObject playPanel, pausePanel, endPanel, timePanel, pauseBtn;
+    public GameObject  SliderCanvas, PauseCanvas,playPanel, pausePanel, endPanel, timePanel, pauseBtn;
+    public GameObject RighetHandPointer;
     public Text gamePlayTime;
     public Text Cleartime_Text;
     public Text RewardText; //리워드
@@ -44,6 +45,7 @@ public class Bird_UIManagerGame : MonoBehaviour
         playPanel.SetActive(true);
         timePanel.SetActive(false);
 
+        endPanel.transform.GetComponent<Canvas>().worldCamera = RighetHandPointer.transform.GetChild(1).GetComponent<Camera>();
         ColorUtility.TryParseHtmlString("#FFCC47", out STARON); // 노란별 색
         ColorUtility.TryParseHtmlString("#374355", out STAROFF); // 까만별 색
 
@@ -101,14 +103,22 @@ public class Bird_UIManagerGame : MonoBehaviour
 
     public void PauseRestart()
     {
+        //Time.timeScale = 1f;
         Bird_SoundManager.instance.EffectOn();
         SceneManager.LoadScene("Bird_GameScene");
     }
 
     public void PauseMainSecen()
     {
+        //Time.timeScale = 1f;
         Bird_SoundManager.instance.EffectOn();
         SceneManager.LoadScene("Bird_MainScene");     
+    }
+
+    public void test()
+    {
+        //Time.timeScale = 1f;
+        print("눌림");
     }
 
     public void GameOver()
@@ -122,6 +132,8 @@ public class Bird_UIManagerGame : MonoBehaviour
             Cleartime_Text.text = ((int)playtime / 60) + ":" + ((int)playtime % 60);
 
         }
+        SliderCanvas.SetActive(false);
+        PauseCanvas.SetActive(false);
         endPanel.SetActive(true);
         Time.timeScale = 0f;
         timerStart = false;
