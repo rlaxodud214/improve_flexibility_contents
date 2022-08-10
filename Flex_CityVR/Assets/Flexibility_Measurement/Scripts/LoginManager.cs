@@ -49,6 +49,7 @@ public class LoginManager : MonoBehaviour
     // 로그인 메소드 -> 성공 시 로그 찍음
     public void Login()
     {
+        LoginButton.interactable = false;
         // 테스트용
         var request = new LoginWithEmailAddressRequest { Email = "soun997@naver.com", Password = "123456" };
 
@@ -77,6 +78,8 @@ public class LoginManager : MonoBehaviour
         GameObject userDataManager = new GameObject("UserDataManager");
         userDataManager.AddComponent<UserDataManager>();
 
+        //yield return null;
+        Time.timeScale = 1f;
         yield return new WaitForSeconds(3f);
         SceneManager.LoadScene("mainCity");
     }
@@ -149,6 +152,7 @@ public class LoginManager : MonoBehaviour
     // Login 관련 Error 핸들러
     void ErrorHandler(PlayFabError error)
     {
+        LoginButton.interactable = true;
         switch (error.Error)
         {
             case PlayFabErrorCode.AccountNotFound:

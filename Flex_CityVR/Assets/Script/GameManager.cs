@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [HideInInspector]
     public GameObject XR_Rig;
 
     public static GameManager instance;   // 싱글톤 
@@ -13,7 +12,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        XR_Rig = GameObject.Find("XR Rig");
     }
 
     // Start is called before the first frame update

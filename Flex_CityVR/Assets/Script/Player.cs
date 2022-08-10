@@ -143,8 +143,8 @@ public class Player : MonoBehaviour
     // Cntents Trigger 입장 여부
     public Dictionary<string, bool> dic_contents = new Dictionary<string, bool>()
     {
-        {"T_hospital", false},{"T_soccer", false},{"T_limbo", false},{"T_kayak", false},
-        {"T_fly", false},{"T_window", false},{"T_battle", false},{"T_chef", false},{"T_arrow", false},
+        {"T_hospital", false},{"T_soccer", false},{"T_balloon", false},{"T_kayak", false},
+        {"T_fly", false},{"T_gondola", false},{"T_battle", false},{"T_chef", false},{"T_arrow", false},
     };
 
     public static Player instance;   //싱글톤 
@@ -174,6 +174,11 @@ public class Player : MonoBehaviour
         {
             objectName = other.name.Substring(0, 5);
             timer = true;
+        }
+        else if (other.gameObject.name == "GondolaPanel")
+        {
+            UIManager.instance.informPanel.SetActive(true);
+            UIManager.instance.informText.text = "곤돌라에서 내리시겠습니까?";
         }
     }
 
@@ -209,14 +214,17 @@ public class Player : MonoBehaviour
         if (objectName == "T_kay") dic_contents["T_kayak"] = true;              //카약
         else if (objectName == "T_hos") dic_contents["T_hospital"] = true;      //병원
         else if (objectName == "T_soc") dic_contents["T_soccer"] = true;        //골키퍼
-        //else if (objectName == "T_lim") dic_contents["T_limbo"] = true;         //림보
         else if (objectName == "T_fly") dic_contents["T_fly"] = true;           //건물 피하기
-        //else if (objectName == "T_win") dic_contents["T_window"] = true;        //창문 닦기
         else if (objectName == "T_bat") dic_contents["T_battle"] = true;     //포트리스
-        //else if (objectName == "T_che") dic_contents["T_chef"] = true;         //음식만들기
         else if (objectName == "T_arr") dic_contents["T_arrow"] = true;       //활쏘기
+        else if (objectName == "T_gon") dic_contents["T_gondola"] = true;        //곤돌라
+        else if (objectName == "T_bal") dic_contents["T_balloon"] = true;       //열기구
         UIManager.instance.informPanel.SetActive(true);
         UIManager.instance.informText.text = "콘텐츠 수행 장소로 이동하시겠습니까?"; //informtype contetns일때
+        if (dic_contents["T_gondola"])
+        {
+            UIManager.instance.informText.text = "곤돌라에 탑승하시겠습니까?";
+        }
         print("이용 중인 포탈은 : " + KeySearch());
     }
 

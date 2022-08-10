@@ -10,6 +10,7 @@ public enum EinformType
     Shop,
     Inventory,
     PetSafe,
+    Ride,
 }
 public class UISetting
 {

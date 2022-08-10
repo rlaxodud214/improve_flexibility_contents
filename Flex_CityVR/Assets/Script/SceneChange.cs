@@ -4,10 +4,6 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
-// 비동기 씬로드 참고 --> 포기
-// https://guks-blog.tistory.com/entry/UNITYC%EB%B9%84%EB%8F%99%EA%B8%B0-Scene-%EB%A1%9C%EB%93%9C%ED%95%98%EA%B8%B0
-// https://blog.naver.com/developer_hyw/221043427652
-
 public class SceneChange : MonoBehaviour
 {
     public static SceneChange instance;   // 싱글톤 
@@ -35,7 +31,8 @@ public class SceneChange : MonoBehaviour
         switch (get_key)
         {
             case "T_hospital":
-                StartCoroutine(Teleport.instance.TeleportMeasure());
+                int teleportPosition = Teleport.instance.teleportLocation.transform.childCount - 1; // 측정 장소
+                StartCoroutine(Teleport.instance.TeleportLocation(teleportPosition));
                 break;
             case "T_soccer":
                 SceneManager.LoadScene("GoalKeeper");
@@ -47,9 +44,7 @@ public class SceneChange : MonoBehaviour
                 break;
             case "T_fly":
                 SceneManager.LoadScene("Bird_MainScene");
-                break;
-/*            case "T_window":
-                break;*/
+                break; 
             case "T_battle":
                 SceneManager.LoadScene("BattleCity");
                 break;
@@ -58,11 +53,28 @@ public class SceneChange : MonoBehaviour
                 break;*/
             case "T_arrow":
                 break;
+            case "T_gondola":
+                UIManager.instance.setInformType(5);
+                int teleportPosition2 = Teleport.instance.teleportLocation.transform.childCount - 2; // 측정 장소
+                StartCoroutine(Teleport.instance.TeleportLocation(teleportPosition2));
+                StartCoroutine(Teleport.instance.GondolarAnimation());
+                break;
+            case "T_balloon":
+                UIManager.instance.setInformType(5);
+                StartCoroutine(Teleport.instance.GondolarAnimation());
+                break;
             default:
                 Debug.Log("<color=Red>입장한 포탈이 없습니다.</color>");
                 break;
         }
-        Player.instance.dic_contents[get_key] = false;
+        if (Player.instance.dic_contents["T_gondola"] || Player.instance.dic_contents["T_balloon"])
+        {
+            return;
+        }
+        else
+        {
+            Player.instance.dic_contents[get_key] = false;
+        }
         //나중에 콘텐츠 수행하고 다시 메인시티로 돌아올 때 해당 Player의 딕셔너리 value false로 바꿔주기 -> 미정
     }
 }

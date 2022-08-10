@@ -70,6 +70,9 @@ public class UIManager : MonoBehaviour
             case EinformType.PetSafe:
                 print("PetSafe Cancle");
                 break;
+            case EinformType.Ride:
+                print("Ride Cancle");
+                break;
 
         }
         informPanel.SetActive(false);
@@ -93,6 +96,10 @@ public class UIManager : MonoBehaviour
                 ItemUse.instance.UseItem();
                 break;
             case EinformType.PetSafe:
+                break;
+            case EinformType.Ride:
+                setInformType(0);
+                StartCoroutine(Teleport.instance.RideGetOut());
                 break;
         }
         informPanel.SetActive(false);

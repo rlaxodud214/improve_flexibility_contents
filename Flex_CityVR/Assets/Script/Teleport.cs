@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using BNG;
 
 public class Teleport : MonoBehaviour
 {
+    #region variables
     // teleport
     public GameObject Player_Controller; // 임시
 
@@ -20,7 +22,10 @@ public class Teleport : MonoBehaviour
     public Image backImg;
     //
 
+    public Transform RideRoot;
+
     public static Teleport instance;   // 싱글톤 
+    #endregion
 
     void Awake()
     {
@@ -34,7 +39,7 @@ public class Teleport : MonoBehaviour
             telePos.Add(teleportBtn.GetChild(i).name, teleportLocation.transform.GetChild(i).gameObject);
         }
 
-        backImg.gameObject.SetActive(false); 
+        backImg.gameObject.SetActive(false);
     }
 
     public void Start()
@@ -91,15 +96,18 @@ public class Teleport : MonoBehaviour
         img.gameObject.SetActive(false);
     }
 
-
-    public void Doteleport() // UI 버튼 함수에 연결
+    public void PlayerAnimatorOff()
     {
         backImg.gameObject.SetActive(true);
         // CharacterController 꺼줘야 캐릭터가 이동함, 페이드아웃될 때 못 움직이도록 함
-        Player.instance.controller_state = false;
+        //Player.instance.controller_state = false;
         Player_Controller.transform.GetComponent<CharacterController>().enabled = false;
-
         StartCoroutine(FadeInCamera(backImg, 3f));
+    }
+
+    public void Doteleport() // UI 버튼 함수에 연결
+    {
+        PlayerAnimatorOff();
         StartCoroutine(changePosition());
     }
 
@@ -110,7 +118,7 @@ public class Teleport : MonoBehaviour
         Vector3 wantPos = telePos[name].transform.position;
         yield return new WaitForSeconds(3.1f); // 캐릭터 이동이 fadeout 보다 먼저 발생하지 않도록
         Player_Controller.transform.position = wantPos;
-        Player.instance.controller_state = true;
+        //Player.instance.controller_state = true;
         Player_Controller.transform.GetComponent<CharacterController>().enabled = true;
         yield return new WaitForSeconds(3f);
         backImg.gameObject.SetActive(false);
@@ -128,22 +136,70 @@ public class Teleport : MonoBehaviour
         StartCoroutine(FadeOutCamera(nowTitle, 2f));
     }
 
-    public IEnumerator TeleportMeasure() // 측정 장소 이동
+    public IEnumerator TeleportLocation(int teleportPosition) // 콘텐츠 장소 외 텔레포트
     {
-        backImg.gameObject.SetActive(true);
-        // CharacterController 꺼줘야 캐릭터가 이동함, 페이드아웃될 때 못 움직이도록 함
-        Player.instance.controller_state = false;
-        Player_Controller.transform.GetComponent<CharacterController>().enabled = false;
-
-        StartCoroutine(FadeInCamera(backImg, 3f));
+        PlayerAnimatorOff();
 
         yield return new WaitForSeconds(3.1f); // 캐릭터 이동이 fadeout 보다 먼저 발생하지 않도록
 
-        Player_Controller.transform.position = teleportLocation.transform.GetChild(9).position;
-        Player.instance.controller_state = true;
+        Player_Controller.transform.position = teleportLocation.transform.GetChild(teleportPosition).position;
+        //Player.instance.controller_state = true;
         Player_Controller.transform.GetComponent<CharacterController>().enabled = true;
 
         yield return new WaitForSeconds(3f);
         backImg.gameObject.SetActive(false);
+    }
+
+    public IEnumerator GondolarAnimation()
+    {
+        // 해시값으로 제어하면 비용이 더 적게 듦
+        int hashGondola = Animator.StringToHash("gondola");
+        yield return new WaitForSeconds(7f);
+        RideRoot.Find("gondolaRoot").transform.GetChild(0).GetComponent<Animator>().SetBool(hashGondola, true);
+    }
+
+    public IEnumerator BalloonAnimation()
+    {
+        int hashBalloon = Animator.StringToHash("balloon");
+        yield return new WaitForSeconds(7f);
+        RideRoot.Find("BalloonRide").transform.GetComponent<Animator>().SetBool(hashBalloon, true);
+    }
+
+    public void StartRideGetOut()
+    {
+        StartCoroutine(RideGetOut());
+    }
+
+    public IEnumerator RideGetOut()
+    {
+        PlayerAnimatorOff();
+        Vector3 wantPos = Vector3.zero;
+        if (Player.instance.dic_contents["T_gondola"])
+        {
+            wantPos = teleportLocation.transform.Find("곤돌라").position;
+        }
+        else if (Player.instance.dic_contents["T_balloon"])
+        {
+            wantPos = teleportLocation.transform.Find("시작지점").position;
+        }
+
+        yield return new WaitForSeconds(3.1f);
+        Player_Controller.transform.position = wantPos;
+        //Player.instance.controller_state = true;
+        Player_Controller.transform.GetComponent<CharacterController>().enabled = true;
+        yield return new WaitForSeconds(3f);
+        backImg.gameObject.SetActive(false);
+
+        if (Player.instance.dic_contents["T_gondola"])
+        {
+            RideRoot.Find("gondolaRoot").transform.GetChild(0).GetComponent<Animator>().SetBool("gondola", false);
+            Player.instance.dic_contents["T_gondola"] = false;
+        }
+        else if (Player.instance.dic_contents["T_balloon"])
+        {
+            RideRoot.Find("BalloonRide").transform.GetComponent<Animator>().SetBool("balloon", false);
+            Player.instance.dic_contents["T_balloon"] = false;
+        }
+        
     }
 }
