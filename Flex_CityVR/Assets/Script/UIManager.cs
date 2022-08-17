@@ -26,7 +26,8 @@ public class UIManager : MonoBehaviour
     //
 
     // 감정 표현
-    public Image EmotionImage;
+    public GameObject EmotionImage;
+    private string EmotionText;
     //
     void Awake()
     {
@@ -37,9 +38,9 @@ public class UIManager : MonoBehaviour
         index = 0;
         previousAxisContent = AxisContentPanel[0];
         Blue = new Color(42/255f, 53/255f, 66/255f); // 색상을 RGB 값으로 스크립트 변경하려면 255로 나눠줘야 함
-
-        EmotionImage.enabled = true;
         #endregion
+
+        EmotionImage.SetActive(false);
     }
     // Start is called before the first frame update
     void Start()
@@ -184,16 +185,15 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
-    public void EmotionClick(Sprite img)
+    public void EmotionClick()
     {
-        StartCoroutine(EmotionMouseClick(img));
+        StartCoroutine(EmotionMouseClick());
     }
 
-    public IEnumerator EmotionMouseClick(Sprite img)
+    private IEnumerator EmotionMouseClick()
     {
-        //EmotionImage.SetActive(true);
-        EmotionImage.transform.GetComponent<Image>().sprite = img;
+        EmotionImage.SetActive(true);
         yield return new WaitForSeconds(5f);
-        //EmotionImage.SetActive(false);
+        EmotionImage.SetActive(false);
     }
 }
