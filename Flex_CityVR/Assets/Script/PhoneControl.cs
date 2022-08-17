@@ -14,8 +14,13 @@ public class PhoneControl : MonoBehaviour
     public GameObject Phone;
     private bool startPhone; // 컨트롤러 A 버튼 입력 bool 변수
     private bool canCall; // 연속된 입력으로 코루틴이 연달아 실행되지 않도록 제어하는 bool 변수
+
     // XR Rig
     private GameObject XR_Rig;
+
+    // Emotion
+    private bool EmotionOn;
+    public GameObject EmotionPanel;
 
     // Start is called before the first frame update
 
@@ -31,6 +36,8 @@ public class PhoneControl : MonoBehaviour
         startPhone = false;
         canCall = true;
         #endregion
+
+        EmotionOn = false;
     }
     void Start()
     {
@@ -49,6 +56,16 @@ public class PhoneControl : MonoBehaviour
                 canCall = false;
                 StartCoroutine(phoneOn());
             }
+        }
+        else if (InputBridge.Instance.XButton && !EmotionOn)
+        {
+            EmotionPanel.SetActive(true);
+            EmotionOn = true;
+        }
+        else if (InputBridge.Instance.XButton && EmotionOn)
+        {
+            EmotionPanel.SetActive(false);
+            EmotionOn = false;
         }
     }
 

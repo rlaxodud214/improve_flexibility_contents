@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.EventSystems;
 public class UIManager : MonoBehaviour
 {
     // Text UI
@@ -24,6 +24,10 @@ public class UIManager : MonoBehaviour
     private GameObject previousAxisContent;
     private Color Blue;
     //
+
+    // 감정 표현
+    public Image EmotionImage;
+    //
     void Awake()
     {
         instance = this;
@@ -33,6 +37,8 @@ public class UIManager : MonoBehaviour
         index = 0;
         previousAxisContent = AxisContentPanel[0];
         Blue = new Color(42/255f, 53/255f, 66/255f); // 색상을 RGB 값으로 스크립트 변경하려면 255로 나눠줘야 함
+
+        EmotionImage.enabled = true;
         #endregion
     }
     // Start is called before the first frame update
@@ -177,4 +183,17 @@ public class UIManager : MonoBehaviour
         previousAxisContent = AxisContentPanel[index - 1];
     }
     #endregion
+
+    public void EmotionClick(Sprite img)
+    {
+        StartCoroutine(EmotionMouseClick(img));
+    }
+
+    public IEnumerator EmotionMouseClick(Sprite img)
+    {
+        //EmotionImage.SetActive(true);
+        EmotionImage.transform.GetComponent<Image>().sprite = img;
+        yield return new WaitForSeconds(5f);
+        //EmotionImage.SetActive(false);
+    }
 }

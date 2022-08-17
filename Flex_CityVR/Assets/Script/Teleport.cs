@@ -160,9 +160,10 @@ public class Teleport : MonoBehaviour
 
     public IEnumerator BalloonAnimation()
     {
-        int hashBalloon = Animator.StringToHash("balloon");
+        yield return null;
+/*        int hashGondola = Animator.StringToHash("balloon");
         yield return new WaitForSeconds(7f);
-        RideRoot.Find("BalloonRide").transform.GetComponent<Animator>().SetBool(hashBalloon, true);
+        RideRoot.Find("BalloonRide").transform.GetComponent<Animator>().SetBool(hashGondola, true);*/
     }
 
     public void StartRideGetOut()
@@ -184,6 +185,7 @@ public class Teleport : MonoBehaviour
         }
 
         yield return new WaitForSeconds(3.1f);
+        GameManager.instance.XR_Rig.transform.parent = null;
         Player_Controller.transform.position = wantPos;
         //Player.instance.controller_state = true;
         Player_Controller.transform.GetComponent<CharacterController>().enabled = true;
@@ -197,7 +199,7 @@ public class Teleport : MonoBehaviour
         }
         else if (Player.instance.dic_contents["T_balloon"])
         {
-            RideRoot.Find("BalloonRide").transform.GetComponent<Animator>().SetBool("balloon", false);
+            //RideRoot.Find("BalloonRide").transform.GetComponent<Animator>().SetBool("balloon", false);
             Player.instance.dic_contents["T_balloon"] = false;
         }
         

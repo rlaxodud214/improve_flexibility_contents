@@ -61,7 +61,7 @@ public class SceneChange : MonoBehaviour
                 break;
             case "T_balloon":
                 UIManager.instance.setInformType(5);
-                StartCoroutine(Teleport.instance.GondolarAnimation());
+                StartCoroutine(Teleport.instance.BalloonAnimation());
                 break;
             default:
                 Debug.Log("<color=Red>입장한 포탈이 없습니다.</color>");
