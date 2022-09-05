@@ -52,6 +52,7 @@ public class SceneChange : MonoBehaviour
                 SceneManager.LoadScene("Chef_Main");
                 break;*/
             case "T_arrow":
+                SceneManager.LoadScene("MonsterShot_GameScene");
                 break;
             case "T_gondola":
                 UIManager.instance.setInformType(5);

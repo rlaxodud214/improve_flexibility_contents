@@ -49,8 +49,8 @@ public class OpenZenMoveObject : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        //OpenZenIdentifier = "00:04:3E:9B:A2:A5";
-        OpenZenIdentifier = "00:04:3E:9B:A2:85";
+        OpenZenIdentifier = "00:04:3E:9B:A2:A5";
+        //OpenZenIdentifier = "00:04:3E:9B:A2:85";
         save_offset = false;
         sensorEulerData = new Vector3(0, 0, 0);
         offset = new Vector3(0, 0, 0);

@@ -36,6 +36,10 @@ public class UserDataManager : MonoBehaviour
 
     void Start()
     {
+        series1Data1 = new List<string>();
+        series1Data2 = new List<string>();
+        series1Data3 = new List<string>();
+        series1Data4 = new List<string>();
         StartCoroutine(InitData());      
     }
 
@@ -82,13 +86,45 @@ public class UserDataManager : MonoBehaviour
         temps.Clear();
         temp.Clear();
 
+        var prekey = "";
+        DateTime PrecalculationDate = DateTime.MinValue;
+        DateTime PrecalculationDate1 = new DateTime(PrecalculationDate.Year, PrecalculationDate.Month, 1); // 기준일
         // 여러 key 값중 Max값 찾는 알고리즘 느낌으로 구현
+        var c = 0;
         foreach (string key in measurements.Keys) // 키 값들중 하나씩 빼서 쓰기
         {
+            DateTime calculationDate = DateTime.ParseExact(key, "yyyy-MM-dd HH:mm:ss", null); // 주차를 구할 일자
+            DateTime calculationDate1 = new DateTime(calculationDate.Year, calculationDate.Month, 1); // 기준일
+            if(c != 0)
+            {
+                PrecalculationDate = DateTime.ParseExact(prekey, "yyyy-MM-dd HH:mm:ss", null); // 주차를 구할 일자
+                PrecalculationDate1 = new DateTime(PrecalculationDate.Year, PrecalculationDate.Month, 1); // 기준일
+            }
+            
             // DateTime.ParseExact(변환할 string 값, format, provider)
             // "yyyy-MM-dd HH:mm:ss" 타입의 string 객체를 DateTime 객체로 형변환
             compareDateKey = DateTime.ParseExact(key, "yyyy-MM-dd HH:mm:ss", null);
-            Debug.Log("Key : " + key + ", (int)compareDateKey.DayOfWeek : " + (int)compareDateKey.DayOfWeek);
+            // Debug.Log("prekey : " + prekey + ", " + "Key : " + key + ", (int)compareDateKey.DayOfWeek : " + (int)compareDateKey.DayOfWeek);
+            Calendar calenderCalc = CultureInfo.CurrentCulture.Calendar;
+            // DayOfWeek.Sunday 인수는 기준 요일
+            int usWeekNumber = calenderCalc.GetWeekOfYear(PrecalculationDate1, CalendarWeekRule.FirstDay, DayOfWeek.Sunday) -
+                               calenderCalc.GetWeekOfYear(calculationDate, CalendarWeekRule.FirstDay, DayOfWeek.Sunday) + 1;
+
+            prekey = key;
+            // print("usWeekNumber : " + usWeekNumber);
+            // 09/01 : 9월 데이터 하나 이후에 7월 데이터 들어오면 오류나서 추가함 -> 저장할 조건
+            // temp 개수가 1개 이상이고, 2주 이상 차이가 날 때
+            if (c != 0 && temp.Count >= 1 && usWeekNumber > 1)
+            {
+                Debug.Log("--------------------------------------------------------------------");
+                foreach (Measurement m in temp)
+                    Debug.Log("1. 데이터 : " + m.date + ", " + m.flexion + ", " + m.extension + ", " + m.leftFlexion + ", " + m.rightFlexion + ", " + m.leftRotation + ", " + m.rightRotation + ", " + m.totalFlexibility + ", " + (int)compareDateKey.DayOfWeek);
+                Debug.Log("--------------------------------------------------------------------");
+
+                temps.Add(temp);
+                temp = new List<Measurement>(); // [n주 데이터]
+            }
+
             string result = compareDateKey.ToString("yyyy-MM-dd HH:mm:ss");
             temp.Add(measurements[result]);
 
@@ -97,19 +133,15 @@ public class UserDataManager : MonoBehaviour
             {
                 Debug.Log("--------------------------------------------------------------------");
                 foreach (Measurement m in temp)
-                    Debug.Log("1. 데이터 : " + m.date + ", " + m.flexion + ", " + m.extension + ", " + m.leftFlexion + ", " + m.rightFlexion + ", " + m.leftRotation + ", " + m.totalFlexibility + ", " + (int)compareDateKey.DayOfWeek);
+                    Debug.Log("2. 데이터 : " + m.date + ", " + m.flexion + ", " + m.extension + ", " + m.leftFlexion + ", " + m.rightFlexion + ", " + m.leftRotation + ", " + m.rightRotation + ", " + m.totalFlexibility + ", " + (int)compareDateKey.DayOfWeek);
                 Debug.Log("--------------------------------------------------------------------");
 
                 temps.Add(temp);
                 temp = new List<Measurement>(); // [n주 데이터]
             }
-            /*else
-            {
-                Debug.Log("--------------------------------------------------------------------");
-                foreach (Measurement m in temp)
-                    Debug.Log("X. 데이터 : " + m.date + m.flexion + ", " + m.extension + ", " + m.leftFlexion + ", " + m.rightFlexion + ", " + m.leftRotation + ", " + m.totalFlexibility + ", " + (int)compareDateKey.DayOfWeek);
-                Debug.Log("--------------------------------------------------------------------");
-            }*/
+            c++;
+            if(temps.Count >= 6)
+                return temps;
         }
         return temps;
     }
@@ -117,6 +149,9 @@ public class UserDataManager : MonoBehaviour
 
     public IEnumerator InitData()
     {
+        if (series1Data1.Count != 0)
+            yield return null;
+
         Debug.Log("InitData() 호출댐");
         series1Data1 = new List<string>();
         series1Data2 = new List<string>();
@@ -128,46 +163,49 @@ public class UserDataManager : MonoBehaviour
         yield return StartCoroutine(DBManager.LoadGameResult((result) => gameResults = result));    // Dictionary<string, GameResult> 딕셔너리 로드(게임결과)
         yield return StartCoroutine(DBManager.LoadInventory((result) => inventory = result));   // InventorySlot 객체 로드
 
-        foreach (string pet in user.pets)
-        {
-            switch (pet)
+        // 09/01 : myPets이 2번 셋되어 수정함
+        if (myPets.Count != user.pets.Count) { 
+            foreach (string pet in user.pets)
             {
-                case "검은 고양이":
-                    myPets.Add("검은 고양이", PetPrefabs.instance.petPrefab[0]);
-                    break;
-                case "메인쿤":
-                    myPets.Add("메인쿤", PetPrefabs.instance.petPrefab[1]);
-                    break;
-                case "회색 고양이":
-                    myPets.Add("회색 고양이", PetPrefabs.instance.petPrefab[2]);
-                    break;
-                case "주황 고양이":
-                    myPets.Add("주황 고양이", PetPrefabs.instance.petPrefab[3]);
-                    break;
-                case "페르시안":
-                    myPets.Add("페르시안", PetPrefabs.instance.petPrefab[4]);
-                    break;
-                case "러시안블루":
-                    myPets.Add("러시안블루", PetPrefabs.instance.petPrefab[5]);
-                    break;
-                case "샴":
-                    myPets.Add("샴", PetPrefabs.instance.petPrefab[6]);
-                    break;
-                case "호랑무늬 고양이":
-                    myPets.Add("호랑무늬 고양이", PetPrefabs.instance.petPrefab[7]);
-                    break;
-                case "턱시도 고양이":
-                    myPets.Add("턱시도 고양이", PetPrefabs.instance.petPrefab[8]);
-                    break;
+                switch (pet)
+                {
+                    case "검은 고양이":
+                        myPets.Add("검은 고양이", PetPrefabs.instance.petPrefab[0]);
+                        break;
+                    case "메인쿤":
+                        myPets.Add("메인쿤", PetPrefabs.instance.petPrefab[1]);
+                        break;
+                    case "회색 고양이":
+                        myPets.Add("회색 고양이", PetPrefabs.instance.petPrefab[2]);
+                        break;
+                    case "주황 고양이":
+                        myPets.Add("주황 고양이", PetPrefabs.instance.petPrefab[3]);
+                        break;
+                    case "페르시안":
+                        myPets.Add("페르시안", PetPrefabs.instance.petPrefab[4]);
+                        break;
+                    case "러시안블루":
+                        myPets.Add("러시안블루", PetPrefabs.instance.petPrefab[5]);
+                        break;
+                    case "샴":
+                        myPets.Add("샴", PetPrefabs.instance.petPrefab[6]);
+                        break;
+                    case "호랑무늬 고양이":
+                        myPets.Add("호랑무늬 고양이", PetPrefabs.instance.petPrefab[7]);
+                        break;
+                    case "턱시도 고양이":
+                        myPets.Add("턱시도 고양이", PetPrefabs.instance.petPrefab[8]);
+                        break;
 
+                }
             }
         }
 
         recentData = FindRecentData(measurements);
         GraphData = FindGraphData(measurements);
         var dayofweek = (int)DateTime.Now.DayOfWeek;
-        var index = 0; // 6주 -> 0~5의 값을 가짐
-        var index1 = 0; // 7일 -> 0~6의 값을 가짐
+        var week = 0; // 6주 -> 0~5의 값을 가짐
+        var day = 0; // 7일 -> 0~6의 값을 가짐
         List<int> data_sum = new List<int>() { 0, 0, 0, 0, 0, 0, 0 };
         var count = 0;
         var measurements_graph = new List<Measurement>();
@@ -189,23 +227,24 @@ public class UserDataManager : MonoBehaviour
         // 일요일이 0, 월요일이 1, 토요일이 6
         for (int i=0; i < 35 + dayofweek; i++)
         {
+            // print("i : " + i + ", index : " + week + ", index1 : " + day);
             temp_backup = temp_Date;
-            if (index == 0)
-                temp = GraphData[index][index1 % GraphData[index].Count];
+            if (week == 0)
+                temp = GraphData[week][day % GraphData[week].Count];
             else
-                temp = GraphData[index][index1 % 7];
+                temp = GraphData[week][day % 7];
 
-            Debug.Log("temp.date : " + temp.date);
+            // Debug.Log("temp.date : " + temp.date);
             temp_Date = DateTime.ParseExact(temp.date, "yyyy-MM-dd HH:mm:ss", null);
-            
-            // Debug.Log("index : " + index + ", " + "index1 : " + index1);
-            // Debug.Log("temp_Date : " + temp_Date.Date + ", " + "temp_Date_minus.Date : " + temp_Date_minus.Date + ", "+ (int)temp_Date_minus.DayOfWeek);
+
+            /*print("temp_Date_minus.Date : " + temp_Date_minus.Date);
+            print("temp_Date.Date : " + temp_Date.Date);*/
 
             // 만약 DB 데이터가 현재 날짜를 초과할 경우 or DB 데이터에서 같은 날이 있을 경우 제일 처음(그 날짜 제일 마지막) 데이터 사용
-            if (DateTime.Compare(temp_Date_minus.Date, temp_Date.Date) < 0) //  || DateTime.Compare(temp_backup.Date, temp_Date.Date) < 0
+            if (DateTime.Compare(temp_Date_minus.Date, temp_Date.Date) > 0) //  || DateTime.Compare(temp_backup.Date, temp_Date.Date) < 0
             {
-                index1++;
                 i--;
+                temp_Date_minus = temp_Date_minus.AddDays(-1);
                 continue;
             }
 
@@ -220,12 +259,12 @@ public class UserDataManager : MonoBehaviour
                 data_sum[4] += temp.leftRotation;
                 data_sum[5] += temp.rightRotation;
                 data_sum[6] += temp.totalFlexibility;
-                index1++;
+                day++;
                 count++;
             }
 
             // 월요일이면
-            if ((int)temp_Date_minus.DayOfWeek == 1)
+            if ((int)temp_Date_minus.DayOfWeek == 1 && count != 0)
             {
                 // data_sum 값 대입
                 // Debug.Log("월요일임" + temp_Date_minus.ToString("yyyy-MM-dd"));
@@ -239,19 +278,33 @@ public class UserDataManager : MonoBehaviour
                 measurements_backup.rightRotation = data_sum[5] / count;
                 measurements_backup.totalFlexibility = data_sum[6] / count;
                 measurements_graph.Add(measurements_backup);
+                if (measurements_graph.Count >= 6)
+                    break;
 
                 // data_sum 초기화
                 data_sum = new List<int>() { 0, 0, 0, 0, 0, 0, 0 };
 
                 // 주 변경
                 count = 0; // 개수 초기화
-                index1 = 0; // 일 초기화
-                index++;
+                day = 0; // 일 초기화
+                week++;
+            }
+            else if (count == 0)
+            {
+                // print("i : " + i + " 0으로 나눌 수 없습니다.");
+                if (GraphData[week].Count-1 == day)
+                {
+                    week++;
+                    day = 0;
+                }
+                else
+                    day++;
+                    
             }
             temp_Date_minus = temp_Date_minus.AddDays(-1);
+            
         }
         count = 1;
-        var now = DateTime.Now;
         if(series1Data1.Count == 0)
         foreach (Measurement m in measurements_graph)
         {
@@ -280,6 +333,11 @@ public class UserDataManager : MonoBehaviour
                 series1Data3.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.leftFlexion + m.rightFlexion));
                 series1Data4.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.leftRotation + m.rightRotation));
             }
+        }
+
+        for(int i=0; i< series1Data1.Count; i++)
+        {
+            print("날짜, 종합 유연성 : " + series1Data1[i]);
         }
         Debug.Log("InitData() 실행끝");
     }

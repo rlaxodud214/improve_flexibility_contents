@@ -177,7 +177,7 @@ public class Teleport : MonoBehaviour
         Vector3 wantPos = Vector3.zero;
         if (Player.instance.dic_contents["T_gondola"])
         {
-            wantPos = teleportLocation.transform.Find("곤돌라").position;
+            wantPos = teleportLocation.transform.Find("8. 곤돌라").position;
         }
         else if (Player.instance.dic_contents["T_balloon"])
         {

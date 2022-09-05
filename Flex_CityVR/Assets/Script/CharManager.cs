@@ -51,12 +51,12 @@ public class CharManager : MonoBehaviour
     public void SelectCharacter()
     {
         currentCharacter = characters[index];
-        if(PlayerCharacter.childCount > 0)
+        if(PlayerCharacter.childCount > 1)
         {
-            Destroy(PlayerCharacter.transform.GetChild(0));
+            Destroy(PlayerCharacter.transform.GetChild(1).gameObject);
         }
         GameObject obj = Instantiate<GameObject>(currentCharacter, PlayerCharacter);
-        obj.transform.localPosition = new Vector3(0f, 0f, 0f);
+        obj.transform.localPosition = new Vector3(0f, 0f, -0.5f);
         obj.transform.localScale = new Vector3(0.44f, 0.44f, 0.44f);
 
         print("선택된 캐릭터는 : "+ currentCharacter.name);

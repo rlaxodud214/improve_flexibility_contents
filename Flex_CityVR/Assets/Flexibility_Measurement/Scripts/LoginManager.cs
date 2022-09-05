@@ -19,6 +19,7 @@ public class LoginManager : MonoBehaviour
         if (string.IsNullOrEmpty(PlayFabSettings.TitleId)) PlayFabSettings.TitleId = "12497";
         LoginButton.interactable = false;
         LoginButton.interactable = true; // 6/21 테스트로 추가
+        // Login(); // 09/01 테스트로 추가
     }
 
     private void Update()
@@ -86,7 +87,7 @@ public class LoginManager : MonoBehaviour
 
     public IEnumerator SaveTestValue()
     {
-        DateTime date_now = DateTime.Now;
+/*        DateTime date_now = DateTime.Now;
         date_now = date_now.AddDays(-39);
         var list1 = new List<float>() { 80, 85, 86, 89, 92, 94, 95 }; // 굴곡 - 앞
         var list2 = new List<float>() { 20, 23, 24, 31, 33, 34, 37 }; // 신전 - 중간
@@ -114,9 +115,9 @@ public class LoginManager : MonoBehaviour
             Measurement measurement = DBManager.CreateMeasurementData(t1, t2, t3, t4, t5, t6, key);
             // Debug.Log(i + ", " + key + ", " + t1 + ", " + t2 + ", " + t3 + ", " + t4 + ", " + t5 + ", " + t6);
             // STEP2 SaveMeasurement의 매개변수로 measurement 전달
-            yield return StartCoroutine(DBManager.SaveMeasurement(measurement, key));
+            yield return StartCoroutine(DBManager.SaveMeasurement(measurement, key));*/
             yield return new WaitForSeconds(1.5f);  // update rate 초과 error 방지
-        }
+        // }
     }
 
     public IEnumerator LoadMeasurement()

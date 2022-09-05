@@ -235,6 +235,10 @@ public class Measurement_btn_change : MonoBehaviour
                 break;
 
             case 5: // RESULT
+                // 09/01 : 조건 추가 값이 정상적일 때만 추가하도록 변경
+                if (flexion == 0 || extension == 0 || leftFlexion == 0 || rightFlexion == 0 || leftRotation == 0 || rightRotation == 0)
+                    break;
+
                 measurement = DBManager.CreateMeasurementData(flexion, extension, leftFlexion, rightFlexion, leftRotation, rightRotation);
                 StartCoroutine(SaveMeasurementData(measurement));
                 ResultBtn.interactable = false;
@@ -246,10 +250,10 @@ public class Measurement_btn_change : MonoBehaviour
     {
         yield return StartCoroutine(DBManager.SaveMeasurement(data));   //  측정한 데이터 저장
         UserDataManager.instance.recentData = data;
-        Debug.Log("UserDataManager.instance.InitData() 호출함");
-        StartCoroutine(UserDataManager.instance.InitData());
-        yield return new WaitForSeconds(2f);
-        Debug.Log("UserDataManager.instance.InitData() 갔다가 다시 돌아옴");
+        // Debug.Log("UserDataManager.instance.InitData() 호출함");
+        // StartCoroutine(UserDataManager.instance.InitData());
+        // yield return new WaitForSeconds(2f);
+        // Debug.Log("UserDataManager.instance.InitData() 갔다가 다시 돌아옴");
         UnityEngine.SceneManagement.SceneManager.LoadScene("3-2.RecentResult");
     }
 

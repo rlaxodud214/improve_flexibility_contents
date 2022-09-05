@@ -12,7 +12,7 @@ public class PetController : MonoBehaviour
 
     private void OnEnable()
     {
-        target = Player.instance.CenterEyeAnchor.transform.GetChild(2);
+        target = Player.instance.CenterEyeAnchor.transform.GetChild(1);
         anim = transform.GetComponent<Animator>();
         anim.applyRootMotion = false;
         speed = 1f;
