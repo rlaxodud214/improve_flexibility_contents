@@ -16,8 +16,8 @@ public class GoalKeeper : MonoBehaviour
 
     #region Private Fields
 
-    int playerMax;
     float imuVal;
+    Measurement playerRange;
 
     #endregion
 
@@ -27,7 +27,7 @@ public class GoalKeeper : MonoBehaviour
     void Start()
     {
         OpenZenMoveObject.Instance.runstart();
-        playerMax = 35;
+        playerRange = UserDataManager.instance.recentData;
         imuVal = 0f;
     }
 
@@ -36,15 +36,19 @@ public class GoalKeeper : MonoBehaviour
     {
         //Debug.Log("IMU Z 데이터 : " + OpenZenMoveObject.Instance.sensorEulerData.z.ToString("N0"));
         //Debug.Log("정규화 데이터 : " + Normalize(0, PLAYER_MAX, OpenZenMoveObject.Instance.sensorEulerData.z));
-        imuVal = Normalize(0, playerMax, OpenZenMoveObject.Instance.sensorEulerData.z);
+        
 
         // 이동방식: 누적
-        if (OpenZenMoveObject.Instance.sensorEulerData.z < -10)
+        if (OpenZenMoveObject.Instance.sensorEulerData.z < -5)
         {
+            imuVal = Normalize(0, (float)playerRange.leftFlexion * (4f / 5f), OpenZenMoveObject.Instance.sensorEulerData.z);    // 사용자 최대 가동범위의 80%
+            //print("보정 값 : " + (float)playerRange.leftFlexion * (4f / 5f));
             transform.Translate(Vector3.left * speed * imuVal);
         }
-        else if (OpenZenMoveObject.Instance.sensorEulerData.z > 10)
+        else if (OpenZenMoveObject.Instance.sensorEulerData.z > 5)
         {
+            imuVal = Normalize(0, (float)playerRange.rightFlexion * (4f / 5f), OpenZenMoveObject.Instance.sensorEulerData.z);
+            //print("보정 값 : " + (float)playerRange.rightFlexion * (4f / 5f));
             transform.Translate(Vector3.right * speed * imuVal);
         }
     }

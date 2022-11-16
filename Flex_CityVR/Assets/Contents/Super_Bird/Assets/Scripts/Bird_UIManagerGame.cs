@@ -72,6 +72,8 @@ public class Bird_UIManagerGame : MonoBehaviour
             }
             
         }
+        if (BNG.InputBridge.Instance.BButtonDown)
+            Pause();
     }
 
     public void Play()

@@ -24,7 +24,9 @@ public class OpenZenMoveObject : MonoBehaviour
         get                       // _sceneManager이 변수값을 리턴받을 수 있음.
         {
             if (_Instance == null)
+            {
                 _Instance = FindObjectOfType<OpenZenMoveObject>();
+            }               
             return _Instance;
         }
     }
@@ -49,8 +51,14 @@ public class OpenZenMoveObject : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        OpenZenIdentifier = "00:04:3E:9B:A2:A5";
-        //OpenZenIdentifier = "00:04:3E:9B:A2:85";
+        try
+        {
+            OpenZenIdentifier = UserDataManager.instance.openZenIdentifier;
+        }
+        catch (System.Exception e)
+        {
+            print("UserDataManager 부재");
+        }
         save_offset = false;
         sensorEulerData = new Vector3(0, 0, 0);
         offset = new Vector3(0, 0, 0);
@@ -59,6 +67,11 @@ public class OpenZenMoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (BNG.InputBridge.Instance.YButtonDown)
+        {
+            //Debug.Log("Calibration");
+            Calibration();
+        }
 
         // run as long as there are new OpenZen events to process
         while (true)

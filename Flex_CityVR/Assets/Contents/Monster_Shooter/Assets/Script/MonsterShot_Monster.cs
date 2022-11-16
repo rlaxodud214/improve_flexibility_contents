@@ -133,7 +133,7 @@ public class MonsterShot_Monster : MonoBehaviour
             if (MonsterShot_Gamemanager.Instance.isLotation)
                 damage = Arrow_Script.ZVel * rand;
             else
-                damage = 110;
+                damage = 10;
 
             // 데미지 출력 함수
             Damage_text_UI();

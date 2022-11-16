@@ -16,11 +16,13 @@ public class kayak_CharacterMovement : MonoBehaviour
     public GameObject Camera;
     public GameObject Paddle;
     public ParticleSystem BoatWater;
+    public Measurement playerRange;
     // Start is called before the first frame update
     void Start()
     {
         /*transform.Find("").gameObject;
         transform.Find("FX_BoatWater_Large").gameObject;*/
+        playerRange = UserDataManager.instance.recentData;
     }
     
     // Update is called once per frame
@@ -44,8 +46,9 @@ public class kayak_CharacterMovement : MonoBehaviour
                 print("error log : " + e.ToString());
                 return ;
             }
-            
-            transform.Rotate(new Vector3(0, data / 100, 0), Space.Self);
+            float _rotation = (data / 100f) * (0.6f / ((float)playerRange.leftRotation / 100f));
+
+            transform.Rotate(new Vector3(0, _rotation, 0), Space.Self);
 
             time += Time.deltaTime;
             if (time >= 0.5f) // 5초 마다 0.01 속도 증가

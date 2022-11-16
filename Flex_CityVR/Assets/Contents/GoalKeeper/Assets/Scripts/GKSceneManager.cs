@@ -9,16 +9,13 @@ public class GKSceneManager : MonoBehaviour
     public void Home()
     {
         SceneManager.LoadScene("mainCity");
+        Time.timeScale = 1f;
     }
 
 
     public void Replay()
     {
         SceneManager.LoadScene("GoalKeeper");
-    }
-    
-    public void Resume()
-    {
-        pausePanel.SetActive(false);
+        Time.timeScale = 1f;
     }
 }

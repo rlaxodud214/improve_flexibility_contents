@@ -75,7 +75,7 @@ public class Measurement_btn_change : MonoBehaviour
         Angle_Value = new int[6] { 0, 0, 0, 0, 0, 0 };
     }
 
-    // Update is called once per frame
+    // 프레임마다 호출
     void Update()
     {
         if (!isstart)
@@ -101,7 +101,8 @@ public class Measurement_btn_change : MonoBehaviour
         // 좌측굴곡, 굴곡, 좌측회전
         if (Angle < 0)
         {
-            Change_Origin.transform.eulerAngles = new Vector3(0, 0, 180 - (float)Angle);
+            //Change_Origin.transform.eulerAngles = new Vector3(0, 0, 180 - (float)Angle);
+            Change_Origin.transform.localEulerAngles = new Vector3(0, 0, 180 - (float)Angle);
             Angle = Math.Abs(Angle);
             switch (num)
             {
@@ -119,7 +120,7 @@ public class Measurement_btn_change : MonoBehaviour
                     if (Angle > Angle_Value[2])
                     {
                         Angle_Value[2] = Angle;
-                        flexion = Angle_Value[2];
+                        extension = Angle_Value[2];
                         Right[2].GetComponent<Image>().fillAmount = (float)Angle / 90;
                     }
                     break;
@@ -137,7 +138,8 @@ public class Measurement_btn_change : MonoBehaviour
         // 우측굴곡, 신전, 우회전
         else
         {
-            Change_Origin.transform.eulerAngles = new Vector3(0, 0, 180);
+            //Change_Origin.transform.eulerAngles = new Vector3(0, 0, 180);
+            Change_Origin.transform.localEulerAngles = new Vector3(0, 0, 180);
             Angle = Math.Abs(Angle);
             switch (num)
             {
@@ -154,7 +156,7 @@ public class Measurement_btn_change : MonoBehaviour
                     if (Angle > Angle_Value[3])
                     {
                         Angle_Value[3] = Angle;
-                        extension = Angle_Value[3];
+                        flexion = Angle_Value[3];
                         Left[2].GetComponent<Image>().fillAmount = (float)Angle / (90 * 1.2f);
                     }
                     break;
@@ -249,11 +251,11 @@ public class Measurement_btn_change : MonoBehaviour
     IEnumerator SaveMeasurementData(Measurement data)
     {
         yield return StartCoroutine(DBManager.SaveMeasurement(data));   //  측정한 데이터 저장
-        UserDataManager.instance.recentData = data;
         // Debug.Log("UserDataManager.instance.InitData() 호출함");
         // StartCoroutine(UserDataManager.instance.InitData());
         // yield return new WaitForSeconds(2f);
         // Debug.Log("UserDataManager.instance.InitData() 갔다가 다시 돌아옴");
+        yield return StartCoroutine(UserDataManager.instance.InitData());
         UnityEngine.SceneManagement.SceneManager.LoadScene("3-2.RecentResult");
     }
 

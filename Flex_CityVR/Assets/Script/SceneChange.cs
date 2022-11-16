@@ -3,23 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using BNG;
+using Photon.Pun;
 
-public class SceneChange : MonoBehaviour
+public class SceneChange : MonoBehaviourPunCallbacks
 {
     public static SceneChange instance;   // 싱글톤 
+    string sceneName;
+    ScreenFader sf;
+
     void Awake()
     {
         SceneChange.instance = this;
+
+        if (Camera.main != null)
+        {
+            sf = Camera.main.GetComponentInChildren<ScreenFader>(true);
+        }
     }
+
+    public void LoadScene(string _sceneName)
+    {
+        // Fade Screen out
+        sceneName = _sceneName;
+
+        StartCoroutine(doLoadLevelWithFade(sceneName));
+    }
+
+    IEnumerator doLoadLevelWithFade(string _sceneName)
+    {
+
+        if (sf)
+        {
+            sf.DoFadeIn();
+            yield return new WaitForSeconds(sf.SceneFadeInDelay);
+            PhotonNetwork.LeaveRoom();
+        }
+        yield return null;
+    }
+
+    public override void OnLeftRoom()
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+
     public void Flex_Scene()
     {
-        SceneManager.LoadScene("3-0.Main");
+        LoadScene("3-0.Main");
+        
     }
 
     public void Main_Flex()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("mainCity");
+        LoadScene("mainCity");
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
     public void contentsTelport()
@@ -35,24 +77,24 @@ public class SceneChange : MonoBehaviour
                 StartCoroutine(Teleport.instance.TeleportLocation(teleportPosition));
                 break;
             case "T_soccer":
-                SceneManager.LoadScene("GoalKeeper");
+                LoadScene("GoalKeeper");
                 break;
 /*            case "T_limbo":
                 break;*/
             case "T_kayak":
-                SceneManager.LoadScene("KayakGame");
+                LoadScene("KayakGame");
                 break;
             case "T_fly":
-                SceneManager.LoadScene("Bird_MainScene");
+                LoadScene("Bird_MainScene");
                 break; 
             case "T_battle":
-                SceneManager.LoadScene("BattleCity");
+                LoadScene("BattleCity");
                 break;
 /*            case "T_chef":
                 SceneManager.LoadScene("Chef_Main");
                 break;*/
             case "T_arrow":
-                SceneManager.LoadScene("MonsterShot_GameScene");
+                LoadScene("MonsterShot_GameScene");
                 break;
             case "T_gondola":
                 UIManager.instance.setInformType(5);

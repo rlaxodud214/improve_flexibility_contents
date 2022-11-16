@@ -74,7 +74,7 @@ public class Battle_UIManager : MonoBehaviour
     void Update()
     {
         if (InputBridge.Instance.BButtonDown)
-        {
+        {           
             PausePanel.SetActive(true);
             Battle_Fire.instance.fireActive = false;
             Time.timeScale = 0f;
@@ -188,6 +188,7 @@ public class Battle_UIManager : MonoBehaviour
     public void Resume()
     {
         PausePanel.SetActive(false);
+        Battle_Fire.instance.fireActive = true;
         Time.timeScale = 1f;
     }
 

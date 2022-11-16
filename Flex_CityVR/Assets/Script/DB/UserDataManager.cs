@@ -10,6 +10,7 @@ public class UserDataManager : MonoBehaviour
     public static UserDataManager instance;          // 싱글톤 패턴을 사용하기 위한 인스턴스 변수, static 선언으로 어디서든 참조가 가능함
 
     public User user;
+    public string openZenIdentifier;
     public Dictionary<string, GameObject> myPets = new Dictionary<string, GameObject>();    // 사용자가 보유한 펫
     public Dictionary<string, Measurement> measurements;
     public Dictionary<string, GameResult> gameResults;
@@ -104,14 +105,14 @@ public class UserDataManager : MonoBehaviour
             // DateTime.ParseExact(변환할 string 값, format, provider)
             // "yyyy-MM-dd HH:mm:ss" 타입의 string 객체를 DateTime 객체로 형변환
             compareDateKey = DateTime.ParseExact(key, "yyyy-MM-dd HH:mm:ss", null);
-            // Debug.Log("prekey : " + prekey + ", " + "Key : " + key + ", (int)compareDateKey.DayOfWeek : " + (int)compareDateKey.DayOfWeek);
+            Debug.Log("prekey : " + prekey + ", " + "Key : " + key + ", (int)compareDateKey.DayOfWeek : " + (int)compareDateKey.DayOfWeek);
             Calendar calenderCalc = CultureInfo.CurrentCulture.Calendar;
             // DayOfWeek.Sunday 인수는 기준 요일
             int usWeekNumber = calenderCalc.GetWeekOfYear(PrecalculationDate1, CalendarWeekRule.FirstDay, DayOfWeek.Sunday) -
                                calenderCalc.GetWeekOfYear(calculationDate, CalendarWeekRule.FirstDay, DayOfWeek.Sunday) + 1;
 
             prekey = key;
-            // print("usWeekNumber : " + usWeekNumber);
+            print("usWeekNumber : " + usWeekNumber);
             // 09/01 : 9월 데이터 하나 이후에 7월 데이터 들어오면 오류나서 추가함 -> 저장할 조건
             // temp 개수가 1개 이상이고, 2주 이상 차이가 날 때
             if (c != 0 && temp.Count >= 1 && usWeekNumber > 1)
@@ -149,55 +150,54 @@ public class UserDataManager : MonoBehaviour
 
     public IEnumerator InitData()
     {
-        if (series1Data1.Count != 0)
-            yield return null;
+        GC.Collect();
 
+        // 초기화
         Debug.Log("InitData() 호출댐");
-        series1Data1 = new List<string>();
-        series1Data2 = new List<string>();
-        series1Data3 = new List<string>();
-        series1Data4 = new List<string>();
+        series1Data1.Clear();
+        series1Data2.Clear();
+        series1Data3.Clear();
+        series1Data4.Clear();
+        myPets.Clear();
 
         yield return StartCoroutine(DBManager.LoadUser((result) => user = result)); // User 객체 로드
         yield return StartCoroutine(DBManager.LoadMeasurement((result) => measurements = result));  // Dictionary<string, Measurement> 딕셔너리 로드(측정결과)
         yield return StartCoroutine(DBManager.LoadGameResult((result) => gameResults = result));    // Dictionary<string, GameResult> 딕셔너리 로드(게임결과)
         yield return StartCoroutine(DBManager.LoadInventory((result) => inventory = result));   // InventorySlot 객체 로드
 
-        // 09/01 : myPets이 2번 셋되어 수정함
-        if (myPets.Count != user.pets.Count) { 
-            foreach (string pet in user.pets)
+        // 09/01 : myPets이 2번 셋되어 수정함 -> 초기화 코드 추가로 if문 뺌
+        foreach (string pet in user.pets)
+        {
+            switch (pet)
             {
-                switch (pet)
-                {
-                    case "검은 고양이":
-                        myPets.Add("검은 고양이", PetPrefabs.instance.petPrefab[0]);
-                        break;
-                    case "메인쿤":
-                        myPets.Add("메인쿤", PetPrefabs.instance.petPrefab[1]);
-                        break;
-                    case "회색 고양이":
-                        myPets.Add("회색 고양이", PetPrefabs.instance.petPrefab[2]);
-                        break;
-                    case "주황 고양이":
-                        myPets.Add("주황 고양이", PetPrefabs.instance.petPrefab[3]);
-                        break;
-                    case "페르시안":
-                        myPets.Add("페르시안", PetPrefabs.instance.petPrefab[4]);
-                        break;
-                    case "러시안블루":
-                        myPets.Add("러시안블루", PetPrefabs.instance.petPrefab[5]);
-                        break;
-                    case "샴":
-                        myPets.Add("샴", PetPrefabs.instance.petPrefab[6]);
-                        break;
-                    case "호랑무늬 고양이":
-                        myPets.Add("호랑무늬 고양이", PetPrefabs.instance.petPrefab[7]);
-                        break;
-                    case "턱시도 고양이":
-                        myPets.Add("턱시도 고양이", PetPrefabs.instance.petPrefab[8]);
-                        break;
+                case "검은 고양이":
+                    myPets.Add("검은 고양이", PetPrefabs.instance.petPrefab[0]);
+                    break;
+                case "메인쿤":
+                    myPets.Add("메인쿤", PetPrefabs.instance.petPrefab[1]);
+                    break;
+                case "회색 고양이":
+                    myPets.Add("회색 고양이", PetPrefabs.instance.petPrefab[2]);
+                    break;
+                case "주황 고양이":
+                    myPets.Add("주황 고양이", PetPrefabs.instance.petPrefab[3]);
+                    break;
+                case "페르시안":
+                    myPets.Add("페르시안", PetPrefabs.instance.petPrefab[4]);
+                    break;
+                case "러시안블루":
+                    myPets.Add("러시안블루", PetPrefabs.instance.petPrefab[5]);
+                    break;
+                case "샴":
+                    myPets.Add("샴", PetPrefabs.instance.petPrefab[6]);
+                    break;
+                case "호랑무늬 고양이":
+                    myPets.Add("호랑무늬 고양이", PetPrefabs.instance.petPrefab[7]);
+                    break;
+                case "턱시도 고양이":
+                    myPets.Add("턱시도 고양이", PetPrefabs.instance.petPrefab[8]);
+                    break;
 
-                }
             }
         }
 
@@ -225,9 +225,9 @@ public class UserDataManager : MonoBehaviour
         var temp_Date = new DateTime();
 
         // 일요일이 0, 월요일이 1, 토요일이 6
-        for (int i=0; i < 35 + dayofweek; i++)
+        for (int i=0; i <40 + dayofweek; i++)
         {
-            // print("i : " + i + ", index : " + week + ", index1 : " + day);
+            //print("i : " + i + ", index : " + week + ", index1 : " + day);
             temp_backup = temp_Date;
             if (week == 0)
                 temp = GraphData[week][day % GraphData[week].Count];
@@ -243,6 +243,7 @@ public class UserDataManager : MonoBehaviour
             // 만약 DB 데이터가 현재 날짜를 초과할 경우 or DB 데이터에서 같은 날이 있을 경우 제일 처음(그 날짜 제일 마지막) 데이터 사용
             if (DateTime.Compare(temp_Date_minus.Date, temp_Date.Date) > 0) //  || DateTime.Compare(temp_backup.Date, temp_Date.Date) < 0
             {
+                //Debug.Log("먼가 이상해");
                 i--;
                 temp_Date_minus = temp_Date_minus.AddDays(-1);
                 continue;
@@ -312,15 +313,16 @@ public class UserDataManager : MonoBehaviour
             DateTime calculationDate = DateTime.ParseExact(m.date, "yyyy-MM-dd HH:mm:ss", null); // 주차를 구할 일자
             DateTime calculationDate1 = new DateTime(calculationDate.Year, calculationDate.Month, 1); // 기준일
             Calendar calenderCalc = CultureInfo.CurrentCulture.Calendar;
+
             // DayOfWeek.Sunday 인수는 기준 요일
             int usWeekNumber = calenderCalc.GetWeekOfYear(calculationDate, CalendarWeekRule.FirstDay, DayOfWeek.Sunday) -
                                calenderCalc.GetWeekOfYear(calculationDate1, CalendarWeekRule.FirstDay, DayOfWeek.Sunday) + 1;
 
 
-            // Debug.Log("usWeekNumber : " + usWeekNumber);
-            // Debug.Log("calculationDate.Month : " + calculationDate.Month);
-            Debug.Log("최근" + (count++) + "주 데이터 : " + m.flexion + ", " + m.extension + ", " + m.leftFlexion + ", " + m.rightFlexion + ", " + m.leftRotation + ", " + m.rightRotation + ", " + m.totalFlexibility);
-            if(usWeekNumber == 5)
+            //Debug.Log("usWeekNumber : " + usWeekNumber);
+            //Debug.Log("calculationDate.Month : " + calculationDate.Month);
+            //Debug.Log("최근" + (count++) + "주 데이터 : " + m.flexion + ", " + m.extension + ", " + m.leftFlexion + ", " + m.rightFlexion + ", " + m.leftRotation + ", " + m.rightRotation + ", " + m.totalFlexibility);
+            /*if(usWeekNumber == 5) // 5주차 인 경우 -> 다음달 1주차로 바꾸는 코드
             {
                 series1Data1.Add((calculationDate.Month + 1) + "월 " + 1 + "째주," + (m.totalFlexibility));
                 series1Data2.Add((calculationDate.Month + 1) + "월 " + 1 + "째주," + (m.flexion + m.extension));
@@ -328,11 +330,12 @@ public class UserDataManager : MonoBehaviour
                 series1Data4.Add((calculationDate.Month + 1) + "월 " + 1 + "째주," + (m.leftRotation + m.rightRotation));
             }
             else {
-                series1Data1.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.totalFlexibility));
-                series1Data2.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.flexion + m.extension));
-                series1Data3.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.leftFlexion + m.rightFlexion));
-                series1Data4.Add(calculationDate.Month + "월 " + usWeekNumber + "째주," + (m.leftRotation + m.rightRotation));
-            }
+                
+            }*/
+            series1Data1.Add(calculationDate.Month + "월 " + usWeekNumber + "주차," + (m.totalFlexibility));
+            series1Data2.Add(calculationDate.Month + "월 " + usWeekNumber + "주차," + (m.flexion + m.extension));
+            series1Data3.Add(calculationDate.Month + "월 " + usWeekNumber + "주차," + (m.leftFlexion + m.rightFlexion));
+            series1Data4.Add(calculationDate.Month + "월 " + usWeekNumber + "주차," + (m.leftRotation + m.rightRotation));
         }
 
         for(int i=0; i< series1Data1.Count; i++)

@@ -35,6 +35,7 @@ public class GKUIManager : MonoBehaviour
     public Button PauseBtn;
     public ToggleGroup ChancesTG;
     public List<Toggle> toggles;
+    public GameObject PausePanel;
 
     public GameObject ResultPanel;
     public List<Image> StarImages;  // 인스펙터 창에서 별 이미지 오브젝트 넣기
@@ -84,6 +85,7 @@ public class GKUIManager : MonoBehaviour
         ColorUtility.TryParseHtmlString("#374355", out STAROFF); // 까만별 색
         explainPanel.SetActive(true);
 
+
         for (int i = 0; i < StarImages.Count; i++)
         {
             StarImages[i].color = STAROFF;
@@ -91,6 +93,12 @@ public class GKUIManager : MonoBehaviour
 
         // 토글 초기화
         InitiateToggles();
+    }
+
+    private void Update()
+    {
+        if (BNG.InputBridge.Instance.BButtonDown)
+            Pause(true);
     }
 
     #endregion
@@ -101,10 +109,12 @@ public class GKUIManager : MonoBehaviour
     {
         if (isPause)
         {
+            PausePanel.SetActive(true);
             Time.timeScale = 0f;
         }
         else
         {
+            PausePanel.SetActive(false);
             Time.timeScale = 1f;
         }
     }

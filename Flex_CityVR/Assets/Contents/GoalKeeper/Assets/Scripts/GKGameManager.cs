@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GKGameManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class GKGameManager : MonoBehaviour
     public int level;   // 몇 단계인지
     public int life;    // 생명
     public int shootingCount;   // Kicker가 공을 찬 횟수(리워드 산정용)
+    public Image backImg;
+    public GameObject XR_Rig;
 
     #endregion
 
@@ -96,6 +99,8 @@ public class GKGameManager : MonoBehaviour
         {
             Kicker.transform.Translate(Vector3.forward * 2f * Time.deltaTime);
         }
+
+        //if (BNG.InputBridge.Instance.AButton && BNG.InputBridge.Instance.)
     }
 
     #endregion
@@ -187,8 +192,61 @@ public class GKGameManager : MonoBehaviour
                 
             }
 
+            yield return StartCoroutine(FadeInCamera(backImg, 1f));
+            XR_Rig.transform.position = new Vector3(-120f, 0.2f, 62.116f);
+            //XR_Rig.transform.Translate(-120f, 0.5f, 62.406f);
+            yield return StartCoroutine(FadeOutCamera(backImg, 1f));
             isStart = true;
         }
+    }
+
+    IEnumerator FadeInCamera(Image img, float fadeInTime) // 페이드 인 : 투명 > 불투명
+    {
+        // 알파값 (투명도) 는 인스펙터에서 0 ~ 255  -->  투명 ~ 불투명
+        // 코드 상으로 0 ~ 1로 지정해야함
+
+        // 투명하게 초기화
+        img.gameObject.SetActive(true);
+        Color temp = img.color;
+        temp.a = 0;
+        img.color = temp;
+        //
+        float t = 0f; // 0~1 일때 t=0; 0.5~1일때 t=0.5 와 같이 선형보간 값 구함
+        temp.a = Mathf.Lerp(0f, 1f, t); // 투명~불투명
+
+        while (temp.a < 1f)
+        {
+            t += Time.deltaTime / fadeInTime;
+            temp.a = Mathf.Lerp(0f, 1f, t);
+            img.color = temp;
+            yield return null;
+        }
+    }
+
+    IEnumerator FadeOutCamera(Image img, float fadeOutTime) // 페이드 아웃 : 불투명 > 투명
+    {
+        // 알파값 (투명도) 는 인스펙터에서 0 ~ 255  -->  투명 ~ 불투명
+        // 코드 상으로 0 ~ 1로 지정해야함
+
+        // 불투명하게 초기화
+        if (img.gameObject.activeSelf == false)
+            img.gameObject.SetActive(true);
+        Color temp = img.color;
+        temp.a = 255;
+        img.color = temp;
+        //
+
+        float t = 0f;
+        temp.a = Mathf.Lerp(1f, 0f, t); // 불투명~투명
+
+        while (temp.a > 0f)
+        {
+            t += Time.deltaTime / fadeOutTime;
+            temp.a = Mathf.Lerp(1f, 0f, t);
+            img.color = temp;
+            yield return null;
+        }
+        img.gameObject.SetActive(false);
     }
 
     #endregion

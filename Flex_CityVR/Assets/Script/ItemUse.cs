@@ -22,6 +22,7 @@ public class ItemUse : MonoBehaviour
     public GameObject PetCard;
     public UnityEngine.UI.Text petName;
     public UnityEngine.UI.Text petRank;
+    public GameObject inventory;
 
     [HideInInspector]
     public GameObject choice;
@@ -98,6 +99,8 @@ public class ItemUse : MonoBehaviour
                 UserDataManager.instance.inventory.petFood--;
                 StartCoroutine(DBManager.SaveInventory(UserDataManager.instance.inventory));
                 StartCoroutine(UsePetFood());
+                UIManager.instance.setInformType(0);
+                inventory.SetActive(false);
                 print("사료 먹이기 성공");
             }
             else

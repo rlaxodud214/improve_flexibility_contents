@@ -48,6 +48,29 @@ public class CSVInput : MonoBehaviour
         genderText.text = "성별: " + (user.gender ? "남성" : "여성");
         LateUpdate.text = "최근 측정 일자 : " + recentData.date;
 
+        //user_age = int.Parse(User_info_change.Instance.user[1]) / 10; // user 나이
+        user.age = user.age / 10;
+        user.age = int.Parse(user.age.ToString() + "0"); // user 연령대
+        if (user.age >= 60)
+            user.age = 65;
+
+        for (int i = 0; i < mean_Slider.Count; i++)
+        {
+            mean_Slider[i].interactable = false;
+            userDataSlider[i].interactable = false;
+        }
+
+        #region 연령별 CSV 헤드 삽입
+        _Index.Add(20, _20Head);
+        _Index.Add(30, _30Head);
+        _Index.Add(65, _65Head);
+        #endregion
+
+        _data = CSVReader.Read("ageData");
+    }
+    void Start()
+    {
+        ReadCSVdata();
         // 측정값 슬라이더 초기화 -> 나중에 순서 바꾸던가 해야될 듯
         userDataSlider[0].maxValue = mean_Slider[2].maxValue;
         userDataSlider[1].maxValue = mean_Slider[3].maxValue;
@@ -73,29 +96,6 @@ public class CSVInput : MonoBehaviour
 
         percentageAge.text = recentData.totalFlexibility.ToString("N0");
         percentageAgeSlider.value = recentData.totalFlexibility;
-        //user_age = int.Parse(User_info_change.Instance.user[1]) / 10; // user 나이
-        user.age = user.age / 10;
-        user.age = int.Parse(user.age.ToString() + "0"); // user 연령대
-        if (user.age >= 60)
-            user.age = 65;
-
-        for (int i = 0; i < mean_Slider.Count; i++)
-        {
-            mean_Slider[i].interactable = false;
-            userDataSlider[i].interactable = false;
-        }
-
-        #region 연령별 CSV 헤드 삽입
-        _Index.Add(20, _20Head);
-        _Index.Add(30, _30Head);
-        _Index.Add(65, _65Head);
-        #endregion
-
-        _data = CSVReader.Read("ageData");
-    }
-    void Start()
-    {
-        ReadCSVdata();
         Mypercentage();
     }
 
@@ -126,9 +126,9 @@ public class CSVInput : MonoBehaviour
     {
         for (int i = 0; i < mean_Slider.Count; i++)
         {
-            mean_Slider[i].maxValue = ((float)_max[i]);
-            mean_Slider[i].value = ((float)_mean[i]);
-            mean_Slider[i].transform.GetChild(2).GetComponent<Text>().text = "" + ((float)_mean[i]);
+            mean_Slider[i].maxValue = ((float)Math.Round(_max[i], 0));
+            mean_Slider[i].value = ((float)Math.Round(_mean[i], 0));
+            mean_Slider[i].transform.GetChild(2).GetComponent<Text>().text = "" + ((float)Math.Round(_mean[i], 0)).ToString("N1");
         }
     }
 
@@ -149,7 +149,14 @@ public class CSVInput : MonoBehaviour
         user_percentage = int.Parse(_data[index]["percentage"].ToString());
         percnetageSlider.value = user_percentage;
         handle.text = user_percentage.ToString();
-        percentage.text = user.name + "님은 상위 " + user_percentage.ToString() + "% 입니다.";
+        int age = 0;
+        if (user.age < 30)
+            age = 20;
+        else if (user.age < 65)
+            age = 30;
+        else
+            age = 65;
+        percentage.text = user.name + "님은 " + age + "세 이상 중 상위 " + user_percentage.ToString() + "% 이내입니다.";
     }
 
     private double Abs(double v)

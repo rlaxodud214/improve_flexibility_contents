@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System;
+using System.Linq;
 
 public class LoginManager : MonoBehaviour
 {
     public InputField EmailInput, PasswordInput;
     public Button LoginButton;
+    public ToggleGroup toggleGroup;
     public Text ErrorText;
     public bool emailValid, passwordValid;
 
@@ -78,6 +79,11 @@ public class LoginManager : MonoBehaviour
     {
         GameObject userDataManager = new GameObject("UserDataManager");
         userDataManager.AddComponent<UserDataManager>();
+
+        if (toggleGroup.ActiveToggles().FirstOrDefault().name.Equals("ToggleA5"))
+            userDataManager.GetComponent<UserDataManager>().openZenIdentifier = "00:04:3E:9B:A2:A5";
+        else
+            userDataManager.GetComponent<UserDataManager>().openZenIdentifier = "00:04:3E:9B:A2:85";
 
         //yield return null;
         Time.timeScale = 1f;

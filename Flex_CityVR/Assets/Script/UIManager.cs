@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using Photon.Realtime;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,12 +25,11 @@ public class UIManager : MonoBehaviour
     public List<GameObject> AxisContentPanel;
     private GameObject previousAxisContent;
     private Color Blue;
-    //
 
-    // 감정 표현
-    public GameObject EmotionImage;
-    private string EmotionText;
-    //
+    // emotion
+    public bool isEmotionSelected = false;
+    public int emotionNumber = 0;
+
     void Awake()
     {
         instance = this;
@@ -40,19 +41,8 @@ public class UIManager : MonoBehaviour
         Blue = new Color(42/255f, 53/255f, 66/255f); // 색상을 RGB 값으로 스크립트 변경하려면 255로 나눠줘야 함
         #endregion
 
-        EmotionImage.SetActive(false);
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void cancle()
     {
@@ -185,15 +175,9 @@ public class UIManager : MonoBehaviour
     }
     #endregion
 
-    public void EmotionClick()
+    public void SetEmotionNumber(int n)
     {
-        StartCoroutine(EmotionMouseClick());
-    }
-
-    private IEnumerator EmotionMouseClick()
-    {
-        EmotionImage.SetActive(true);
-        yield return new WaitForSeconds(5f);
-        EmotionImage.SetActive(false);
+        emotionNumber = n;
+        isEmotionSelected = true;
     }
 }

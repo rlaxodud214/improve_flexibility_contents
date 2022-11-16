@@ -66,7 +66,8 @@ public class MonsterShot_UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (BNG.InputBridge.Instance.BButtonDown)
+            Pause();
     }
     public void GameStart()
     {
@@ -96,6 +97,7 @@ public class MonsterShot_UIManager : MonoBehaviour
     // 메인시티로 나가기 버튼
     public void Exit()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("mainCity");
     }
 

@@ -123,6 +123,9 @@ public class kayak_GameManager : MonoBehaviour
             }
         }
 
+        if (BNG.InputBridge.Instance.BButtonDown)
+            PauseTheGame();
+
         #region 카메라 Rig 조정
         if (Input.GetKey(KeyCode.UpArrow))
             GameObject.Find("XR Rig").transform.position += new Vector3(0, 0, 0.01f);
@@ -240,12 +243,6 @@ public class kayak_GameManager : MonoBehaviour
         Time.timeScale = 1;
         PauseState = false;
         SceneManager.LoadScene("mainCity");
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-        Application.Quit();
-#else
-                        Application.Quit(); // 어플리케이션 종료
-#endif
     }
 
     public void Restart()

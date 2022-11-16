@@ -22,6 +22,8 @@ public class Bird_CharacterMove : MonoBehaviour
     private float value;
     public List<float> weights = new List<float>();
 
+    Measurement playerRange;
+
     void Start()
     {
 /*        MoveSlider = GameObject.FindGameObjectWithTag("slider").GetComponent<Slider>();
@@ -30,6 +32,7 @@ public class Bird_CharacterMove : MonoBehaviour
         MoveSlider.minValue = -36.6f;*/
         weights.Add(1f);
         weights.Add(1f);
+        playerRange = UserDataManager.instance.recentData;
     }
 
     // Update is called once per frame
@@ -49,7 +52,7 @@ public class Bird_CharacterMove : MonoBehaviour
                         Flexion = MoveSlider.value;
                     }*/
 
-                    transform.position = new Vector3(0, (-5.5f / 95f) * value, -17);
+                    transform.position = Vector3.Lerp(transform.position, new Vector3(0, (-5.5f / playerRange.flexion) * value, -17), Time.deltaTime);
                 }
                 else if (value < -4.4)
                 {
@@ -58,7 +61,7 @@ public class Bird_CharacterMove : MonoBehaviour
                         Extension = MoveSlider.value;
                     }*/
 
-                    transform.position = new Vector3(0, (6.7f / -36.6f) * value, -17);
+                    transform.position = Vector3.Lerp(transform.position, new Vector3(0, (6.7f / -playerRange.extension) * value, -17), Time.deltaTime);
                 }
 
                 if (!Bird_UIManagerGame._instance.pausePanel.activeSelf && !Bird_UIManagerGame._instance.endPanel.activeSelf)
