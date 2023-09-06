@@ -2,7 +2,7 @@
 
 <img src="https://user-images.githubusercontent.com/47537803/222512573-50dc0548-dd50-4d6a-8c22-fa8552391c6d.png" width="700" height="400">
 
-> 개발 기간: 2021.12 ~ 2022.12</p>🎥 시연영상 https://www.youtube.com/watch?v=LUJFNjoDq-A
+> 개발 기간: 2021.12 ~ 2022.12</p>🎥 시연영상 https://www.youtube.com/watch?v=ZRfCsJewmR8&t=1s
 
 
 
